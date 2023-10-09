@@ -8,6 +8,13 @@ namespace AutoAcceptFacebookFriendRequests
         [STAThread]
         static void Main()
         {
+            string[] files = new string[] { "user_agents.txt" };
+            foreach (string file in files)
+            {
+                if (!File.Exists(file))
+                    using (File.Create(file)) { }
+            }
+
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
