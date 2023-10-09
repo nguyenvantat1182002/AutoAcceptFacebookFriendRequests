@@ -127,10 +127,8 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
 
                         break;
                     }
-
-                    _service.UpdateCookieStatus(accountAPI, "Lỗi không xác định.");
-
-                    Console.WriteLine(ex);
+                    else
+                        _service.UpdateCookieStatus(accountAPI, ex.Message);
                 }
                 finally
                 {
