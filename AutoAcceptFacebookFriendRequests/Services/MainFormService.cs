@@ -12,9 +12,9 @@ namespace AutoAcceptFacebookFriendRequests.Services
             MainForm = mainForm;
         }
 
-        public void AddCookie(string cookie, string? proxy = null)
+        public void AddCookie(string cookie, string proxy)
         {
-            string agent = FileUtil.RandomChoice($"{Directory.GetCurrentDirectory()}\\user_agents.txt");
+            string agent = FileUtils.RandomChoice($"{Directory.GetCurrentDirectory()}\\user_agents.txt");
             if (string.IsNullOrWhiteSpace(agent))
                 throw new Exception("Vui lòng thêm User-Agent(s).");
 
@@ -23,6 +23,18 @@ namespace AutoAcceptFacebookFriendRequests.Services
             int index = MainForm.CookieGridView.Rows.Add(new object[] {0, cookie});
             MainForm.CookieGridView.Rows[index].Cells[0].Value = MainForm.CookieGridView.RowCount;
             MainForm.CookieGridView.Rows[index].Cells[3].Value = proxy ?? "";
+        }
+
+        public void UpdateCookieStatus(FacebookAccountAPI account, string status)
+        {
+            int index = MainForm.AccountList.IndexOf(account);
+            MainForm.CookieGridView.Rows[index].Cells[4].Value = status;
+        }
+
+        public void UpdateFriendRequests(FacebookAccountAPI account, int requests)
+        {
+            int index = MainForm.AccountList.IndexOf(account);
+            MainForm.CookieGridView.Rows[index].Cells[2].Value = requests;
         }
     }
 }

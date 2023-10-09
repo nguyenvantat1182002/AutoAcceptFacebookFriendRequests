@@ -1,6 +1,6 @@
 ﻿namespace AutoAcceptFacebookFriendRequests.Utils
 {
-    public static class FileUtil
+    public static class FileUtils
     {
         public static string RandomChoice(string filePath)
         {

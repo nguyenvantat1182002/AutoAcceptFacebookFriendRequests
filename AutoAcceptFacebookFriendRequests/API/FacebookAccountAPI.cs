@@ -18,32 +18,28 @@ namespace AutoAcceptFacebookFriendRequests.API
 
         private const string GRAPHQL_URL = "https://www.facebook.com/api/graphql/";
 
-        public FacebookAccountAPI(string cookie, string userAgent, string? proxy = null)
+        public FacebookAccountAPI(string cookie, string userAgent, string proxy)
         {
             Cookie = cookie;
             UserAgent = userAgent;
 
+            string[] parts = proxy.Split(':');
+            string proxyHost = parts[0];
+            string proxyPort = parts[1];
+            string proxyUsername = parts[2];
+            string proxyPassword = parts[3];
+
             _httpHandler = new HttpClientHandler();
             _httpHandler.CookieContainer = new CookieContainer();
+            _httpHandler.Proxy = new WebProxy($"http://{proxyHost}:{proxyPort}");
+            _httpHandler.UseProxy = true;
+            _httpHandler.DefaultProxyCredentials = new NetworkCredential(proxyUsername, proxyPassword);
 
             _http = new HttpClient(_httpHandler, true);
             _http.DefaultRequestHeaders.Add("User-Agent", UserAgent);
 
             foreach (Cookie item in ParseCookieString(cookie))
                 _httpHandler.CookieContainer.Add(item);
-
-            if (!string.IsNullOrWhiteSpace(proxy))
-            {
-                string[] parts = proxy.Split(':');
-                string proxyHost = parts[0];
-                string proxyPort = parts[1];
-                string proxyUsername = parts[2];
-                string proxyPassword = parts[3];
-
-                _httpHandler.Proxy = new WebProxy($"http://{proxyHost}:{proxyPort}");
-                _httpHandler.UseProxy = true;
-                _httpHandler.DefaultProxyCredentials = new NetworkCredential(proxyUsername, proxyPassword);
-            }
         }
 
         public async Task<bool> AcceptFriendRequest(FriendInfo info)
