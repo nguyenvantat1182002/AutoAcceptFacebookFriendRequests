@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using AutoAcceptFacebookFriendRequests.API.Exeptions;
 using Newtonsoft.Json.Linq;
 using System.Text.Json;
+using AutoAcceptFacebookFriendRequests.API.Models;
 
 namespace AutoAcceptFacebookFriendRequests.API
 {
@@ -11,6 +12,7 @@ namespace AutoAcceptFacebookFriendRequests.API
     {
         public string Cookie { get; }
         public string UserAgent { get; }
+        public AccountState State { get; }
 
         private HttpClient _http;
         private HttpClientHandler _httpHandler;
@@ -22,6 +24,7 @@ namespace AutoAcceptFacebookFriendRequests.API
         {
             Cookie = cookie;
             UserAgent = userAgent;
+            State = new AccountState();
 
             string[] parts = proxy.Split(':');
             string proxyHost = parts[0];

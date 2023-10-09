@@ -419,6 +419,7 @@
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "AUTO ACCEPT FACEBOOK FRIEND REQUESTS";
+            Load += MainForm_Load;
             ((System.ComponentModel.ISupportInitialize)CookieGridView).EndInit();
             ResumeLayout(false);
             PerformLayout();

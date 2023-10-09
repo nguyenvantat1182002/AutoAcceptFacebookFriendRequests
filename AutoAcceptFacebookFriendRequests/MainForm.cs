@@ -156,5 +156,13 @@ namespace AutoAcceptFacebookFriendRequests
             stopButton.Text = "Stop...";
             _tokenSource!.Cancel();
         }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            rateLimitDuration.Text = Input.RateLimitDuration.ToString();
+            rateLimit.Text = Input.RateLimit.ToString();
+            duration.Text = Input.Duration.ToString();
+            maxThreadCount.Text = Input.MaxThreadCount.ToString();
+        }
     }
 }

@@ -28,13 +28,21 @@ namespace AutoAcceptFacebookFriendRequests.Services
         public void UpdateCookieStatus(FacebookAccountAPI account, string status)
         {
             int index = MainForm.AccountList.IndexOf(account);
-            MainForm.CookieGridView.Rows[index].Cells[4].Value = status;
+
+            MainForm.CookieGridView.Invoke(new Action(() =>
+            {
+                MainForm.CookieGridView.Rows[index].Cells[4].Value = status;
+            }));
         }
 
         public void UpdateFriendRequests(FacebookAccountAPI account, int requests)
         {
             int index = MainForm.AccountList.IndexOf(account);
-            MainForm.CookieGridView.Rows[index].Cells[2].Value = requests;
+
+            MainForm.CookieGridView.Invoke(new Action(() =>
+            {
+                MainForm.CookieGridView.Rows[index].Cells[2].Value = requests;
+            }));
         }
     }
 }
