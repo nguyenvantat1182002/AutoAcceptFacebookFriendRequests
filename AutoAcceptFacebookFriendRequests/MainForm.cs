@@ -142,6 +142,7 @@ namespace AutoAcceptFacebookFriendRequests
 
             startButton.Enabled = true;
             stopButton.Enabled = false;
+            stopButton.Text = "Stop";
 
             MessageBox.Show(
                     text: _tokenSource.IsCancellationRequested ? "Đã dừng" : "Hoành thành",
@@ -149,6 +150,8 @@ namespace AutoAcceptFacebookFriendRequests
                     buttons: MessageBoxButtons.OK,
                     icon: MessageBoxIcon.Information
                 );
+
+            
         }
 
         private void stopButton_Click(object sender, EventArgs e)
