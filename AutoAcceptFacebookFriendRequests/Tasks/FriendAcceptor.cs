@@ -48,41 +48,26 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
                 lock (_lockObject)
                     accountAPI = _accountList.Dequeue();
 
-                int requests = 0;
+                int requestedCount = 0;
+                int acceptedRequestCount = 0;
 
                 try
                 {
-                    Queue<FriendInfo> friendRequests = new Queue<FriendInfo>(await accountAPI.GetFriendRequests());
-                    _service.UpdateFriendRequests(accountAPI, friendRequests.Count);
-
-                    if (friendRequests.Count < 1)
+                    while (acceptedRequestCount < _input.MaxAcceptanceLimit)
                     {
-                        _service.UpdateCookieStatus(accountAPI, $"Không có lời mời kết bạn nào.");
-                        continue;
-                    }
+                        Queue<FriendInfo> friendRequests = new Queue<FriendInfo>(await accountAPI.GetFriendRequests());
 
-                    long endTime = 0;
-
-                    while (friendRequests.Count > 0)
-                    {
-                        FriendInfo friendRequest = friendRequests.Dequeue();
-
-                        while (true)
+                        if (friendRequests.Count < 1)
                         {
-                            if (TimeUtils.GetTimestamp() > endTime)
-                                break;
-
-                            int remainningTime = (int)(endTime - TimeUtils.GetTimestamp());
-                            string formattedTime = TimeUtils.SecondsToFormattedTime(remainningTime);
-
-                            _service.UpdateCookieStatus(accountAPI, $"Sẽ tiếp tục sau {formattedTime}");
-
-                            await Task.Delay(1000, _token);
+                            _service.UpdateCookieStatus(accountAPI, $"Không có lời mời kết bạn nào.");
+                            break;
                         }
 
-                        if (requests >= _input.RateLimit)
+                        long endTime = 0;
+
+                        while (friendRequests.Count > 0)
                         {
-                            endTime = TimeUtils.GetTimestamp() + _input.RateLimitDuration;
+                            FriendInfo friendRequest = friendRequests.Dequeue();
 
                             while (true)
                             {
@@ -92,25 +77,45 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
                                 int remainningTime = (int)(endTime - TimeUtils.GetTimestamp());
                                 string formattedTime = TimeUtils.SecondsToFormattedTime(remainningTime);
 
-                                _service.UpdateCookieStatus(accountAPI, $"Tạm dừng, sẽ tiếp tục sau {formattedTime}");
+                                _service.UpdateCookieStatus(accountAPI, $"Sẽ tiếp tục sau {formattedTime}");
 
                                 await Task.Delay(1000, _token);
                             }
 
-                            requests = 0;
+                            if (requestedCount >= _input.RateLimit)
+                            {
+                                endTime = TimeUtils.GetTimestamp() + _input.RateLimitDuration;
+
+                                while (true)
+                                {
+                                    if (TimeUtils.GetTimestamp() > endTime)
+                                        break;
+
+                                    int remainningTime = (int)(endTime - TimeUtils.GetTimestamp());
+                                    string formattedTime = TimeUtils.SecondsToFormattedTime(remainningTime);
+
+                                    _service.UpdateCookieStatus(accountAPI, $"Tạm dừng, sẽ tiếp tục sau {formattedTime}");
+
+                                    await Task.Delay(1000, _token);
+                                }
+
+                                requestedCount = 0;
+                            }
+
+                            _service.UpdateCookieStatus(accountAPI, $"Chấp nhận kết bạn với {friendRequest.Name}");
+                            await accountAPI.AcceptFriendRequest(friendRequest);
+
+                            requestedCount++;
+                            acceptedRequestCount++;
+
+                            _service.UpdateAcceptedFriend(accountAPI, acceptedRequestCount);
+
+                            endTime = TimeUtils.GetTimestamp() + _input.Duration;
                         }
-
-                        _service.UpdateCookieStatus(accountAPI, $"Chấp nhận kết bạn với {friendRequest.Name}");
-                        await accountAPI.AcceptFriendRequest(friendRequest);
-
-                        requests++;
-
-                        _service.UpdateFriendRequests(accountAPI, friendRequests.Count);
-
-                        endTime = TimeUtils.GetTimestamp() + _input.Duration;
                     }
 
-                    _service.UpdateCookieStatus(accountAPI, $"Hoàn thành.");
+                    if (acceptedRequestCount > 0)
+                        _service.UpdateCookieStatus(accountAPI, $"Hoàn thành");
                 }
                 catch (Exception ex)
                 {

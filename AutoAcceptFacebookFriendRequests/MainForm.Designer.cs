@@ -42,13 +42,15 @@
             stopButton = new MaterialSkin.Controls.MaterialButton();
             addAccountButton = new MaterialSkin.Controls.MaterialButton();
             CookieGridView = new DataGridView();
-            Column1 = new DataGridViewTextBoxColumn();
-            Column2 = new DataGridViewTextBoxColumn();
-            Column3 = new DataGridViewTextBoxColumn();
-            Column5 = new DataGridViewTextBoxColumn();
-            Column4 = new DataGridViewTextBoxColumn();
             materialLabel7 = new MaterialSkin.Controls.MaterialLabel();
             maxThreadCount = new MaterialSkin.Controls.MaterialTextBox2();
+            maxAcceptanceLimit = new MaterialSkin.Controls.MaterialTextBox2();
+            materialLabel8 = new MaterialSkin.Controls.MaterialLabel();
+            Column1 = new DataGridViewTextBoxColumn();
+            Column2 = new DataGridViewTextBoxColumn();
+            Column6 = new DataGridViewTextBoxColumn();
+            Column5 = new DataGridViewTextBoxColumn();
+            Column4 = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)CookieGridView).BeginInit();
             SuspendLayout();
             // 
@@ -304,7 +306,7 @@
             CookieGridView.AllowUserToAddRows = false;
             CookieGridView.AllowUserToDeleteRows = false;
             CookieGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            CookieGridView.Columns.AddRange(new DataGridViewColumn[] { Column1, Column2, Column3, Column5, Column4 });
+            CookieGridView.Columns.AddRange(new DataGridViewColumn[] { Column1, Column2, Column6, Column5, Column4 });
             CookieGridView.Location = new Point(7, 306);
             CookieGridView.Name = "CookieGridView";
             CookieGridView.ReadOnly = true;
@@ -312,45 +314,6 @@
             CookieGridView.RowTemplate.Height = 25;
             CookieGridView.Size = new Size(669, 362);
             CookieGridView.TabIndex = 15;
-            // 
-            // Column1
-            // 
-            Column1.HeaderText = "N.";
-            Column1.Name = "Column1";
-            Column1.ReadOnly = true;
-            Column1.SortMode = DataGridViewColumnSortMode.NotSortable;
-            Column1.Width = 60;
-            // 
-            // Column2
-            // 
-            Column2.HeaderText = "Cookie [0]";
-            Column2.Name = "Column2";
-            Column2.ReadOnly = true;
-            Column2.SortMode = DataGridViewColumnSortMode.NotSortable;
-            Column2.Width = 150;
-            // 
-            // Column3
-            // 
-            Column3.HeaderText = "Request";
-            Column3.Name = "Column3";
-            Column3.ReadOnly = true;
-            Column3.SortMode = DataGridViewColumnSortMode.NotSortable;
-            // 
-            // Column5
-            // 
-            Column5.HeaderText = "Proxy";
-            Column5.Name = "Column5";
-            Column5.ReadOnly = true;
-            Column5.SortMode = DataGridViewColumnSortMode.NotSortable;
-            Column5.Width = 150;
-            // 
-            // Column4
-            // 
-            Column4.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            Column4.HeaderText = "Status";
-            Column4.Name = "Column4";
-            Column4.ReadOnly = true;
-            Column4.SortMode = DataGridViewColumnSortMode.NotSortable;
             // 
             // materialLabel7
             // 
@@ -394,11 +357,93 @@
             maxThreadCount.UseSystemPasswordChar = false;
             maxThreadCount.TextChanged += maxThreadCount_TextChanged;
             // 
+            // maxAcceptanceLimit
+            // 
+            maxAcceptanceLimit.AnimateReadOnly = false;
+            maxAcceptanceLimit.BackgroundImageLayout = ImageLayout.None;
+            maxAcceptanceLimit.CharacterCasing = CharacterCasing.Normal;
+            maxAcceptanceLimit.Depth = 0;
+            maxAcceptanceLimit.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            maxAcceptanceLimit.HideSelection = true;
+            maxAcceptanceLimit.LeadingIcon = null;
+            maxAcceptanceLimit.Location = new Point(357, 204);
+            maxAcceptanceLimit.MaxLength = 32767;
+            maxAcceptanceLimit.MouseState = MaterialSkin.MouseState.OUT;
+            maxAcceptanceLimit.Name = "maxAcceptanceLimit";
+            maxAcceptanceLimit.PasswordChar = '\0';
+            maxAcceptanceLimit.PrefixSuffixText = null;
+            maxAcceptanceLimit.ReadOnly = false;
+            maxAcceptanceLimit.RightToLeft = RightToLeft.No;
+            maxAcceptanceLimit.SelectedText = "";
+            maxAcceptanceLimit.SelectionLength = 0;
+            maxAcceptanceLimit.SelectionStart = 0;
+            maxAcceptanceLimit.ShortcutsEnabled = true;
+            maxAcceptanceLimit.Size = new Size(174, 48);
+            maxAcceptanceLimit.TabIndex = 19;
+            maxAcceptanceLimit.TabStop = false;
+            maxAcceptanceLimit.Text = "30";
+            maxAcceptanceLimit.TextAlign = HorizontalAlignment.Left;
+            maxAcceptanceLimit.TrailingIcon = null;
+            maxAcceptanceLimit.UseSystemPasswordChar = false;
+            maxAcceptanceLimit.TextChanged += maxAcceptanceLimit_TextChanged;
+            // 
+            // materialLabel8
+            // 
+            materialLabel8.AutoSize = true;
+            materialLabel8.Depth = 0;
+            materialLabel8.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            materialLabel8.Location = new Point(357, 182);
+            materialLabel8.MouseState = MaterialSkin.MouseState.HOVER;
+            materialLabel8.Name = "materialLabel8";
+            materialLabel8.Size = new Size(148, 19);
+            materialLabel8.TabIndex = 18;
+            materialLabel8.Text = "Chỉ chấp nhận tối đa";
+            // 
+            // Column1
+            // 
+            Column1.HeaderText = "N.";
+            Column1.Name = "Column1";
+            Column1.ReadOnly = true;
+            Column1.SortMode = DataGridViewColumnSortMode.NotSortable;
+            Column1.Width = 60;
+            // 
+            // Column2
+            // 
+            Column2.HeaderText = "Cookie [0]";
+            Column2.Name = "Column2";
+            Column2.ReadOnly = true;
+            Column2.SortMode = DataGridViewColumnSortMode.NotSortable;
+            Column2.Width = 150;
+            // 
+            // Column6
+            // 
+            Column6.HeaderText = "Đã chấp nhận";
+            Column6.Name = "Column6";
+            Column6.ReadOnly = true;
+            Column6.SortMode = DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Column5
+            // 
+            Column5.HeaderText = "Proxy";
+            Column5.Name = "Column5";
+            Column5.ReadOnly = true;
+            Column5.SortMode = DataGridViewColumnSortMode.NotSortable;
+            // 
+            // Column4
+            // 
+            Column4.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            Column4.HeaderText = "Status";
+            Column4.Name = "Column4";
+            Column4.ReadOnly = true;
+            Column4.SortMode = DataGridViewColumnSortMode.NotSortable;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(683, 674);
+            Controls.Add(maxAcceptanceLimit);
+            Controls.Add(materialLabel8);
             Controls.Add(maxThreadCount);
             Controls.Add(materialLabel7);
             Controls.Add(CookieGridView);
@@ -440,13 +485,15 @@
         private MaterialSkin.Controls.MaterialButton stopButton;
         private MaterialSkin.Controls.MaterialButton addAccountButton;
         public DataGridView CookieGridView;
-        private DataGridViewTextBoxColumn Column1;
-        private DataGridViewTextBoxColumn Column2;
-        private DataGridViewTextBoxColumn Column3;
-        private DataGridViewTextBoxColumn Column5;
-        private DataGridViewTextBoxColumn Column4;
         private MaterialSkin.Controls.MaterialButton startButton;
         private MaterialSkin.Controls.MaterialLabel materialLabel7;
         private MaterialSkin.Controls.MaterialTextBox2 maxThreadCount;
+        private MaterialSkin.Controls.MaterialTextBox2 maxAcceptanceLimit;
+        private MaterialSkin.Controls.MaterialLabel materialLabel8;
+        private DataGridViewTextBoxColumn Column1;
+        private DataGridViewTextBoxColumn Column2;
+        private DataGridViewTextBoxColumn Column6;
+        private DataGridViewTextBoxColumn Column5;
+        private DataGridViewTextBoxColumn Column4;
     }
 }

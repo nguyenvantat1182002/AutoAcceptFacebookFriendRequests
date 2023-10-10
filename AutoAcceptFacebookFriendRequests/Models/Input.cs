@@ -6,5 +6,6 @@
         public int RateLimit { get; set; } = 10;
         public int Duration { get; set; } = 15;
         public int MaxThreadCount { get; set; } = 5;
+        public int MaxAcceptanceLimit { get; set; } = 30;
     }
 }

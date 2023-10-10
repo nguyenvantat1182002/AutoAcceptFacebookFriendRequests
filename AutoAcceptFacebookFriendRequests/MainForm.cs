@@ -163,6 +163,16 @@ namespace AutoAcceptFacebookFriendRequests
             rateLimit.Text = Input.RateLimit.ToString();
             duration.Text = Input.Duration.ToString();
             maxThreadCount.Text = Input.MaxThreadCount.ToString();
+            maxAcceptanceLimit.Text = Input.MaxAcceptanceLimit.ToString();
+        }
+
+        private void maxAcceptanceLimit_TextChanged(object sender, EventArgs e)
+        {
+            int.TryParse(maxAcceptanceLimit.Text, out int result);
+
+            Input.MaxAcceptanceLimit = result < 1 ? 5 : result;
+
+            maxAcceptanceLimit.Text = Input.MaxAcceptanceLimit.ToString();
         }
     }
 }

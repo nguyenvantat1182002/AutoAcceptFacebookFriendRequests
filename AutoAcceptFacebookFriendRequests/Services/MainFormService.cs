@@ -35,13 +35,13 @@ namespace AutoAcceptFacebookFriendRequests.Services
             }));
         }
 
-        public void UpdateFriendRequests(FacebookAccountAPI account, int requests)
+        public void UpdateAcceptedFriend(FacebookAccountAPI account, int value)
         {
             int index = MainForm.AccountList.IndexOf(account);
 
             MainForm.CookieGridView.Invoke(new Action(() =>
             {
-                MainForm.CookieGridView.Rows[index].Cells[2].Value = requests;
+                MainForm.CookieGridView.Rows[index].Cells[2].Value = value;
             }));
         }
     }
