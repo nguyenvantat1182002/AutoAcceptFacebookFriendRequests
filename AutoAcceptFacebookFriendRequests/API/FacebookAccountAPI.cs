@@ -45,6 +45,31 @@ namespace AutoAcceptFacebookFriendRequests.API
                 _httpHandler.CookieContainer.Add(item);
         }
 
+        public async Task<bool> AddFriend(FriendInfo friend)
+        {
+            string dtsg = await GetDTSG($"https://www.facebook.com/{friend.Id}");
+            string actorId = GetActorId();
+            string variables = JsonSerializer.Serialize(new
+            {
+                input = new
+                {
+                    people_you_may_know_location = "netego",
+                    refs = new string[] { null! },
+                    source = "netego_pymk",
+                    warn_ack_for_ids = new string[] { },
+                    actor_id = actorId,
+                    client_mutation_id = "1",
+                    friend_requestee_ids = new string[] { friend.Id },
+                },
+                scale = 1
+            });
+
+            string responseContent = await RequestAPI(dtsg, variables, "6523509764398491");
+            Console.WriteLine(responseContent.Substring(0, 100));
+
+            return true;
+        }
+
         public async Task<bool> Unfriend(FriendInfo friend)
         {
             string dtsg = await GetDTSG($"https://www.facebook.com/{friend.Id}");
@@ -126,7 +151,7 @@ namespace AutoAcceptFacebookFriendRequests.API
             List<FriendInfo> friends = new List<FriendInfo>();
 
             string dtsg = await GetDTSG("https://www.facebook.com/friends/suggestions");
-            
+
             Dictionary<string, dynamic> values = new Dictionary<string, dynamic>();
             values.Add("count", 30);
             values.Add("location", "FRIENDS_CENTER");
@@ -140,7 +165,7 @@ namespace AutoAcceptFacebookFriendRequests.API
 
                 string variables = Newtonsoft.Json.JsonConvert.SerializeObject(values);
                 string responseContent = await RequestAPI(dtsg, variables, "7426902770683771");
-                
+
                 JObject responseObject = JObject.Parse(responseContent);
 
                 JToken peopleYouMayKnow = responseObject["data"]!["viewer"]!["people_you_may_know"]!;
@@ -171,7 +196,7 @@ namespace AutoAcceptFacebookFriendRequests.API
 
                 await Task.Delay((int)(DateTime.Now - startTime).TotalMilliseconds);
             }
-            
+
             return friends;
         }
 

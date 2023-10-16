@@ -7,9 +7,16 @@ namespace AutoAcceptFacebookFriendRequests.Services
     {
         public MainForm MainForm { get; }
 
+        public List<DataGridView> GridViews { get; }
+
         public MainFormService(MainForm mainForm)
         {
             MainForm = mainForm;
+            GridViews = new List<DataGridView>();
+
+            GridViews.Add(MainForm.CookieGridView1);
+            GridViews.Add(MainForm.CookieGridView2);
+            GridViews.Add(MainForm.CookieGridView3);
         }
 
         public void AddCookie(string cookie, string proxy)
@@ -20,28 +27,31 @@ namespace AutoAcceptFacebookFriendRequests.Services
 
             MainForm.AccountList.Add(new FacebookAccountAPI(cookie, agent, proxy));
 
-            int index = MainForm.CookieGridView.Rows.Add(new object[] {0, cookie});
-            MainForm.CookieGridView.Rows[index].Cells[0].Value = MainForm.CookieGridView.RowCount;
-            MainForm.CookieGridView.Rows[index].Cells[3].Value = proxy ?? "";
+            foreach (DataGridView item in GridViews)
+            {
+                int index = item.Rows.Add(new object[] {0, cookie});
+                item.Rows[index].Cells[0].Value = item.RowCount;
+                item.Rows[index].Cells[2].Value = proxy ?? "";
+            }
         }
 
-        public void UpdateCookieStatus(FacebookAccountAPI account, string status)
+        public void UpdateCookieStatus(DataGridView gridView, FacebookAccountAPI account, string status)
         {
             int index = MainForm.AccountList.IndexOf(account);
 
-            MainForm.CookieGridView.Invoke(new Action(() =>
+            gridView.Invoke(new Action(() =>
             {
-                MainForm.CookieGridView.Rows[index].Cells[4].Value = status;
+                gridView.Rows[index].Cells[4].Value = status;
             }));
         }
 
-        public void UpdateAcceptedFriend(FacebookAccountAPI account, int value)
+        public void UpdateRequest(DataGridView gridView, FacebookAccountAPI account, int value)
         {
             int index = MainForm.AccountList.IndexOf(account);
 
-            MainForm.CookieGridView.Invoke(new Action(() =>
+            gridView.Invoke(new Action(() =>
             {
-                MainForm.CookieGridView.Rows[index].Cells[2].Value = value;
+                gridView.Rows[index].Cells[3].Value = value;
             }));
         }
     }

@@ -53,8 +53,8 @@ namespace AutoAcceptFacebookFriendRequests
             if (AccountList.Count > 0)
                 AccountList.Clear();
 
-            if (CookieGridView.RowCount > 0)
-                CookieGridView.Rows.Clear();
+            if (CookieGridView1.RowCount > 0)
+                CookieGridView1.Rows.Clear();
 
             try
             {
@@ -70,7 +70,7 @@ namespace AutoAcceptFacebookFriendRequests
                     Service.AddCookie(cookie, proxy);
                 }
 
-                CookieGridView.Columns[1].HeaderText = $"Cookie [{CookieGridView.RowCount}]";
+                CookieGridView1.Columns[1].HeaderText = $"Cookie [{CookieGridView1.RowCount}]";
             }
             catch (Exception ex)
             {
@@ -86,11 +86,6 @@ namespace AutoAcceptFacebookFriendRequests
         private void addUserAgentButton_Click(object sender, EventArgs e)
         {
             Process.Start("explorer.exe", $"{Directory.GetCurrentDirectory()}\\user_agents.txt");
-        }
-
-        private void addProxyButton_Click(object sender, EventArgs e)
-        {
-            Process.Start("explorer.exe", $"{Directory.GetCurrentDirectory()}\\proxies.txt");
         }
 
         private void rateLimitDuration_TextChanged(object sender, EventArgs e)
@@ -115,6 +110,8 @@ namespace AutoAcceptFacebookFriendRequests
         {
             int.TryParse(duration.Text, out int result);
 
+            Console.WriteLine(duration.Text);
+
             Input.Duration = result < 1 ? 15 : result;
 
             duration.Text = Input.Duration.ToString();
@@ -131,27 +128,32 @@ namespace AutoAcceptFacebookFriendRequests
 
         private async void startButton_Click(object sender, EventArgs e)
         {
+            tabPage3.Enabled = false;
+            tabPage4.Enabled = false;
+
             startButton.Enabled = false;
             stopButton.Enabled = true;
 
             _tokenSource = null;
             _tokenSource = new CancellationTokenSource();
 
-            FriendAcceptor acceptor = new FriendAcceptor(_tokenSource.Token);
+            FriendAcceptor acceptor = new FriendAcceptor(Service, CookieGridView1, _tokenSource.Token);
             await Task.Run(acceptor.Start);
 
             startButton.Enabled = true;
             stopButton.Enabled = false;
+
             stopButton.Text = "Stop";
 
+            tabPage3.Enabled = true;
+            tabPage4.Enabled = true;
+
             MessageBox.Show(
-                    text: _tokenSource.IsCancellationRequested ? "Đã dừng" : "Hoành thành",
+                    text: _tokenSource.IsCancellationRequested ? "Đã dừng" : "Hoàn thành",
                     caption: "Thông báo",
                     buttons: MessageBoxButtons.OK,
                     icon: MessageBoxIcon.Information
                 );
-
-            
         }
 
         private void stopButton_Click(object sender, EventArgs e)
@@ -167,6 +169,7 @@ namespace AutoAcceptFacebookFriendRequests
             duration.Text = Input.Duration.ToString();
             maxThreadCount.Text = Input.MaxThreadCount.ToString();
             maxAcceptanceLimit.Text = Input.MaxAcceptanceLimit.ToString();
+            maxSuggestionLimit.Text = Input.MaxSuggestionLimit.ToString();
         }
 
         private void maxAcceptanceLimit_TextChanged(object sender, EventArgs e)
@@ -176,6 +179,96 @@ namespace AutoAcceptFacebookFriendRequests
             Input.MaxAcceptanceLimit = result < 1 ? 5 : result;
 
             maxAcceptanceLimit.Text = Input.MaxAcceptanceLimit.ToString();
+        }
+
+        private async void startButton2_Click(object sender, EventArgs e)
+        {
+            startButton2.Enabled = false;
+            stopButton2.Enabled = true;
+
+            tabPage1.Enabled = false;
+            tabPage4.Enabled = false;
+
+            _tokenSource = null;
+            _tokenSource = new CancellationTokenSource();
+
+            FriendSuggestor suggestor = new FriendSuggestor(Service, CookieGridView2, _tokenSource.Token);
+            await Task.Run(suggestor.Start);
+
+            startButton2.Enabled = true;
+            stopButton2.Enabled = false;
+
+            stopButton2.Text = "Stop";
+
+            tabPage1.Enabled = true;
+            tabPage4.Enabled = true;
+
+            MessageBox.Show(
+                    text: _tokenSource.IsCancellationRequested ? "Đã dừng" : "Hoàn thành",
+                    caption: "Thông báo",
+                    buttons: MessageBoxButtons.OK,
+                    icon: MessageBoxIcon.Information
+                );
+        }
+
+        private void stopButton2_Click(object sender, EventArgs e)
+        {
+            stopButton2.Text = "Stop...";
+            _tokenSource!.Cancel();
+        }
+
+        private void MaxSuggestionLimit_TextChanged(object sender, EventArgs e)
+        {
+            int.TryParse(maxSuggestionLimit.Text, out int result);
+
+            Input.MaxSuggestionLimit = result < 1 ? 30 : result;
+
+            maxSuggestionLimit.Text = Input.MaxSuggestionLimit.ToString();
+        }
+
+        private void maxDeleteLimit_TextChanged(object sender, EventArgs e)
+        {
+            int.TryParse(maxDeleteLimit.Text, out int result);
+
+            Input.MaxDeleteLimit = result < 1 ? 30 : result;
+
+            maxDeleteLimit.Text = Input.MaxDeleteLimit.ToString();
+        }
+
+        private async void startButton3_Click(object sender, EventArgs e)
+        {
+            startButton3.Enabled = false;
+            stopButton3.Enabled = true;
+
+            tabPage1.Enabled = false;
+            tabPage3.Enabled = false;
+
+            _tokenSource = null;
+            _tokenSource = new CancellationTokenSource();
+
+            FriendDeleter deleter = new FriendDeleter(Service, CookieGridView3, _tokenSource.Token);
+            await Task.Run(deleter.Start);
+
+            startButton3.Enabled = true;
+            stopButton3.Enabled = false;
+
+            stopButton3.Text = "Stop";
+
+            tabPage1.Enabled = true;
+            tabPage3.Enabled = true;
+
+            MessageBox.Show(
+                    text: _tokenSource.IsCancellationRequested ? "Đã dừng" : "Hoàn thành",
+                    caption: "Thông báo",
+                    buttons: MessageBoxButtons.OK,
+                    icon: MessageBoxIcon.Information
+                );
+        }
+
+        private void stopButton3_Click(object sender, EventArgs e)
+        {
+            stopButton3.Text = "Stop...";
+            _tokenSource!.Cancel();
         }
     }
 }

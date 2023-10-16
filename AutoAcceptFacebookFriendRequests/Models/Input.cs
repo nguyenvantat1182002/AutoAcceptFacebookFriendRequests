@@ -7,5 +7,7 @@
         public int Duration { get; set; } = 15;
         public int MaxThreadCount { get; set; } = 5;
         public int MaxAcceptanceLimit { get; set; } = 30;
+        public int MaxSuggestionLimit { get; set; } = 30;
+        public int MaxDeleteLimit { get; set; } = 30;
     }
 }

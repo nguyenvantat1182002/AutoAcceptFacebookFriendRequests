@@ -1,15 +1,14 @@
-﻿using AutoAcceptFacebookFriendRequests.API;
-using AutoAcceptFacebookFriendRequests.API.Exeptions;
+﻿using AutoAcceptFacebookFriendRequests.API.Exeptions;
 using AutoAcceptFacebookFriendRequests.API.Model;
-using AutoAcceptFacebookFriendRequests.Models;
+using AutoAcceptFacebookFriendRequests.API;
 using AutoAcceptFacebookFriendRequests.Services;
 using AutoAcceptFacebookFriendRequests.Utils;
 
 namespace AutoAcceptFacebookFriendRequests.Tasks
 {
-    public class FriendAcceptor : BaseTask
+    public class FriendDeleter : BaseTask
     {
-        public FriendAcceptor(MainFormService service, DataGridView gridView, CancellationToken token) : base(service, gridView, token) { }
+        public FriendDeleter(MainFormService service, DataGridView gridView, CancellationToken token) : base(service, gridView, token) { }
 
         public override async Task Start()
         {
@@ -17,7 +16,7 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
 
             for (int _ = 0; _ < Input.MaxThreadCount; _++)
             {
-                Task task = Task.Run(Acceptor);
+                Task task = Task.Run(Deleter);
                 tasks.Add(task);
 
                 await Task.Delay(100);
@@ -26,7 +25,7 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
             await Task.WhenAll(tasks);
         }
 
-        async Task Acceptor()
+        public async Task Deleter()
         {
             while (Accounts.Count > 0)
             {
@@ -36,25 +35,25 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
                     accountAPI = Accounts.Dequeue();
 
                 int requestedCount = 0;
-                int acceptedRequestCount = 0;
+                int deletedCount = 0;
 
                 try
                 {
-                    while (acceptedRequestCount < Input.MaxAcceptanceLimit)
+                    while (deletedCount < Input.MaxDeleteLimit)
                     {
-                        Queue<FriendInfo> friendRequests = new Queue<FriendInfo>(await accountAPI.GetFriendRequests());
+                        Queue<FriendInfo> friends = new Queue<FriendInfo>(await accountAPI.GetFriends(Input.MaxDeleteLimit));
 
-                        if (friendRequests.Count < 1)
+                        if (friends.Count < 1)
                         {
-                            Service.UpdateCookieStatus(GridView, accountAPI, $"Không có lời mời kết bạn nào.");
+                            Service.UpdateCookieStatus(GridView, accountAPI, $"Không còn bạn bè nào.");
                             break;
                         }
 
                         long endTime = 0;
 
-                        while (friendRequests.Count > 0)
+                        while (friends.Count > 0)
                         {
-                            FriendInfo friendRequest = friendRequests.Dequeue();
+                            FriendInfo friend = friends.Dequeue();
 
                             while (true)
                             {
@@ -89,19 +88,19 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
                                 requestedCount = 0;
                             }
 
-                            Service.UpdateCookieStatus(GridView, accountAPI, $"Chấp nhận kết bạn với {friendRequest.Name}");
-                            await accountAPI.AcceptFriendRequest(friendRequest);
+                            Service.UpdateCookieStatus(GridView, accountAPI, $"Xóa kết bạn với {friend.Name}");
+                            await accountAPI.Unfriend(friend);
 
                             requestedCount++;
-                            acceptedRequestCount++;
+                            deletedCount++;
 
-                            Service.UpdateRequest(GridView, accountAPI, acceptedRequestCount);
+                            Service.UpdateRequest(GridView, accountAPI, deletedCount);
 
                             endTime = TimeUtils.GetTimestamp() + Input.Duration;
                         }
                     }
 
-                    if (acceptedRequestCount > 0)
+                    if (deletedCount > 0)
                         Service.UpdateCookieStatus(GridView, accountAPI, $"Hoàn thành");
                 }
                 catch (Exception ex)
