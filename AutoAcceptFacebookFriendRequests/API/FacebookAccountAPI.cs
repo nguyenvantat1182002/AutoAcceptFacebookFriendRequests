@@ -27,22 +27,55 @@ namespace AutoAcceptFacebookFriendRequests.API
             UserAgent = userAgent;
             State = new AccountState();
 
-            string[] parts = proxy.Split(':');
-            string proxyHost = parts[0];
-            string proxyPort = parts[1];
-            string proxyUsername = parts[2];
-            string proxyPassword = parts[3];
+            //string[] parts = proxy.Split(':');
+            //string proxyHost = parts[0];
+            //string proxyPort = parts[1];
+            //string proxyUsername = parts[2];
+            //string proxyPassword = parts[3];
 
             _httpHandler = new HttpClientHandler();
             _httpHandler.CookieContainer = new CookieContainer();
-            _httpHandler.Proxy = new WebProxy($"http://{proxyHost}:{proxyPort}");
-            _httpHandler.DefaultProxyCredentials = new NetworkCredential(proxyUsername, proxyPassword);
+            //_httpHandler.Proxy = new WebProxy($"http://{proxyHost}:{proxyPort}");
+            //_httpHandler.DefaultProxyCredentials = new NetworkCredential(proxyUsername, proxyPassword);
 
             _http = new HttpClient(_httpHandler, true);
             _http.DefaultRequestHeaders.Add("User-Agent", UserAgent);
 
             foreach (Cookie item in ParseCookieString(cookie))
                 _httpHandler.CookieContainer.Add(item);
+        }
+
+        public async Task<bool> CreatePost(string content)
+        {
+
+            return true;
+        }
+
+        public async Task<bool> InviteFriendToGroup(string groupId, List<FriendInfo> friends)
+        {
+            string dtsg = await GetDTSG($"https://www.facebook.com/{groupId}");
+            string actorId = GetActorId();
+
+            List<string> friendIDs = friends.Select(item => item.Id).ToList();
+
+            string variables = JsonSerializer.Serialize(new
+            {
+                input = new
+                {
+                    email_addresses = new string[] { },
+                    group_id = groupId,
+                    source = "comet_invite_friends",
+                    user_ids = friendIDs,
+                    actor_id = actorId,
+                    client_mutation_id = "1",
+                },
+                groupID = groupId
+            });
+
+            string responseContent = await RequestAPI(dtsg, variables, "6628217590557977");
+            Console.WriteLine(responseContent.Substring(0, 100));
+
+            return true;
         }
 
         public async Task<bool> AddFriend(FriendInfo friend)
