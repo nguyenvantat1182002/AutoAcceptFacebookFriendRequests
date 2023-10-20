@@ -301,5 +301,39 @@ namespace AutoAcceptFacebookFriendRequests
             stopButton4.Text = "Stop...";
             _tokenSource!.Cancel();
         }
+
+        private async void startButton5_Click(object sender, EventArgs e)
+        {
+            startButton5.Enabled = false;
+            stopButton5.Enabled = true;
+
+            Service.HighlightMainTab(tabPage6, false);
+
+            _tokenSource = null;
+            _tokenSource = new CancellationTokenSource();
+
+            PostCreator creator = new PostCreator(Service, CookieGirdView5, _tokenSource.Token);
+            await Task.Run(creator.Start);
+
+            startButton5.Enabled = true;
+            stopButton5.Enabled = false;
+
+            stopButton5.Text = "Stop";
+
+            Service.HighlightMainTab(tabPage6, true);
+
+            MessageBox.Show(
+                    text: _tokenSource.IsCancellationRequested ? "Đã dừng" : "Hoàn thành",
+                    caption: "Thông báo",
+                    buttons: MessageBoxButtons.OK,
+                    icon: MessageBoxIcon.Information
+                );
+        }
+
+        private void stopButton5_Click(object sender, EventArgs e)
+        {
+            stopButton5.Text = "Stop...";
+            _tokenSource!.Cancel();
+        }
     }
 }

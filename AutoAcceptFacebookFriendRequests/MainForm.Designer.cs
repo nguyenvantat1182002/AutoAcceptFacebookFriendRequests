@@ -83,8 +83,8 @@
             dataGridViewTextBoxColumn12 = new DataGridViewTextBoxColumn();
             dataGridViewTextBoxColumn13 = new DataGridViewTextBoxColumn();
             dataGridViewTextBoxColumn15 = new DataGridViewTextBoxColumn();
-            materialButton3 = new MaterialSkin.Controls.MaterialButton();
-            materialButton4 = new MaterialSkin.Controls.MaterialButton();
+            stopButton5 = new MaterialSkin.Controls.MaterialButton();
+            startButton5 = new MaterialSkin.Controls.MaterialButton();
             materialLabel13 = new MaterialSkin.Controls.MaterialLabel();
             materialMultiLineTextBox22 = new MaterialSkin.Controls.MaterialMultiLineTextBox2();
             tabPage2 = new TabPage();
@@ -783,8 +783,8 @@
             // tabPage6
             // 
             tabPage6.Controls.Add(CookieGirdView5);
-            tabPage6.Controls.Add(materialButton3);
-            tabPage6.Controls.Add(materialButton4);
+            tabPage6.Controls.Add(stopButton5);
+            tabPage6.Controls.Add(startButton5);
             tabPage6.Controls.Add(materialLabel13);
             tabPage6.Controls.Add(materialMultiLineTextBox22);
             tabPage6.ImageKey = "note-plus.png";
@@ -839,43 +839,45 @@
             dataGridViewTextBoxColumn15.ReadOnly = true;
             dataGridViewTextBoxColumn15.SortMode = DataGridViewColumnSortMode.NotSortable;
             // 
-            // materialButton3
+            // stopButton5
             // 
-            materialButton3.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            materialButton3.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            materialButton3.Depth = 0;
-            materialButton3.HighEmphasis = true;
-            materialButton3.Icon = null;
-            materialButton3.Location = new Point(535, 137);
-            materialButton3.Margin = new Padding(4, 6, 4, 6);
-            materialButton3.MouseState = MaterialSkin.MouseState.HOVER;
-            materialButton3.Name = "materialButton3";
-            materialButton3.NoAccentTextColor = Color.Empty;
-            materialButton3.Size = new Size(64, 36);
-            materialButton3.TabIndex = 8;
-            materialButton3.Text = "Stop";
-            materialButton3.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            materialButton3.UseAccentColor = false;
-            materialButton3.UseVisualStyleBackColor = true;
+            stopButton5.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            stopButton5.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            stopButton5.Depth = 0;
+            stopButton5.HighEmphasis = true;
+            stopButton5.Icon = null;
+            stopButton5.Location = new Point(535, 137);
+            stopButton5.Margin = new Padding(4, 6, 4, 6);
+            stopButton5.MouseState = MaterialSkin.MouseState.HOVER;
+            stopButton5.Name = "stopButton5";
+            stopButton5.NoAccentTextColor = Color.Empty;
+            stopButton5.Size = new Size(64, 36);
+            stopButton5.TabIndex = 8;
+            stopButton5.Text = "Stop";
+            stopButton5.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            stopButton5.UseAccentColor = false;
+            stopButton5.UseVisualStyleBackColor = true;
+            stopButton5.Click += stopButton5_Click;
             // 
-            // materialButton4
+            // startButton5
             // 
-            materialButton4.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            materialButton4.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            materialButton4.Depth = 0;
-            materialButton4.HighEmphasis = true;
-            materialButton4.Icon = null;
-            materialButton4.Location = new Point(460, 137);
-            materialButton4.Margin = new Padding(4, 6, 4, 6);
-            materialButton4.MouseState = MaterialSkin.MouseState.HOVER;
-            materialButton4.Name = "materialButton4";
-            materialButton4.NoAccentTextColor = Color.Empty;
-            materialButton4.Size = new Size(67, 36);
-            materialButton4.TabIndex = 7;
-            materialButton4.Text = "Start";
-            materialButton4.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            materialButton4.UseAccentColor = false;
-            materialButton4.UseVisualStyleBackColor = true;
+            startButton5.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            startButton5.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            startButton5.Depth = 0;
+            startButton5.HighEmphasis = true;
+            startButton5.Icon = null;
+            startButton5.Location = new Point(460, 137);
+            startButton5.Margin = new Padding(4, 6, 4, 6);
+            startButton5.MouseState = MaterialSkin.MouseState.HOVER;
+            startButton5.Name = "startButton5";
+            startButton5.NoAccentTextColor = Color.Empty;
+            startButton5.Size = new Size(67, 36);
+            startButton5.TabIndex = 7;
+            startButton5.Text = "Start";
+            startButton5.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            startButton5.UseAccentColor = false;
+            startButton5.UseVisualStyleBackColor = true;
+            startButton5.Click += startButton5_Click;
             // 
             // materialLabel13
             // 
@@ -1288,8 +1290,8 @@
         private DataGridViewTextBoxColumn Column9;
         private DataGridViewTextBoxColumn Column10;
         private DataGridView dataGridView2;
-        private MaterialSkin.Controls.MaterialButton materialButton3;
-        private MaterialSkin.Controls.MaterialButton materialButton4;
+        private MaterialSkin.Controls.MaterialButton stopButton5;
+        private MaterialSkin.Controls.MaterialButton startButton5;
         private MaterialSkin.Controls.MaterialLabel materialLabel13;
         private MaterialSkin.Controls.MaterialMultiLineTextBox2 materialMultiLineTextBox22;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn11;
