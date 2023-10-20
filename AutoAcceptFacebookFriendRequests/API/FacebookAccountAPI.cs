@@ -5,6 +5,9 @@ using AutoAcceptFacebookFriendRequests.API.Exeptions;
 using Newtonsoft.Json.Linq;
 using System.Text.Json;
 using AutoAcceptFacebookFriendRequests.API.Models;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using System.Windows.Forms;
+using System.Web;
 
 namespace AutoAcceptFacebookFriendRequests.API
 {
@@ -27,26 +30,74 @@ namespace AutoAcceptFacebookFriendRequests.API
             UserAgent = userAgent;
             State = new AccountState();
 
-            //string[] parts = proxy.Split(':');
-            //string proxyHost = parts[0];
-            //string proxyPort = parts[1];
-            //string proxyUsername = parts[2];
-            //string proxyPassword = parts[3];
+            string[] parts = proxy.Split(':');
+            string proxyHost = parts[0];
+            string proxyPort = parts[1];
+            string proxyUsername = parts[2];
+            string proxyPassword = parts[3];
 
             _httpHandler = new HttpClientHandler();
             _httpHandler.CookieContainer = new CookieContainer();
-            //_httpHandler.Proxy = new WebProxy($"http://{proxyHost}:{proxyPort}");
-            //_httpHandler.DefaultProxyCredentials = new NetworkCredential(proxyUsername, proxyPassword);
+            _httpHandler.Proxy = new WebProxy($"http://{proxyHost}:{proxyPort}");
+            _httpHandler.DefaultProxyCredentials = new NetworkCredential(proxyUsername, proxyPassword);
 
             _http = new HttpClient(_httpHandler, true);
             _http.DefaultRequestHeaders.Add("User-Agent", UserAgent);
+            _http.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.9");
 
             foreach (Cookie item in ParseCookieString(cookie))
                 _httpHandler.CookieContainer.Add(item);
         }
 
-        public async Task<bool> CreatePost(string content)
+        public async Task<bool> CreatePost(string message)
         {
+            string responseContent;
+
+            using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, "https://mbasic.facebook.com/"))
+            {
+                request.Headers.Add("Sec-Fetch-Site", "same-origin");
+                request.Headers.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7");
+
+                using (HttpResponseMessage response = await _http.SendAsync(request))
+                    responseContent = await EnsureNoCheckpoint(response).Content.ReadAsStringAsync();
+            }
+
+            HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+            doc.LoadHtml(responseContent);
+
+            HtmlAgilityPack.HtmlNode composerForm = doc.DocumentNode.SelectSingleNode(".//form[@id=\"mbasic-composer-form\"]");
+            HtmlAgilityPack.HtmlNode fb_dtsg = doc.DocumentNode.SelectSingleNode(".//input[@name=\"fb_dtsg\"]");
+            HtmlAgilityPack.HtmlNode jazoest = doc.DocumentNode.SelectSingleNode(".//input[@name=\"jazoest\"]");
+            HtmlAgilityPack.HtmlNode privacyx = doc.DocumentNode.SelectSingleNode(".//input[@name=\"privacyx\"]");
+            HtmlAgilityPack.HtmlNode c_src = doc.DocumentNode.SelectSingleNode(".//input[@name=\"c_src\"]");
+            HtmlAgilityPack.HtmlNode target = doc.DocumentNode.SelectSingleNode(".//input[@name=\"target\"]");
+            HtmlAgilityPack.HtmlNode cwevent = doc.DocumentNode.SelectSingleNode(".//input[@name=\"cwevent\"]");
+            HtmlAgilityPack.HtmlNode referrer = doc.DocumentNode.SelectSingleNode(".//input[@name=\"referrer\"]");
+            HtmlAgilityPack.HtmlNode cver = doc.DocumentNode.SelectSingleNode(".//input[@name=\"cver\"]");
+            HtmlAgilityPack.HtmlNode view_post = doc.DocumentNode.SelectSingleNode(".//input[@name=\"view_post\"]");
+
+            FormUrlEncodedContent content = new FormUrlEncodedContent(new Dictionary<string, string>
+            {
+                { "fb_dtsg", fb_dtsg.Attributes["value"].Value },
+                { "jazoest", jazoest.Attributes["value"].Value },
+                { "privacyx", privacyx.Attributes["value"].Value },
+                { "target", target.Attributes["value"].Value },
+                { "c_src", c_src.Attributes["value"].Value },
+                { "cwevent", cwevent.Attributes["value"].Value },
+                { "referrer", referrer.Attributes["value"].Value },
+                { "cver", cver.Attributes["value"].Value },
+                { "xc_message", message },
+                { "view_post", view_post.Attributes["value"].Value }
+            });
+
+            using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, $"https://mbasic.facebook.com/{composerForm.Attributes["action"].Value}"))
+            {
+                request.Content = content;
+                request.Headers.Add("Sec-Fetch-Site", "same-origin");
+
+                using (HttpResponseMessage response = await _http.SendAsync(request))
+                    responseContent = await EnsureNoCheckpoint(response).Content.ReadAsStringAsync();
+            }
 
             return true;
         }
@@ -301,15 +352,21 @@ namespace AutoAcceptFacebookFriendRequests.API
 
         async Task<string> GetDTSG(string url)
         {
-            using (HttpResponseMessage response = await _http.GetAsync(url))
+            using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url))
             {
-                string responseContent = await EnsureNoCheckpoint(response).Content.ReadAsStringAsync();
+                request.Headers.Add("Sec-Fetch-Site", "same-origin");
+                request.Headers.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7");
 
-                Match match = Regex.Match(responseContent, "\\[\"DTSGInitialData\",\\[],{\"token\":\"(.*?)\"},\\d+]");
-                if (!match.Success)
-                    throw new InvalidCookie();
+                using (HttpResponseMessage response = await _http.SendAsync(request))
+                {
+                    string responseContent = await EnsureNoCheckpoint(response).Content.ReadAsStringAsync();
 
-                return match.Groups[1].Value;
+                    Match match = Regex.Match(responseContent, "\\[\"DTSGInitialData\",\\[],{\"token\":\"(.*?)\"},\\d+]");
+                    if (!match.Success)
+                        throw new InvalidCookie();
+
+                    return match.Groups[1].Value;
+                }
             }
         }
 

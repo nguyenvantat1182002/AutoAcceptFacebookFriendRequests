@@ -128,6 +128,8 @@ namespace AutoAcceptFacebookFriendRequests
 
         private async void startButton_Click(object sender, EventArgs e)
         {
+            Service.HighlightMainTab(tabPage1, false);
+
             tabPage3.Enabled = false;
             tabPage4.Enabled = false;
 
@@ -145,8 +147,7 @@ namespace AutoAcceptFacebookFriendRequests
 
             stopButton.Text = "Stop";
 
-            tabPage3.Enabled = true;
-            tabPage4.Enabled = true;
+            Service.HighlightMainTab(tabPage1, true);
 
             MessageBox.Show(
                     text: _tokenSource.IsCancellationRequested ? "Đã dừng" : "Hoàn thành",
@@ -183,11 +184,10 @@ namespace AutoAcceptFacebookFriendRequests
 
         private async void startButton2_Click(object sender, EventArgs e)
         {
+            Service.HighlightMainTab(tabPage3, false);
+
             startButton2.Enabled = false;
             stopButton2.Enabled = true;
-
-            tabPage1.Enabled = false;
-            tabPage4.Enabled = false;
 
             _tokenSource = null;
             _tokenSource = new CancellationTokenSource();
@@ -200,8 +200,7 @@ namespace AutoAcceptFacebookFriendRequests
 
             stopButton2.Text = "Stop";
 
-            tabPage1.Enabled = true;
-            tabPage4.Enabled = true;
+            Service.HighlightMainTab(tabPage3, true);
 
             MessageBox.Show(
                     text: _tokenSource.IsCancellationRequested ? "Đã dừng" : "Hoàn thành",
@@ -240,8 +239,7 @@ namespace AutoAcceptFacebookFriendRequests
             startButton3.Enabled = false;
             stopButton3.Enabled = true;
 
-            tabPage1.Enabled = false;
-            tabPage3.Enabled = false;
+            Service.HighlightMainTab(tabPage4, false);
 
             _tokenSource = null;
             _tokenSource = new CancellationTokenSource();
@@ -254,8 +252,7 @@ namespace AutoAcceptFacebookFriendRequests
 
             stopButton3.Text = "Stop";
 
-            tabPage1.Enabled = true;
-            tabPage3.Enabled = true;
+            Service.HighlightMainTab(tabPage4, true);
 
             MessageBox.Show(
                     text: _tokenSource.IsCancellationRequested ? "Đã dừng" : "Hoàn thành",
@@ -268,6 +265,40 @@ namespace AutoAcceptFacebookFriendRequests
         private void stopButton3_Click(object sender, EventArgs e)
         {
             stopButton3.Text = "Stop...";
+            _tokenSource!.Cancel();
+        }
+
+        private async void startButton4_Click(object sender, EventArgs e)
+        {
+            startButton4.Enabled = false;
+            stopButton4.Enabled = true;
+
+            Service.HighlightMainTab(tabPage5, false);
+
+            _tokenSource = null;
+            _tokenSource = new CancellationTokenSource();
+
+            GroupInviter inviter = new GroupInviter(Service, CookieGridView4, _tokenSource.Token);
+            await Task.Run(inviter.Start);
+
+            startButton4.Enabled = true;
+            stopButton4.Enabled = false;
+
+            stopButton4.Text = "Stop";
+
+            Service.HighlightMainTab(tabPage5, true);
+
+            MessageBox.Show(
+                    text: _tokenSource.IsCancellationRequested ? "Đã dừng" : "Hoàn thành",
+                    caption: "Thông báo",
+                    buttons: MessageBoxButtons.OK,
+                    icon: MessageBoxIcon.Information
+                );
+        }
+
+        private void stopButton4_Click(object sender, EventArgs e)
+        {
+            stopButton4.Text = "Stop...";
             _tokenSource!.Cancel();
         }
     }

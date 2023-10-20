@@ -9,14 +9,30 @@ namespace AutoAcceptFacebookFriendRequests.Services
 
         public List<DataGridView> GridViews { get; }
 
+        private readonly List<TabPage> _tabs;
+
         public MainFormService(MainForm mainForm)
         {
             MainForm = mainForm;
             GridViews = new List<DataGridView>();
 
-            GridViews.Add(MainForm.CookieGridView1);
-            GridViews.Add(MainForm.CookieGridView2);
-            GridViews.Add(MainForm.CookieGridView3);
+            _tabs = new List<TabPage>();
+            _tabs.Add(MainForm.tabPage1);
+            _tabs.Add(MainForm.tabPage3);
+            _tabs.Add(MainForm.tabPage4);
+            _tabs.Add(MainForm.tabPage5);
+            _tabs.Add(MainForm.tabPage6);
+        }
+
+        public void HighlightMainTab(TabPage tab, bool enable)
+        {
+            foreach (TabPage item in _tabs)
+            {
+                if (item == tab)
+                    continue;
+
+                item.Enabled = enable;
+            }
         }
 
         public void AddCookie(string cookie, string proxy)
