@@ -31,9 +31,9 @@ namespace AutoAcceptFacebookFriendRequests.Services
             {
                 int result = 0;
 
-                MainForm.materialTextBox21.Invoke(new Action(() =>
+                MainForm.repeatCount.Invoke(new Action(() =>
                 {
-                    result = Convert.ToInt32(MainForm.materialTextBox21.Text);
+                    result = Convert.ToInt32(MainForm.repeatCount.Text);
                 }));
 
                 return result;

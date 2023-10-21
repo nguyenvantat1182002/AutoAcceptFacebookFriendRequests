@@ -172,6 +172,7 @@ namespace AutoAcceptFacebookFriendRequests
             maxAcceptanceLimit.Text = Input.MaxAcceptanceLimit.ToString();
             maxSuggestionLimit.Text = Input.MaxSuggestionLimit.ToString();
             maxInviteCount.Text = Input.MaxInviteCounnt.ToString();
+            repeatCount.Text = Input.RepeatCount.ToString();
         }
 
         private void maxAcceptanceLimit_TextChanged(object sender, EventArgs e)
@@ -344,6 +345,15 @@ namespace AutoAcceptFacebookFriendRequests
             Input.MaxInviteCounnt = result < 1 ? 30 : result;
 
             maxInviteCount.Text = Input.MaxInviteCounnt.ToString();
+        }
+
+        private void repeatCount_TextChanged(object sender, EventArgs e)
+        {
+            int.TryParse(repeatCount.Text, out int result);
+
+            Input.RepeatCount = result < 1 ? 3 : result;
+
+            repeatCount.Text = Input.RepeatCount.ToString();
         }
     }
 }

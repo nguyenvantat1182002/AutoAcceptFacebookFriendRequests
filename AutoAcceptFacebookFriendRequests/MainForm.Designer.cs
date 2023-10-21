@@ -88,7 +88,7 @@
             materialLabel13 = new MaterialSkin.Controls.MaterialLabel();
             materialMultiLineTextBox22 = new MaterialSkin.Controls.MaterialMultiLineTextBox2();
             tabPage2 = new TabPage();
-            materialTextBox21 = new MaterialSkin.Controls.MaterialTextBox2();
+            repeatCount = new MaterialSkin.Controls.MaterialTextBox2();
             materialSwitch1 = new MaterialSkin.Controls.MaterialSwitch();
             addAccountButton = new MaterialSkin.Controls.MaterialButton();
             addUserAgentButton = new MaterialSkin.Controls.MaterialButton();
@@ -920,7 +920,7 @@
             // 
             // tabPage2
             // 
-            tabPage2.Controls.Add(materialTextBox21);
+            tabPage2.Controls.Add(repeatCount);
             tabPage2.Controls.Add(materialSwitch1);
             tabPage2.Controls.Add(addAccountButton);
             tabPage2.Controls.Add(addUserAgentButton);
@@ -944,34 +944,35 @@
             tabPage2.Text = "Cài đặt";
             tabPage2.UseVisualStyleBackColor = true;
             // 
-            // materialTextBox21
+            // repeatCount
             // 
-            materialTextBox21.AnimateReadOnly = false;
-            materialTextBox21.BackgroundImageLayout = ImageLayout.None;
-            materialTextBox21.CharacterCasing = CharacterCasing.Normal;
-            materialTextBox21.Depth = 0;
-            materialTextBox21.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
-            materialTextBox21.HideSelection = true;
-            materialTextBox21.LeadingIcon = null;
-            materialTextBox21.Location = new Point(6, 280);
-            materialTextBox21.MaxLength = 32767;
-            materialTextBox21.MouseState = MaterialSkin.MouseState.OUT;
-            materialTextBox21.Name = "materialTextBox21";
-            materialTextBox21.PasswordChar = '\0';
-            materialTextBox21.PrefixSuffixText = null;
-            materialTextBox21.ReadOnly = false;
-            materialTextBox21.RightToLeft = RightToLeft.No;
-            materialTextBox21.SelectedText = "";
-            materialTextBox21.SelectionLength = 0;
-            materialTextBox21.SelectionStart = 0;
-            materialTextBox21.ShortcutsEnabled = true;
-            materialTextBox21.Size = new Size(169, 48);
-            materialTextBox21.TabIndex = 41;
-            materialTextBox21.TabStop = false;
-            materialTextBox21.Text = "3";
-            materialTextBox21.TextAlign = HorizontalAlignment.Left;
-            materialTextBox21.TrailingIcon = null;
-            materialTextBox21.UseSystemPasswordChar = false;
+            repeatCount.AnimateReadOnly = false;
+            repeatCount.BackgroundImageLayout = ImageLayout.None;
+            repeatCount.CharacterCasing = CharacterCasing.Normal;
+            repeatCount.Depth = 0;
+            repeatCount.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            repeatCount.HideSelection = true;
+            repeatCount.LeadingIcon = null;
+            repeatCount.Location = new Point(6, 280);
+            repeatCount.MaxLength = 32767;
+            repeatCount.MouseState = MaterialSkin.MouseState.OUT;
+            repeatCount.Name = "repeatCount";
+            repeatCount.PasswordChar = '\0';
+            repeatCount.PrefixSuffixText = null;
+            repeatCount.ReadOnly = false;
+            repeatCount.RightToLeft = RightToLeft.No;
+            repeatCount.SelectedText = "";
+            repeatCount.SelectionLength = 0;
+            repeatCount.SelectionStart = 0;
+            repeatCount.ShortcutsEnabled = true;
+            repeatCount.Size = new Size(169, 48);
+            repeatCount.TabIndex = 41;
+            repeatCount.TabStop = false;
+            repeatCount.Text = "3";
+            repeatCount.TextAlign = HorizontalAlignment.Left;
+            repeatCount.TrailingIcon = null;
+            repeatCount.UseSystemPasswordChar = false;
+            repeatCount.TextChanged += repeatCount_TextChanged;
             // 
             // materialSwitch1
             // 
@@ -1356,6 +1357,6 @@
         public MaterialSkin.Controls.MaterialTextBox2 maxInviteCount;
         public MaterialSkin.Controls.MaterialMultiLineTextBox2 materialMultiLineTextBox22;
         public MaterialSkin.Controls.MaterialSwitch materialSwitch1;
-        public MaterialSkin.Controls.MaterialTextBox2 materialTextBox21;
+        public MaterialSkin.Controls.MaterialTextBox2 repeatCount;
     }
 }

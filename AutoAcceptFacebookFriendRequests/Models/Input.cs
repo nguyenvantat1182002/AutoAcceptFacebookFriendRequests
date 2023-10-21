@@ -10,5 +10,6 @@
         public int MaxSuggestionLimit { get; set; } = 30;
         public int MaxDeleteLimit { get; set; } = 30;
         public int MaxInviteCounnt { get; set; } = 30;
+        public int RepeatCount { get; set; } = 3;
     }
 }
