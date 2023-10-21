@@ -138,6 +138,8 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
                 }
                 catch (Exception ex)
                 {
+                    Console.WriteLine(ex);
+
                     if (ex is TaskCanceledException || ex is InvalidCookie || ex is AccountCheckpointed)
                     {
                         if (ex is InvalidCookie)
