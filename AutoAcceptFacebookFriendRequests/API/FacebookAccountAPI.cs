@@ -5,10 +5,6 @@ using AutoAcceptFacebookFriendRequests.API.Exeptions;
 using Newtonsoft.Json.Linq;
 using System.Text.Json;
 using AutoAcceptFacebookFriendRequests.API.Models;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
-using System.Windows.Forms;
-using System.Web;
-using System.Security.Policy;
 
 namespace AutoAcceptFacebookFriendRequests.API
 {

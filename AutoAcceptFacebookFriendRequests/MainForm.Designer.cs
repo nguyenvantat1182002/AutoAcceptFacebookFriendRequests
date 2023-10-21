@@ -88,6 +88,8 @@
             materialLabel13 = new MaterialSkin.Controls.MaterialLabel();
             materialMultiLineTextBox22 = new MaterialSkin.Controls.MaterialMultiLineTextBox2();
             tabPage2 = new TabPage();
+            materialTextBox21 = new MaterialSkin.Controls.MaterialTextBox2();
+            materialSwitch1 = new MaterialSkin.Controls.MaterialSwitch();
             addAccountButton = new MaterialSkin.Controls.MaterialButton();
             addUserAgentButton = new MaterialSkin.Controls.MaterialButton();
             maxThreadCount = new MaterialSkin.Controls.MaterialTextBox2();
@@ -918,6 +920,8 @@
             // 
             // tabPage2
             // 
+            tabPage2.Controls.Add(materialTextBox21);
+            tabPage2.Controls.Add(materialSwitch1);
             tabPage2.Controls.Add(addAccountButton);
             tabPage2.Controls.Add(addUserAgentButton);
             tabPage2.Controls.Add(maxThreadCount);
@@ -939,6 +943,50 @@
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Cài đặt";
             tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // materialTextBox21
+            // 
+            materialTextBox21.AnimateReadOnly = false;
+            materialTextBox21.BackgroundImageLayout = ImageLayout.None;
+            materialTextBox21.CharacterCasing = CharacterCasing.Normal;
+            materialTextBox21.Depth = 0;
+            materialTextBox21.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            materialTextBox21.HideSelection = true;
+            materialTextBox21.LeadingIcon = null;
+            materialTextBox21.Location = new Point(6, 280);
+            materialTextBox21.MaxLength = 32767;
+            materialTextBox21.MouseState = MaterialSkin.MouseState.OUT;
+            materialTextBox21.Name = "materialTextBox21";
+            materialTextBox21.PasswordChar = '\0';
+            materialTextBox21.PrefixSuffixText = null;
+            materialTextBox21.ReadOnly = false;
+            materialTextBox21.RightToLeft = RightToLeft.No;
+            materialTextBox21.SelectedText = "";
+            materialTextBox21.SelectionLength = 0;
+            materialTextBox21.SelectionStart = 0;
+            materialTextBox21.ShortcutsEnabled = true;
+            materialTextBox21.Size = new Size(169, 48);
+            materialTextBox21.TabIndex = 41;
+            materialTextBox21.TabStop = false;
+            materialTextBox21.Text = "3";
+            materialTextBox21.TextAlign = HorizontalAlignment.Left;
+            materialTextBox21.TrailingIcon = null;
+            materialTextBox21.UseSystemPasswordChar = false;
+            // 
+            // materialSwitch1
+            // 
+            materialSwitch1.AutoSize = true;
+            materialSwitch1.Depth = 0;
+            materialSwitch1.Location = new Point(6, 240);
+            materialSwitch1.Margin = new Padding(0);
+            materialSwitch1.MouseLocation = new Point(-1, -1);
+            materialSwitch1.MouseState = MaterialSkin.MouseState.HOVER;
+            materialSwitch1.Name = "materialSwitch1";
+            materialSwitch1.Ripple = true;
+            materialSwitch1.Size = new Size(106, 37);
+            materialSwitch1.TabIndex = 40;
+            materialSwitch1.Text = "Lặp lại";
+            materialSwitch1.UseVisualStyleBackColor = true;
             // 
             // addAccountButton
             // 
@@ -984,7 +1032,6 @@
             // 
             // maxThreadCount
             // 
-            maxThreadCount.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             maxThreadCount.AnimateReadOnly = false;
             maxThreadCount.BackgroundImageLayout = ImageLayout.None;
             maxThreadCount.CharacterCasing = CharacterCasing.Normal;
@@ -1308,5 +1355,7 @@
         public MaterialSkin.Controls.MaterialMultiLineTextBox2 materialMultiLineTextBox21;
         public MaterialSkin.Controls.MaterialTextBox2 maxInviteCount;
         public MaterialSkin.Controls.MaterialMultiLineTextBox2 materialMultiLineTextBox22;
+        public MaterialSkin.Controls.MaterialSwitch materialSwitch1;
+        public MaterialSkin.Controls.MaterialTextBox2 materialTextBox21;
     }
 }

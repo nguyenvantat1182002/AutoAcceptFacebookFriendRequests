@@ -10,6 +10,36 @@ namespace AutoAcceptFacebookFriendRequests.Services
 
         public List<DataGridView> GridViews { get; }
 
+        public bool IsRepeat
+        {
+            get
+            {
+                bool result = false;
+
+                MainForm.materialSwitch1.Invoke(new Action(() =>
+                {
+                    result = MainForm.materialSwitch1.Checked;
+                }));
+
+                return result;
+            }
+        }
+
+        public int RepeatCount
+        {
+            get
+            {
+                int result = 0;
+
+                MainForm.materialTextBox21.Invoke(new Action(() =>
+                {
+                    result = Convert.ToInt32(MainForm.materialTextBox21.Text);
+                }));
+
+                return result;
+            }
+        }
+
         private readonly List<TabPage> _tabs;
 
         public MainFormService(MainForm mainForm)
