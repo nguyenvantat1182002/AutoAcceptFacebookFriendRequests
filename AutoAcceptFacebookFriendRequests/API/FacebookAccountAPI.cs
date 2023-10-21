@@ -8,6 +8,7 @@ using AutoAcceptFacebookFriendRequests.API.Models;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 using System.Windows.Forms;
 using System.Web;
+using System.Security.Policy;
 
 namespace AutoAcceptFacebookFriendRequests.API
 {
@@ -30,16 +31,16 @@ namespace AutoAcceptFacebookFriendRequests.API
             UserAgent = userAgent;
             State = new AccountState();
 
-            string[] parts = proxy.Split(':');
-            string proxyHost = parts[0];
-            string proxyPort = parts[1];
-            string proxyUsername = parts[2];
-            string proxyPassword = parts[3];
+            //string[] parts = proxy.Split(':');
+            //string proxyHost = parts[0];
+            //string proxyPort = parts[1];
+            //string proxyUsername = parts[2];
+            //string proxyPassword = parts[3];
 
             _httpHandler = new HttpClientHandler();
             _httpHandler.CookieContainer = new CookieContainer();
-            _httpHandler.Proxy = new WebProxy($"http://{proxyHost}:{proxyPort}");
-            _httpHandler.DefaultProxyCredentials = new NetworkCredential(proxyUsername, proxyPassword);
+            //_httpHandler.Proxy = new WebProxy($"http://{proxyHost}:{proxyPort}");
+            //_httpHandler.DefaultProxyCredentials = new NetworkCredential(proxyUsername, proxyPassword);
 
             _http = new HttpClient(_httpHandler, true);
             _http.DefaultRequestHeaders.Add("User-Agent", UserAgent);
@@ -100,6 +101,81 @@ namespace AutoAcceptFacebookFriendRequests.API
             }
 
             return true;
+        }
+
+        public async Task<List<FriendInfo>> GetSuggestedMembers(string groupId, int maxSuggestedMembers = 10)
+        {
+            string dtsg = await GetDTSG($"https://www.facebook.com/groups/{groupId}");
+
+            Dictionary<string, dynamic> values = new Dictionary<string, dynamic>();
+            values.Add("count", 10);
+            values.Add("name", null!);
+            values.Add("scale", 1);
+            values.Add("id", groupId);
+
+            List<FriendInfo> friends = new List<FriendInfo>();
+
+            bool hasNextPage = true;
+
+            while (hasNextPage && friends.Count < maxSuggestedMembers)
+            {
+                DateTime startTime = DateTime.Now;
+
+                string variables = Newtonsoft.Json.JsonConvert.SerializeObject(values);
+                string responseContent = await RequestAPI(dtsg, variables, "6783565111701846");
+
+                JObject responseObject = JObject.Parse(responseContent);
+
+                JToken suggestedMembers = responseObject["data"]!["node"]!["suggested_members"]!;
+                JToken pageInfo = suggestedMembers["page_info"]!;
+
+                JArray menber = (JArray)suggestedMembers["edges"]!;
+                hasNextPage = Convert.ToBoolean(pageInfo["has_next_page"]!);
+
+                if (hasNextPage)
+                {
+                    if (!values.ContainsKey("after_cursor"))
+                        values.Add("after_cursor", "");
+                    values["after_cursor"] = pageInfo["end_cursor"]!.ToString();
+                }
+
+                foreach (JToken item in menber)
+                {
+                    if (friends.Count > maxSuggestedMembers)
+                        break;
+
+                    JToken node = item["node"]!;
+
+                    string id = node["id"]!.ToString();
+                    string name = node["name"]!.ToString();
+
+                    friends.Add(new FriendInfo(id, name));
+                }
+
+                await Task.Delay((int)(DateTime.Now - startTime).TotalMilliseconds);
+            }
+
+            return friends;
+        }
+
+        public async Task<string> GetRealGroupID(string groupId)
+        {
+            using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"https://www.facebook.com/groups/{groupId}"))
+            {
+                request.Headers.Add("Sec-Fetch-Site", "same-origin");
+                request.Headers.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7");
+
+                using (HttpResponseMessage response = await _http.SendAsync(request))
+                {
+                    string responseContent = await EnsureNoCheckpoint(response).Content.ReadAsStringAsync();
+
+                    Match match = Regex.Match(responseContent, "{\"__typename\":\"Group\",\"id\":\"(\\d+)\"}");
+                    if (!match.Success)
+                        throw new GroupIdNotFound(groupId);
+
+                    return match.Groups[1].Value;
+                }
+            }
         }
 
         public async Task<bool> InviteFriendToGroup(string groupId, List<FriendInfo> friends)

@@ -171,6 +171,7 @@ namespace AutoAcceptFacebookFriendRequests
             maxThreadCount.Text = Input.MaxThreadCount.ToString();
             maxAcceptanceLimit.Text = Input.MaxAcceptanceLimit.ToString();
             maxSuggestionLimit.Text = Input.MaxSuggestionLimit.ToString();
+            maxInviteCount.Text = Input.MaxInviteCounnt.ToString();
         }
 
         private void maxAcceptanceLimit_TextChanged(object sender, EventArgs e)
@@ -334,6 +335,15 @@ namespace AutoAcceptFacebookFriendRequests
         {
             stopButton5.Text = "Stop...";
             _tokenSource!.Cancel();
+        }
+
+        private void maxInviteCount_TextChanged(object sender, EventArgs e)
+        {
+            int.TryParse(maxInviteCount.Text, out int result);
+
+            Input.MaxInviteCounnt = result < 1 ? 30 : result;
+
+            maxInviteCount.Text = Input.MaxInviteCounnt.ToString();
         }
     }
 }

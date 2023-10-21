@@ -9,5 +9,6 @@
         public int MaxAcceptanceLimit { get; set; } = 30;
         public int MaxSuggestionLimit { get; set; } = 30;
         public int MaxDeleteLimit { get; set; } = 30;
+        public int MaxInviteCounnt { get; set; } = 30;
     }
 }

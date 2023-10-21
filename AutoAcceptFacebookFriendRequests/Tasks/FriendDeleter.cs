@@ -32,7 +32,12 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
                 FacebookAccountAPI accountAPI;
 
                 lock (LockObject)
+                {
+                    if (Accounts.Count < 1)
+                        break;
+
                     accountAPI = Accounts.Dequeue();
+                }
 
                 int requestedCount = 0;
                 int deletedCount = 0;

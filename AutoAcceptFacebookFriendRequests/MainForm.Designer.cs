@@ -72,7 +72,7 @@
             Column9 = new DataGridViewTextBoxColumn();
             Column10 = new DataGridViewTextBoxColumn();
             materialLabel12 = new MaterialSkin.Controls.MaterialLabel();
-            materialTextBox21 = new MaterialSkin.Controls.MaterialTextBox2();
+            maxInviteCount = new MaterialSkin.Controls.MaterialTextBox2();
             materialLabel11 = new MaterialSkin.Controls.MaterialLabel();
             stopButton4 = new MaterialSkin.Controls.MaterialButton();
             startButton4 = new MaterialSkin.Controls.MaterialButton();
@@ -599,7 +599,7 @@
             // 
             tabPage5.Controls.Add(CookieGridView4);
             tabPage5.Controls.Add(materialLabel12);
-            tabPage5.Controls.Add(materialTextBox21);
+            tabPage5.Controls.Add(maxInviteCount);
             tabPage5.Controls.Add(materialLabel11);
             tabPage5.Controls.Add(stopButton4);
             tabPage5.Controls.Add(startButton4);
@@ -675,34 +675,35 @@
             materialLabel12.TabIndex = 5;
             materialLabel12.Text = "Group Id(s)";
             // 
-            // materialTextBox21
+            // maxInviteCount
             // 
-            materialTextBox21.AnimateReadOnly = false;
-            materialTextBox21.BackgroundImageLayout = ImageLayout.None;
-            materialTextBox21.CharacterCasing = CharacterCasing.Normal;
-            materialTextBox21.Depth = 0;
-            materialTextBox21.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
-            materialTextBox21.HideSelection = true;
-            materialTextBox21.LeadingIcon = null;
-            materialTextBox21.Location = new Point(407, 80);
-            materialTextBox21.MaxLength = 32767;
-            materialTextBox21.MouseState = MaterialSkin.MouseState.OUT;
-            materialTextBox21.Name = "materialTextBox21";
-            materialTextBox21.PasswordChar = '\0';
-            materialTextBox21.PrefixSuffixText = null;
-            materialTextBox21.ReadOnly = false;
-            materialTextBox21.RightToLeft = RightToLeft.No;
-            materialTextBox21.SelectedText = "";
-            materialTextBox21.SelectionLength = 0;
-            materialTextBox21.SelectionStart = 0;
-            materialTextBox21.ShortcutsEnabled = true;
-            materialTextBox21.Size = new Size(139, 48);
-            materialTextBox21.TabIndex = 4;
-            materialTextBox21.TabStop = false;
-            materialTextBox21.Text = "30";
-            materialTextBox21.TextAlign = HorizontalAlignment.Left;
-            materialTextBox21.TrailingIcon = null;
-            materialTextBox21.UseSystemPasswordChar = false;
+            maxInviteCount.AnimateReadOnly = false;
+            maxInviteCount.BackgroundImageLayout = ImageLayout.None;
+            maxInviteCount.CharacterCasing = CharacterCasing.Normal;
+            maxInviteCount.Depth = 0;
+            maxInviteCount.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            maxInviteCount.HideSelection = true;
+            maxInviteCount.LeadingIcon = null;
+            maxInviteCount.Location = new Point(407, 80);
+            maxInviteCount.MaxLength = 32767;
+            maxInviteCount.MouseState = MaterialSkin.MouseState.OUT;
+            maxInviteCount.Name = "maxInviteCount";
+            maxInviteCount.PasswordChar = '\0';
+            maxInviteCount.PrefixSuffixText = null;
+            maxInviteCount.ReadOnly = false;
+            maxInviteCount.RightToLeft = RightToLeft.No;
+            maxInviteCount.SelectedText = "";
+            maxInviteCount.SelectionLength = 0;
+            maxInviteCount.SelectionStart = 0;
+            maxInviteCount.ShortcutsEnabled = true;
+            maxInviteCount.Size = new Size(139, 48);
+            maxInviteCount.TabIndex = 4;
+            maxInviteCount.TabStop = false;
+            maxInviteCount.Text = "30";
+            maxInviteCount.TextAlign = HorizontalAlignment.Left;
+            maxInviteCount.TrailingIcon = null;
+            maxInviteCount.UseSystemPasswordChar = false;
+            maxInviteCount.TextChanged += maxInviteCount_TextChanged;
             // 
             // materialLabel11
             // 
@@ -1278,10 +1279,8 @@
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn10;
         private MaterialSkin.Controls.MaterialButton stopButton3;
         private MaterialSkin.Controls.MaterialButton startButton3;
-        private MaterialSkin.Controls.MaterialMultiLineTextBox2 materialMultiLineTextBox21;
         private MaterialSkin.Controls.MaterialButton stopButton4;
         private MaterialSkin.Controls.MaterialButton startButton4;
-        private MaterialSkin.Controls.MaterialTextBox2 materialTextBox21;
         private MaterialSkin.Controls.MaterialLabel materialLabel11;
         private MaterialSkin.Controls.MaterialLabel materialLabel12;
         private DataGridViewTextBoxColumn Column3;
@@ -1293,7 +1292,6 @@
         private MaterialSkin.Controls.MaterialButton stopButton5;
         private MaterialSkin.Controls.MaterialButton startButton5;
         private MaterialSkin.Controls.MaterialLabel materialLabel13;
-        private MaterialSkin.Controls.MaterialMultiLineTextBox2 materialMultiLineTextBox22;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn11;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn12;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn13;
@@ -1307,5 +1305,8 @@
         public TabPage tabPage6;
         public DataGridView CookieGridView4;
         public DataGridView CookieGirdView5;
+        public MaterialSkin.Controls.MaterialMultiLineTextBox2 materialMultiLineTextBox21;
+        public MaterialSkin.Controls.MaterialTextBox2 maxInviteCount;
+        public MaterialSkin.Controls.MaterialMultiLineTextBox2 materialMultiLineTextBox22;
     }
 }

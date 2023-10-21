@@ -1,5 +1,6 @@
 ﻿using AutoAcceptFacebookFriendRequests.API;
 using AutoAcceptFacebookFriendRequests.Utils;
+using MaterialSkin.Controls;
 
 namespace AutoAcceptFacebookFriendRequests.Services
 {
@@ -16,12 +17,59 @@ namespace AutoAcceptFacebookFriendRequests.Services
             MainForm = mainForm;
             GridViews = new List<DataGridView>();
 
+            GridViews.Add(MainForm.CookieGridView1);
+            GridViews.Add(MainForm.CookieGridView2);
+            GridViews.Add(MainForm.CookieGridView3);
+            GridViews.Add(MainForm.CookieGridView4);
+            GridViews.Add(MainForm.CookieGirdView5);
+
             _tabs = new List<TabPage>();
             _tabs.Add(MainForm.tabPage1);
             _tabs.Add(MainForm.tabPage3);
             _tabs.Add(MainForm.tabPage4);
             _tabs.Add(MainForm.tabPage5);
             _tabs.Add(MainForm.tabPage6);
+        }
+
+        public string GetPostContent()
+        {
+            string content = "";
+
+            MainForm.materialMultiLineTextBox22.Invoke(new Action(() =>
+            {
+                content = MainForm.materialMultiLineTextBox22.Text.Replace("\r", "");
+            }));
+
+            return content;
+        }
+
+        public int GetMaxInviteCount()
+        {
+            int value = 30;
+
+            MainForm.maxInviteCount.Invoke(new Action(() =>
+            {
+                value = Convert.ToInt32(MainForm.maxInviteCount.Text);
+            }));
+
+            return value;
+        }
+
+        public string[] GetGroupIDs()
+        {
+            return ReadTextBoxLines(MainForm.materialMultiLineTextBox21);
+        }
+
+        public string[] ReadTextBoxLines(MaterialMultiLineTextBox2 textBox)
+        {
+            string[] values = new string[] { };
+
+            textBox.Invoke(new Action(() =>
+            {
+                values = textBox.Text.Split("\r\n").Where(item => item.Length > 0).ToArray();
+            }));
+
+            return values;
         }
 
         public void HighlightMainTab(TabPage tab, bool enable)
@@ -57,7 +105,7 @@ namespace AutoAcceptFacebookFriendRequests.Services
 
             gridView.Invoke(new Action(() =>
             {
-                gridView.Rows[index].Cells[4].Value = status;
+                gridView.Rows[index].Cells[gridView.ColumnCount > 3 ? 4 : 3].Value = status;
             }));
         }
 

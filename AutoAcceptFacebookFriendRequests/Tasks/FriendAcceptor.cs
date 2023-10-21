@@ -28,12 +28,17 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
 
         async Task Acceptor()
         {
-            while (Accounts.Count > 0)
+            while (true)
             {
                 FacebookAccountAPI accountAPI;
 
                 lock (LockObject)
+                {
+                    if (Accounts.Count < 1)
+                        break;
+
                     accountAPI = Accounts.Dequeue();
+                }
 
                 int requestedCount = 0;
                 int acceptedRequestCount = 0;
