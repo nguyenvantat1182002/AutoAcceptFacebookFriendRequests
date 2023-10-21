@@ -70,7 +70,8 @@ namespace AutoAcceptFacebookFriendRequests
                     Service.AddCookie(cookie, proxy);
                 }
 
-                CookieGridView1.Columns[1].HeaderText = $"Cookie [{CookieGridView1.RowCount}]";
+                foreach (DataGridView item in Service.GridViews)
+                    item.Columns[1].HeaderText = $"Cookie [{item.RowCount}]";
             }
             catch (Exception ex)
             {
@@ -314,7 +315,7 @@ namespace AutoAcceptFacebookFriendRequests
             _tokenSource = null;
             _tokenSource = new CancellationTokenSource();
 
-            PostCreator creator = new PostCreator(Service, CookieGirdView5, _tokenSource.Token);
+            PostCreator creator = new PostCreator(Service, CookieGridView5, _tokenSource.Token);
             await Task.Run(creator.Start);
 
             startButton5.Enabled = true;

@@ -51,7 +51,7 @@ namespace AutoAcceptFacebookFriendRequests.Services
             GridViews.Add(MainForm.CookieGridView2);
             GridViews.Add(MainForm.CookieGridView3);
             GridViews.Add(MainForm.CookieGridView4);
-            GridViews.Add(MainForm.CookieGirdView5);
+            GridViews.Add(MainForm.CookieGridView5);
 
             _tabs = new List<TabPage>();
             _tabs.Add(MainForm.tabPage1);
@@ -135,7 +135,7 @@ namespace AutoAcceptFacebookFriendRequests.Services
 
             gridView.Invoke(new Action(() =>
             {
-                gridView.Rows[index].Cells[gridView.ColumnCount > 3 ? 4 : 3].Value = status;
+                gridView.Rows[index].Cells[gridView.ColumnCount < 5 ? 3 : 4].Value = status;
             }));
         }
 

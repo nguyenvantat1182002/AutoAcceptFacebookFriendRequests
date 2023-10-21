@@ -78,7 +78,7 @@
             startButton4 = new MaterialSkin.Controls.MaterialButton();
             materialMultiLineTextBox21 = new MaterialSkin.Controls.MaterialMultiLineTextBox2();
             tabPage6 = new TabPage();
-            CookieGirdView5 = new DataGridView();
+            CookieGridView5 = new DataGridView();
             dataGridViewTextBoxColumn11 = new DataGridViewTextBoxColumn();
             dataGridViewTextBoxColumn12 = new DataGridViewTextBoxColumn();
             dataGridViewTextBoxColumn13 = new DataGridViewTextBoxColumn();
@@ -114,7 +114,7 @@
             tabPage5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)CookieGridView4).BeginInit();
             tabPage6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)CookieGirdView5).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)CookieGridView5).BeginInit();
             tabPage2.SuspendLayout();
             SuspendLayout();
             // 
@@ -785,7 +785,7 @@
             // 
             // tabPage6
             // 
-            tabPage6.Controls.Add(CookieGirdView5);
+            tabPage6.Controls.Add(CookieGridView5);
             tabPage6.Controls.Add(stopButton5);
             tabPage6.Controls.Add(startButton5);
             tabPage6.Controls.Add(materialLabel13);
@@ -798,20 +798,20 @@
             tabPage6.Text = "Đăng bài viết";
             tabPage6.UseVisualStyleBackColor = true;
             // 
-            // CookieGirdView5
+            // CookieGridView5
             // 
-            CookieGirdView5.AllowUserToAddRows = false;
-            CookieGirdView5.AllowUserToDeleteRows = false;
-            CookieGirdView5.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            CookieGirdView5.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            CookieGirdView5.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn11, dataGridViewTextBoxColumn12, dataGridViewTextBoxColumn13, dataGridViewTextBoxColumn15 });
-            CookieGirdView5.Location = new Point(3, 182);
-            CookieGirdView5.Name = "CookieGirdView5";
-            CookieGirdView5.ReadOnly = true;
-            CookieGirdView5.RowHeadersVisible = false;
-            CookieGirdView5.RowTemplate.Height = 25;
-            CookieGirdView5.Size = new Size(662, 344);
-            CookieGirdView5.TabIndex = 9;
+            CookieGridView5.AllowUserToAddRows = false;
+            CookieGridView5.AllowUserToDeleteRows = false;
+            CookieGridView5.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            CookieGridView5.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            CookieGridView5.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn11, dataGridViewTextBoxColumn12, dataGridViewTextBoxColumn13, dataGridViewTextBoxColumn15 });
+            CookieGridView5.Location = new Point(3, 182);
+            CookieGridView5.Name = "CookieGridView5";
+            CookieGridView5.ReadOnly = true;
+            CookieGridView5.RowHeadersVisible = false;
+            CookieGridView5.RowTemplate.Height = 25;
+            CookieGridView5.Size = new Size(662, 344);
+            CookieGridView5.TabIndex = 9;
             // 
             // dataGridViewTextBoxColumn11
             // 
@@ -1276,7 +1276,7 @@
             ((System.ComponentModel.ISupportInitialize)CookieGridView4).EndInit();
             tabPage6.ResumeLayout(false);
             tabPage6.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)CookieGirdView5).EndInit();
+            ((System.ComponentModel.ISupportInitialize)CookieGridView5).EndInit();
             tabPage2.ResumeLayout(false);
             tabPage2.PerformLayout();
             ResumeLayout(false);
@@ -1352,7 +1352,7 @@
         public TabPage tabPage5;
         public TabPage tabPage6;
         public DataGridView CookieGridView4;
-        public DataGridView CookieGirdView5;
+        public DataGridView CookieGridView5;
         public MaterialSkin.Controls.MaterialMultiLineTextBox2 materialMultiLineTextBox21;
         public MaterialSkin.Controls.MaterialTextBox2 maxInviteCount;
         public MaterialSkin.Controls.MaterialMultiLineTextBox2 materialMultiLineTextBox22;
