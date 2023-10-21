@@ -15,7 +15,7 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
         {
             int currentLoop = 0;
 
-            while (currentLoop < Service.RepeatCount)
+            while (true)
             {
                 List<Task> tasks = new List<Task>();
 
@@ -30,6 +30,9 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
                 await Task.WhenAll(tasks);
 
                 if (!Service.IsRepeat)
+                    break;
+
+                if (currentLoop >= Service.RepeatCount)
                     break;
 
                 currentLoop++;
