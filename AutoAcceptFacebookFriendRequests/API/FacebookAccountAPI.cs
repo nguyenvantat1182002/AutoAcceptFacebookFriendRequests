@@ -31,16 +31,16 @@ namespace AutoAcceptFacebookFriendRequests.API
             UserAgent = userAgent;
             State = new AccountState();
 
-            //string[] parts = proxy.Split(':');
-            //string proxyHost = parts[0];
-            //string proxyPort = parts[1];
-            //string proxyUsername = parts[2];
-            //string proxyPassword = parts[3];
+            string[] parts = proxy.Split(':');
+            string proxyHost = parts[0];
+            string proxyPort = parts[1];
+            string proxyUsername = parts[2];
+            string proxyPassword = parts[3];
 
             _httpHandler = new HttpClientHandler();
             _httpHandler.CookieContainer = new CookieContainer();
-            //_httpHandler.Proxy = new WebProxy($"http://{proxyHost}:{proxyPort}");
-            //_httpHandler.DefaultProxyCredentials = new NetworkCredential(proxyUsername, proxyPassword);
+            _httpHandler.Proxy = new WebProxy($"http://{proxyHost}:{proxyPort}");
+            _httpHandler.DefaultProxyCredentials = new NetworkCredential(proxyUsername, proxyPassword);
 
             _http = new HttpClient(_httpHandler, true);
             _http.DefaultRequestHeaders.Add("User-Agent", UserAgent);
