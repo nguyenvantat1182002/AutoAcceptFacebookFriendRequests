@@ -87,6 +87,17 @@
             startButton5 = new MaterialSkin.Controls.MaterialButton();
             materialLabel13 = new MaterialSkin.Controls.MaterialLabel();
             materialMultiLineTextBox22 = new MaterialSkin.Controls.MaterialMultiLineTextBox2();
+            tabPage7 = new TabPage();
+            materialLabel14 = new MaterialSkin.Controls.MaterialLabel();
+            maxPostsDelete = new MaterialSkin.Controls.MaterialTextBox2();
+            CookieGridView6 = new DataGridView();
+            dataGridViewTextBoxColumn14 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn16 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn17 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn18 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn19 = new DataGridViewTextBoxColumn();
+            stopButton6 = new MaterialSkin.Controls.MaterialButton();
+            startButton6 = new MaterialSkin.Controls.MaterialButton();
             tabPage2 = new TabPage();
             repeatCount = new MaterialSkin.Controls.MaterialTextBox2();
             materialSwitch1 = new MaterialSkin.Controls.MaterialSwitch();
@@ -115,6 +126,8 @@
             ((System.ComponentModel.ISupportInitialize)CookieGridView4).BeginInit();
             tabPage6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)CookieGridView5).BeginInit();
+            tabPage7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)CookieGridView6).BeginInit();
             tabPage2.SuspendLayout();
             SuspendLayout();
             // 
@@ -125,6 +138,7 @@
             tabControl1.Controls.Add(tabPage4);
             tabControl1.Controls.Add(tabPage5);
             tabControl1.Controls.Add(tabPage6);
+            tabControl1.Controls.Add(tabPage7);
             tabControl1.Controls.Add(tabPage2);
             tabControl1.Depth = 0;
             tabControl1.Dock = DockStyle.Fill;
@@ -360,7 +374,7 @@
             CookieGridView2.ReadOnly = true;
             CookieGridView2.RowHeadersVisible = false;
             CookieGridView2.RowTemplate.Height = 25;
-            CookieGridView2.Size = new Size(657, 445);
+            CookieGridView2.Size = new Size(657, 515);
             CookieGridView2.TabIndex = 40;
             // 
             // dataGridViewTextBoxColumn1
@@ -513,7 +527,7 @@
             CookieGridView3.ReadOnly = true;
             CookieGridView3.RowHeadersVisible = false;
             CookieGridView3.RowTemplate.Height = 25;
-            CookieGridView3.Size = new Size(657, 445);
+            CookieGridView3.Size = new Size(657, 515);
             CookieGridView3.TabIndex = 45;
             // 
             // dataGridViewTextBoxColumn6
@@ -626,7 +640,7 @@
             CookieGridView4.ReadOnly = true;
             CookieGridView4.RowHeadersVisible = false;
             CookieGridView4.RowTemplate.Height = 25;
-            CookieGridView4.Size = new Size(662, 347);
+            CookieGridView4.Size = new Size(662, 417);
             CookieGridView4.TabIndex = 6;
             // 
             // Column3
@@ -917,6 +931,160 @@
             materialMultiLineTextBox22.TabStop = false;
             materialMultiLineTextBox22.TextAlign = HorizontalAlignment.Left;
             materialMultiLineTextBox22.UseSystemPasswordChar = false;
+            // 
+            // tabPage7
+            // 
+            tabPage7.Controls.Add(materialLabel14);
+            tabPage7.Controls.Add(maxPostsDelete);
+            tabPage7.Controls.Add(CookieGridView6);
+            tabPage7.Controls.Add(stopButton6);
+            tabPage7.Controls.Add(startButton6);
+            tabPage7.ImageKey = "note-minus.png";
+            tabPage7.Location = new Point(4, 74);
+            tabPage7.Name = "tabPage7";
+            tabPage7.Padding = new Padding(3);
+            tabPage7.Size = new Size(669, 529);
+            tabPage7.TabIndex = 6;
+            tabPage7.Text = "Xóa bài viết";
+            tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // materialLabel14
+            // 
+            materialLabel14.AutoSize = true;
+            materialLabel14.Depth = 0;
+            materialLabel14.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            materialLabel14.Location = new Point(6, 4);
+            materialLabel14.MouseState = MaterialSkin.MouseState.HOVER;
+            materialLabel14.Name = "materialLabel14";
+            materialLabel14.Size = new Size(99, 19);
+            materialLabel14.TabIndex = 41;
+            materialLabel14.Text = "Chỉ xóa tối đa";
+            // 
+            // maxPostsDelete
+            // 
+            maxPostsDelete.AnimateReadOnly = false;
+            maxPostsDelete.BackgroundImageLayout = ImageLayout.None;
+            maxPostsDelete.CharacterCasing = CharacterCasing.Normal;
+            maxPostsDelete.Depth = 0;
+            maxPostsDelete.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            maxPostsDelete.HideSelection = true;
+            maxPostsDelete.LeadingIcon = null;
+            maxPostsDelete.Location = new Point(6, 26);
+            maxPostsDelete.MaxLength = 32767;
+            maxPostsDelete.MouseState = MaterialSkin.MouseState.OUT;
+            maxPostsDelete.Name = "maxPostsDelete";
+            maxPostsDelete.PasswordChar = '\0';
+            maxPostsDelete.PrefixSuffixText = null;
+            maxPostsDelete.ReadOnly = false;
+            maxPostsDelete.RightToLeft = RightToLeft.No;
+            maxPostsDelete.SelectedText = "";
+            maxPostsDelete.SelectionLength = 0;
+            maxPostsDelete.SelectionStart = 0;
+            maxPostsDelete.ShortcutsEnabled = true;
+            maxPostsDelete.Size = new Size(174, 48);
+            maxPostsDelete.TabIndex = 42;
+            maxPostsDelete.TabStop = false;
+            maxPostsDelete.Text = "30";
+            maxPostsDelete.TextAlign = HorizontalAlignment.Left;
+            maxPostsDelete.TrailingIcon = null;
+            maxPostsDelete.UseSystemPasswordChar = false;
+            maxPostsDelete.TextChanged += maxPostsDelete_TextChanged;
+            // 
+            // CookieGridView6
+            // 
+            CookieGridView6.AllowUserToAddRows = false;
+            CookieGridView6.AllowUserToDeleteRows = false;
+            CookieGridView6.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            CookieGridView6.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            CookieGridView6.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn14, dataGridViewTextBoxColumn16, dataGridViewTextBoxColumn17, dataGridViewTextBoxColumn18, dataGridViewTextBoxColumn19 });
+            CookieGridView6.Location = new Point(6, 80);
+            CookieGridView6.Name = "CookieGridView6";
+            CookieGridView6.ReadOnly = true;
+            CookieGridView6.RowHeadersVisible = false;
+            CookieGridView6.RowTemplate.Height = 25;
+            CookieGridView6.Size = new Size(657, 444);
+            CookieGridView6.TabIndex = 40;
+            // 
+            // dataGridViewTextBoxColumn14
+            // 
+            dataGridViewTextBoxColumn14.HeaderText = "N.";
+            dataGridViewTextBoxColumn14.Name = "dataGridViewTextBoxColumn14";
+            dataGridViewTextBoxColumn14.ReadOnly = true;
+            dataGridViewTextBoxColumn14.SortMode = DataGridViewColumnSortMode.NotSortable;
+            dataGridViewTextBoxColumn14.Width = 60;
+            // 
+            // dataGridViewTextBoxColumn16
+            // 
+            dataGridViewTextBoxColumn16.HeaderText = "Cookie [0]";
+            dataGridViewTextBoxColumn16.Name = "dataGridViewTextBoxColumn16";
+            dataGridViewTextBoxColumn16.ReadOnly = true;
+            dataGridViewTextBoxColumn16.SortMode = DataGridViewColumnSortMode.NotSortable;
+            dataGridViewTextBoxColumn16.Width = 150;
+            // 
+            // dataGridViewTextBoxColumn17
+            // 
+            dataGridViewTextBoxColumn17.HeaderText = "Proxy";
+            dataGridViewTextBoxColumn17.Name = "dataGridViewTextBoxColumn17";
+            dataGridViewTextBoxColumn17.ReadOnly = true;
+            dataGridViewTextBoxColumn17.SortMode = DataGridViewColumnSortMode.NotSortable;
+            // 
+            // dataGridViewTextBoxColumn18
+            // 
+            dataGridViewTextBoxColumn18.HeaderText = "Đã xóa";
+            dataGridViewTextBoxColumn18.Name = "dataGridViewTextBoxColumn18";
+            dataGridViewTextBoxColumn18.ReadOnly = true;
+            dataGridViewTextBoxColumn18.SortMode = DataGridViewColumnSortMode.NotSortable;
+            // 
+            // dataGridViewTextBoxColumn19
+            // 
+            dataGridViewTextBoxColumn19.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dataGridViewTextBoxColumn19.HeaderText = "Status";
+            dataGridViewTextBoxColumn19.Name = "dataGridViewTextBoxColumn19";
+            dataGridViewTextBoxColumn19.ReadOnly = true;
+            dataGridViewTextBoxColumn19.SortMode = DataGridViewColumnSortMode.NotSortable;
+            // 
+            // stopButton6
+            // 
+            stopButton6.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            stopButton6.Cursor = Cursors.Hand;
+            stopButton6.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            stopButton6.Depth = 0;
+            stopButton6.Enabled = false;
+            stopButton6.HighEmphasis = true;
+            stopButton6.Icon = null;
+            stopButton6.Location = new Point(262, 38);
+            stopButton6.Margin = new Padding(4, 6, 4, 6);
+            stopButton6.MouseState = MaterialSkin.MouseState.HOVER;
+            stopButton6.Name = "stopButton6";
+            stopButton6.NoAccentTextColor = Color.Empty;
+            stopButton6.Size = new Size(64, 36);
+            stopButton6.TabIndex = 39;
+            stopButton6.Text = "STOP";
+            stopButton6.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            stopButton6.UseAccentColor = false;
+            stopButton6.UseVisualStyleBackColor = true;
+            stopButton6.Click += stopButton6_Click;
+            // 
+            // startButton6
+            // 
+            startButton6.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            startButton6.Cursor = Cursors.Hand;
+            startButton6.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            startButton6.Depth = 0;
+            startButton6.HighEmphasis = true;
+            startButton6.Icon = null;
+            startButton6.Location = new Point(187, 38);
+            startButton6.Margin = new Padding(4, 6, 4, 6);
+            startButton6.MouseState = MaterialSkin.MouseState.HOVER;
+            startButton6.Name = "startButton6";
+            startButton6.NoAccentTextColor = Color.Empty;
+            startButton6.Size = new Size(67, 36);
+            startButton6.TabIndex = 38;
+            startButton6.Text = "START";
+            startButton6.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            startButton6.UseAccentColor = false;
+            startButton6.UseVisualStyleBackColor = true;
+            startButton6.Click += startButton6_Click;
             // 
             // tabPage2
             // 
@@ -1246,6 +1414,7 @@
             imageList.Images.SetKeyName(3, "account-multiple-minus.png");
             imageList.Images.SetKeyName(4, "account-multiple-plus.png");
             imageList.Images.SetKeyName(5, "note-plus.png");
+            imageList.Images.SetKeyName(6, "note-minus.png");
             // 
             // MainForm
             // 
@@ -1277,6 +1446,9 @@
             tabPage6.ResumeLayout(false);
             tabPage6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)CookieGridView5).EndInit();
+            tabPage7.ResumeLayout(false);
+            tabPage7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)CookieGridView6).EndInit();
             tabPage2.ResumeLayout(false);
             tabPage2.PerformLayout();
             ResumeLayout(false);
@@ -1358,5 +1530,16 @@
         public MaterialSkin.Controls.MaterialMultiLineTextBox2 materialMultiLineTextBox22;
         public MaterialSkin.Controls.MaterialSwitch materialSwitch1;
         public MaterialSkin.Controls.MaterialTextBox2 repeatCount;
+        private MaterialSkin.Controls.MaterialLabel materialLabel14;
+        public DataGridView CookieGridView6;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn14;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn16;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn17;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn18;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn19;
+        private MaterialSkin.Controls.MaterialButton stopButton6;
+        private MaterialSkin.Controls.MaterialButton startButton6;
+        public MaterialSkin.Controls.MaterialTextBox2 maxPostsDelete;
+        public TabPage tabPage7;
     }
 }

@@ -356,5 +356,48 @@ namespace AutoAcceptFacebookFriendRequests
 
             repeatCount.Text = Input.RepeatCount.ToString();
         }
+
+        private void maxPostsDelete_TextChanged(object sender, EventArgs e)
+        {
+            int.TryParse(maxPostsDelete.Text, out int result);
+
+            Input.MaxPostsDelete = result < 1 ? 30 : result;
+
+            maxPostsDelete.Text = Input.MaxPostsDelete.ToString();
+        }
+
+        private async void startButton6_Click(object sender, EventArgs e)
+        {
+            startButton6.Enabled = false;
+            stopButton6.Enabled = true;
+
+            Service.HighlightMainTab(tabPage7, false);
+
+            _tokenSource = null;
+            _tokenSource = new CancellationTokenSource();
+
+            PostDeleter deleter = new PostDeleter(Service, CookieGridView6, _tokenSource.Token);
+            await Task.Run(deleter.Start);
+
+            startButton6.Enabled = true;
+            stopButton6.Enabled = false;
+
+            stopButton6.Text = "Stop";
+
+            Service.HighlightMainTab(tabPage7, true);
+
+            MessageBox.Show(
+                    text: _tokenSource.IsCancellationRequested ? "Đã dừng" : "Hoàn thành",
+                    caption: "Thông báo",
+                    buttons: MessageBoxButtons.OK,
+                    icon: MessageBoxIcon.Information
+                );
+        }
+
+        private void stopButton6_Click(object sender, EventArgs e)
+        {
+            stopButton6.Text = "Stop...";
+            _tokenSource!.Cancel();
+        }
     }
 }

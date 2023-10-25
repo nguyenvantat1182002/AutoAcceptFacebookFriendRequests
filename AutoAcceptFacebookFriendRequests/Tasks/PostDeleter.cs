@@ -1,14 +1,20 @@
 ﻿using AutoAcceptFacebookFriendRequests.API.Exeptions;
-using AutoAcceptFacebookFriendRequests.API.Model;
 using AutoAcceptFacebookFriendRequests.API;
 using AutoAcceptFacebookFriendRequests.Services;
-using AutoAcceptFacebookFriendRequests.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using AutoAcceptFacebookFriendRequests.API.Models;
 
 namespace AutoAcceptFacebookFriendRequests.Tasks
 {
-    public class FriendDeleter : BaseTask
+    public class PostDeleter : BaseTask
     {
-        public FriendDeleter(MainFormService service, DataGridView gridView, CancellationToken token) : base(service, gridView, token) { }
+        public PostDeleter(MainFormService service, DataGridView gridView, CancellationToken token) : base(service, gridView, token)
+        {
+        }
 
         public override async Task Start()
         {
@@ -40,13 +46,13 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
             }
         }
 
-        public async Task Deleter()
+        private async Task Deleter()
         {
             FacebookAccountAPI accountAPI = null!;
 
             bool nextAccount = true;
 
-            while (Accounts.Count > 0)
+            while (true)
             {
                 if (nextAccount)
                 {
@@ -61,72 +67,45 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
                     nextAccount = false;
                 }
 
-                int requestedCount = 0;
                 int deletedCount = 0;
+                DateTime coolDownTime = DateTime.Now;
 
                 Service.UpdateCookieStatus(GridView, accountAPI, $"Đang chờ...");
                 Semaphore.Wait();
                 try
                 {
-                    while (deletedCount < Input.MaxDeleteLimit)
+                    while (deletedCount < Input.MaxPostsDelete)
                     {
-                        Service.UpdateCookieStatus(GridView, accountAPI, $"Đang lấy danh sách bạn bè");
-                        Queue<FriendInfo> friends = new Queue<FriendInfo>(await accountAPI.GetFriends(Input.MaxDeleteLimit));
-
-                        if (friends.Count < 1)
+                        while (true)
                         {
-                            Service.UpdateCookieStatus(GridView, accountAPI, $"Không còn bạn bè nào.");
+                            if (DateTime.Now > coolDownTime)
+                                break;
+
+                            TimeSpan remainningTime = coolDownTime - DateTime.Now;
+                            Service.UpdateCookieStatus(GridView, accountAPI, $"Sẽ thực hiện sau 0:{remainningTime.Minutes}:{remainningTime.Seconds}");
+
+                            await Task.Delay(1000, Token);
+                        }
+
+                        Service.UpdateCookieStatus(GridView, accountAPI, $"Lấy bài viết...");
+                        PostInfo? info = await accountAPI.GetPost();
+
+                        if (info == null)
+                        {
+                            Service.UpdateCookieStatus(GridView, accountAPI, $"Không có bài viết nào");
                             break;
                         }
 
-                        long endTime = 0;
+                        Service.UpdateCookieStatus(GridView, accountAPI, $"Xóa bài viết {info.Id}");
+                        await accountAPI.DeletePost(info);
 
-                        while (friends.Count > 0)
-                        {
-                            FriendInfo friend = friends.Dequeue();
+                        deletedCount++;
 
-                            while (true)
-                            {
-                                if (TimeUtils.GetTimestamp() > endTime)
-                                    break;
+                        Service.UpdateRequest(GridView, accountAPI, deletedCount);
 
-                                int remainningTime = (int)(endTime - TimeUtils.GetTimestamp());
-                                string formattedTime = TimeUtils.SecondsToFormattedTime(remainningTime);
+                        coolDownTime = DateTime.Now.AddSeconds(Input.Duration);
 
-                                Service.UpdateCookieStatus(GridView, accountAPI, $"Sẽ tiếp tục sau {formattedTime}");
-
-                                await Task.Delay(1000, Token);
-                            }
-
-                            if (requestedCount >= Input.RateLimit)
-                            {
-                                endTime = TimeUtils.GetTimestamp() + Input.RateLimitDuration;
-
-                                while (true)
-                                {
-                                    if (TimeUtils.GetTimestamp() > endTime)
-                                        break;
-
-                                    int remainningTime = (int)(endTime - TimeUtils.GetTimestamp());
-                                    string formattedTime = TimeUtils.SecondsToFormattedTime(remainningTime);
-
-                                    Service.UpdateCookieStatus(GridView, accountAPI, $"Tạm dừng, sẽ tiếp tục sau {formattedTime}");
-
-                                    await Task.Delay(1000, Token);
-                                }
-
-                                requestedCount = 0;
-                            }
-
-                            Service.UpdateCookieStatus(GridView, accountAPI, $"Xóa kết bạn với {friend.Name}");
-                            await accountAPI.Unfriend(friend);
-
-                            requestedCount++;
-                            deletedCount++;
-                            Service.UpdateRequest(GridView, accountAPI, deletedCount);
-
-                            endTime = TimeUtils.GetTimestamp() + Input.Duration;
-                        }
+                        await Task.Delay(500, Token);
                     }
 
                     if (deletedCount > 0)

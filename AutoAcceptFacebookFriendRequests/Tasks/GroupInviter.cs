@@ -59,6 +59,8 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
                     nextAccount = false;
                 }
 
+                Service.UpdateCookieStatus(GridView, accountAPI, $"Đang chờ...");
+                Semaphore.Wait();
                 try
                 {
                     while (true)
@@ -134,35 +136,38 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
                         }
                     }
 
+                    Service.UpdateCookieStatus(GridView, accountAPI, $"Hoàn thành");
                     nextAccount = true;
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex);
-
-                    if (ex is TaskCanceledException || ex is InvalidCookie || ex is AccountCheckpointed)
+                    if (ex is InvalidCookie || ex is AccountCheckpointed)
                     {
                         if (ex is InvalidCookie)
                             accountAPI.State.IsInvalidCookie = true;
 
                         if (ex is AccountCheckpointed)
-                        {
                             accountAPI.State.IsCheckpointed = true;
-                            Service.UpdateCookieStatus(GridView, accountAPI, ex.Message);
-                        }
 
-                        break;
+                        nextAccount = true;
                     }
+                    else if (ex is TaskCanceledException)
+                        break;
                     else
                         Service.UpdateCookieStatus(GridView, accountAPI, ex.Message);
                 }
                 finally
                 {
+                    if (accountAPI.State.IsCheckpointed)
+                        Service.UpdateCookieStatus(GridView, accountAPI, "Checkpoint");
+
                     if (accountAPI.State.IsInvalidCookie)
                         Service.UpdateCookieStatus(GridView, accountAPI, "Invalid cookie.");
 
                     if (Token.IsCancellationRequested)
                         Service.UpdateCookieStatus(GridView, accountAPI, "Đã dừng.");
+
+                    Semaphore.Release();
                 }
             }
         }

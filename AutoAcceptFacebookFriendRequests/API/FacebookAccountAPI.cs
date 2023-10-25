@@ -46,6 +46,73 @@ namespace AutoAcceptFacebookFriendRequests.API
                 _httpHandler.CookieContainer.Add(item);
         }
 
+        public async Task<bool> DeletePost(PostInfo info)
+        {
+            string dtsg = await GetDTSG($"https://www.facebook.com/{info.Id}");
+            string actorId = GetActorId();
+            string _null = null!;
+            string variables = JsonSerializer.Serialize(new
+            {
+                input = new
+                {
+                    story_id = info.Hash,
+                    story_location = "TIMELINE",
+                    actor_id = actorId,
+                    client_mutation_id = 1
+                },
+                groupID = _null,
+                inviteShortLinkKey = _null,
+                renderLocation = _null,
+                scale = 1
+            });
+            string responseContent = await RequestAPI(dtsg, variables, "6103177226450446");
+            Console.WriteLine(responseContent);
+
+            return true;
+        }
+
+        public async Task<PostInfo?> GetPost()
+        {
+            string dtsg = await GetDTSG($"https://www.facebook.com/profile.php");
+            string actorId = GetActorId();
+            string _null = null!;
+
+            string variables = JsonSerializer.Serialize(new
+            {
+                count = 3,
+                feedLocation = "TIMELINE",
+                feedbackSource = 0,
+                focusCommentID = _null,
+                memorializedSplitTimeFilter = _null,
+                omitPinnedPost = true,
+                postedBy = _null,
+                privacy = _null,
+                privacySelectorRenderLocation = "COMET_STREAM",
+                renderLocation = "timeline",
+                scale = 1,
+                stream_count = 1,
+                taggedInOnly = _null,
+                useDefaultActor = false,
+                id = actorId,
+            });
+
+            string responseContent = await RequestAPI(dtsg, variables, "7193989197280434");
+            string[] items = responseContent.Split('\n');
+
+            JObject responseObject = JObject.Parse(items[0]);
+
+            JArray? posts = (JArray)responseObject["data"]?["node"]?["timeline_list_feed_units"]?["edges"]!;
+            if (posts == null || posts.Count < 1)
+                return null;
+
+            JToken post = posts![0]!["node"]!;
+
+            string postId = post["post_id"]!.ToString();
+            string hash = post["id"]!.ToString();
+
+            return new PostInfo(postId, hash);
+        }
+
         public async Task<bool> CreatePost(string message)
         {
             string responseContent;

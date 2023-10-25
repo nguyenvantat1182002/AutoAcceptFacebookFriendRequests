@@ -11,5 +11,6 @@
         public int MaxDeleteLimit { get; set; } = 30;
         public int MaxInviteCounnt { get; set; } = 30;
         public int RepeatCount { get; set; } = 3;
+        public int MaxPostsDelete { get; set; } = 30;
     }
 }

@@ -18,6 +18,7 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
             while (true)
             {
                 List<Task> tasks = new List<Task>();
+                Accounts = new Queue<FacebookAccountAPI>(Service.MainForm.AccountList);
 
                 for (int _ = 0; _ < Input.MaxThreadCount; _++)
                 {
@@ -41,25 +42,35 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
 
         async Task Acceptor()
         {
+            FacebookAccountAPI accountAPI = null!;
+
+            bool nextAccount = true;
+
             while (true)
             {
-                FacebookAccountAPI accountAPI;
-
-                lock (LockObject)
+                if (nextAccount)
                 {
-                    if (Accounts.Count < 1)
-                        break;
+                    lock (LockObject)
+                    {
+                        if (Accounts.Count < 1)
+                            break;
 
-                    accountAPI = Accounts.Dequeue();
+                        accountAPI = Accounts.Dequeue();
+                    }
+
+                    nextAccount = false;
                 }
 
                 int requestedCount = 0;
                 int acceptedRequestCount = 0;
 
+                Service.UpdateCookieStatus(GridView, accountAPI, $"Đang chờ...");
+                Semaphore.Wait();
                 try
                 {
                     while (acceptedRequestCount < Input.MaxAcceptanceLimit)
                     {
+                        Service.UpdateCookieStatus(GridView, accountAPI, $"Lấy danh sách lời mời kết bạn");
                         Queue<FriendInfo> friendRequests = new Queue<FriendInfo>(await accountAPI.GetFriendRequests());
 
                         if (friendRequests.Count < 1)
@@ -108,11 +119,11 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
                             }
 
                             Service.UpdateCookieStatus(GridView, accountAPI, $"Chấp nhận kết bạn với {friendRequest.Name}");
+
                             await accountAPI.AcceptFriendRequest(friendRequest);
 
                             requestedCount++;
                             acceptedRequestCount++;
-
                             Service.UpdateRequest(GridView, accountAPI, acceptedRequestCount);
 
                             endTime = TimeUtils.GetTimestamp() + Input.Duration;
@@ -121,32 +132,37 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
 
                     if (acceptedRequestCount > 0)
                         Service.UpdateCookieStatus(GridView, accountAPI, $"Hoàn thành");
+                    nextAccount = true;
                 }
                 catch (Exception ex)
                 {
-                    if (ex is TaskCanceledException || ex is InvalidCookie || ex is AccountCheckpointed)
+                    if (ex is InvalidCookie || ex is AccountCheckpointed)
                     {
                         if (ex is InvalidCookie)
                             accountAPI.State.IsInvalidCookie = true;
 
                         if (ex is AccountCheckpointed)
-                        {
                             accountAPI.State.IsCheckpointed = true;
-                            Service.UpdateCookieStatus(GridView, accountAPI, ex.Message);
-                        }
 
-                        break;
+                        nextAccount = true;
                     }
+                    else if (ex is TaskCanceledException)
+                        break;
                     else
                         Service.UpdateCookieStatus(GridView, accountAPI, ex.Message);
                 }
                 finally
                 {
+                    if (accountAPI.State.IsCheckpointed)
+                        Service.UpdateCookieStatus(GridView, accountAPI, "Checkpoint");
+
                     if (accountAPI.State.IsInvalidCookie)
                         Service.UpdateCookieStatus(GridView, accountAPI, "Invalid cookie.");
 
                     if (Token.IsCancellationRequested)
                         Service.UpdateCookieStatus(GridView, accountAPI, "Đã dừng.");
+
+                    Semaphore.Release();
                 }
             }
         }

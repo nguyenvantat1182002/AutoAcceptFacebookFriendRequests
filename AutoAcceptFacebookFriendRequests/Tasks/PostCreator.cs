@@ -34,6 +34,8 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
 
         private async Task Creator()
         {
+            DateTime coolDownTime = DateTime.Now;
+
             while (true)
             {
                 FacebookAccountAPI accountAPI;
@@ -46,41 +48,59 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
                     accountAPI = Accounts.Dequeue();
                 }
 
+                while (true)
+                {
+                    if (DateTime.Now > coolDownTime)
+                        break;
+
+                    TimeSpan remainningTime = coolDownTime - DateTime.Now;
+                    Service.UpdateCookieStatus(GridView, accountAPI, $"Sẽ thực hiện sau 0:{remainningTime.Minutes}:{remainningTime.Seconds}");
+
+                    if (Token.IsCancellationRequested)
+                        return;
+                }
+
+                Service.UpdateCookieStatus(GridView, accountAPI, $"Đang tạo bài viết...");
+                Semaphore.Wait();
                 try
                 {
-                    Service.UpdateCookieStatus(GridView, accountAPI, $"Đang tạo bài viết...");
-
                     string content = Service.GetPostContent();
 
                     await accountAPI.CreatePost(content);
 
                     Service.UpdateCookieStatus(GridView, accountAPI, $"Hoàn thành");
+
+                    Token.ThrowIfCancellationRequested();
                 }
                 catch (Exception ex)
                 {
-                    if (ex is TaskCanceledException || ex is InvalidCookie || ex is AccountCheckpointed)
+                    if (ex is InvalidCookie || ex is AccountCheckpointed)
                     {
                         if (ex is InvalidCookie)
                             accountAPI.State.IsInvalidCookie = true;
 
                         if (ex is AccountCheckpointed)
-                        {
                             accountAPI.State.IsCheckpointed = true;
-                            Service.UpdateCookieStatus(GridView, accountAPI, ex.Message);
-                        }
-
-                        break;
                     }
+                    else if (ex is OperationCanceledException)
+                        break;
                     else
                         Service.UpdateCookieStatus(GridView, accountAPI, ex.Message);
                 }
                 finally
                 {
+                    if (accountAPI.State.IsCheckpointed)
+                        Service.UpdateCookieStatus(GridView, accountAPI, "Checkpoint");
+
                     if (accountAPI.State.IsInvalidCookie)
                         Service.UpdateCookieStatus(GridView, accountAPI, "Invalid cookie.");
 
                     if (Token.IsCancellationRequested)
                         Service.UpdateCookieStatus(GridView, accountAPI, "Đã dừng.");
+
+                    coolDownTime = DateTime.Now.AddSeconds(Input.Duration);
+
+                    Semaphore.Release();
                 }
             }
         }

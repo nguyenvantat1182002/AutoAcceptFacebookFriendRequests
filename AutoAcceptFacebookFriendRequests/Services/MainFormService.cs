@@ -52,6 +52,7 @@ namespace AutoAcceptFacebookFriendRequests.Services
             GridViews.Add(MainForm.CookieGridView3);
             GridViews.Add(MainForm.CookieGridView4);
             GridViews.Add(MainForm.CookieGridView5);
+            GridViews.Add(MainForm.CookieGridView6);
 
             _tabs = new List<TabPage>();
             _tabs.Add(MainForm.tabPage1);
@@ -59,6 +60,8 @@ namespace AutoAcceptFacebookFriendRequests.Services
             _tabs.Add(MainForm.tabPage4);
             _tabs.Add(MainForm.tabPage5);
             _tabs.Add(MainForm.tabPage6);
+            _tabs.Add(MainForm.tabPage6);
+            _tabs.Add(MainForm.tabPage7);
         }
 
         public string GetPostContent()
