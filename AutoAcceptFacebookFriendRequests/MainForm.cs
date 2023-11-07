@@ -53,8 +53,11 @@ namespace AutoAcceptFacebookFriendRequests
             if (AccountList.Count > 0)
                 AccountList.Clear();
 
-            if (CookieGridView1.RowCount > 0)
-                CookieGridView1.Rows.Clear();
+            foreach (DataGridView item in Service.GridViews)
+            {
+                if (item.RowCount > 0)
+                    item.Rows.Clear();
+            }    
 
             try
             {

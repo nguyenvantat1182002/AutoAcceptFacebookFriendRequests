@@ -19,7 +19,7 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
             Service = service;
             GridView = gridView;
             Token = token;
-            Accounts = new Queue<FacebookAccountAPI>();
+            Accounts = new Queue<FacebookAccountAPI>(Service.MainForm.AccountList);
             LockObject = new object();
             Input = Service.MainForm.Input;
             Semaphore = new SemaphoreSlim(10, 10);

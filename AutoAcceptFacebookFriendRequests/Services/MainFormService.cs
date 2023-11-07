@@ -130,6 +130,9 @@ namespace AutoAcceptFacebookFriendRequests.Services
                 item.Rows[index].Cells[0].Value = item.RowCount;
                 item.Rows[index].Cells[2].Value = proxy ?? "";
             }
+
+            foreach (DataGridView item in GridViews)
+                item.Columns[1].HeaderText = $"Cookie [{item.RowCount}]";
         }
 
         public void UpdateCookieStatus(DataGridView gridView, FacebookAccountAPI account, string status)
