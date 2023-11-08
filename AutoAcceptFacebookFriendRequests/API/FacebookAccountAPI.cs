@@ -132,7 +132,7 @@ namespace AutoAcceptFacebookFriendRequests.API
             HtmlAgilityPack.HtmlNode composerForm = doc.DocumentNode.SelectSingleNode(".//form[@id=\"mbasic-composer-form\"]");
             HtmlAgilityPack.HtmlNode fb_dtsg = doc.DocumentNode.SelectSingleNode(".//input[@name=\"fb_dtsg\"]");
             HtmlAgilityPack.HtmlNode jazoest = doc.DocumentNode.SelectSingleNode(".//input[@name=\"jazoest\"]");
-            HtmlAgilityPack.HtmlNode privacyx = doc.DocumentNode.SelectSingleNode(".//input[@name=\"privacyx\"]");
+            //HtmlAgilityPack.HtmlNode privacyx = doc.DocumentNode.SelectSingleNode(".//input[@name=\"privacyx\"]");
             HtmlAgilityPack.HtmlNode c_src = doc.DocumentNode.SelectSingleNode(".//input[@name=\"c_src\"]");
             HtmlAgilityPack.HtmlNode target = doc.DocumentNode.SelectSingleNode(".//input[@name=\"target\"]");
             HtmlAgilityPack.HtmlNode cwevent = doc.DocumentNode.SelectSingleNode(".//input[@name=\"cwevent\"]");
@@ -144,7 +144,8 @@ namespace AutoAcceptFacebookFriendRequests.API
             {
                 { "fb_dtsg", fb_dtsg.Attributes["value"].Value },
                 { "jazoest", jazoest.Attributes["value"].Value },
-                { "privacyx", privacyx.Attributes["value"].Value },
+                { "privacyx", "300645083384735" },
+                //{ "privacyx", privacyx.Attributes["value"].Value },
                 { "target", target.Attributes["value"].Value },
                 { "c_src", c_src.Attributes["value"].Value },
                 { "cwevent", cwevent.Attributes["value"].Value },
