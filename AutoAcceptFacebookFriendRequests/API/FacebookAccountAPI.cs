@@ -190,7 +190,7 @@ namespace AutoAcceptFacebookFriendRequests.API
             doc.LoadHtml(responseContent);
 
             HtmlAgilityPack.HtmlNode composerForm = doc.DocumentNode.SelectSingleNode(".//form[@id=\"mbasic-composer-form\"]");
-            HtmlAgilityPack.HtmlNode fb_dtsg = doc.DocumentNode.SelectSingleNode(".//input[@name=\"fb_dtsg\"]");
+            HtmlAgilityPack.HtmlNode? fb_dtsg = doc.DocumentNode.SelectSingleNode(".//input[@name=\"fb_dtsg\"]");
             HtmlAgilityPack.HtmlNode jazoest = doc.DocumentNode.SelectSingleNode(".//input[@name=\"jazoest\"]");
             //HtmlAgilityPack.HtmlNode privacyx = doc.DocumentNode.SelectSingleNode(".//input[@name=\"privacyx\"]");
             HtmlAgilityPack.HtmlNode c_src = doc.DocumentNode.SelectSingleNode(".//input[@name=\"c_src\"]");
@@ -199,6 +199,9 @@ namespace AutoAcceptFacebookFriendRequests.API
             HtmlAgilityPack.HtmlNode referrer = doc.DocumentNode.SelectSingleNode(".//input[@name=\"referrer\"]");
             HtmlAgilityPack.HtmlNode cver = doc.DocumentNode.SelectSingleNode(".//input[@name=\"cver\"]");
             HtmlAgilityPack.HtmlNode view_post = doc.DocumentNode.SelectSingleNode(".//input[@name=\"view_post\"]");
+
+            if (fb_dtsg == null)
+                throw new InvalidCookie();
 
             FormUrlEncodedContent content = new FormUrlEncodedContent(new Dictionary<string, string>
             {

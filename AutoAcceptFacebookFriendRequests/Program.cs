@@ -1,8 +1,3 @@
-using AutoAcceptFacebookFriendRequests.API;
-using AutoAcceptFacebookFriendRequests.API.Model;
-using AutoAcceptFacebookFriendRequests.API.Models;
-using System.Net;
-
 namespace AutoAcceptFacebookFriendRequests
 {
     internal static class Program
@@ -13,11 +8,13 @@ namespace AutoAcceptFacebookFriendRequests
         [STAThread]
         static void Main()
         {
-            //string cookie = "sb=9PIrZa4G_Q8ZS00wBNAhQ7ej; datr=9PIrZQEZb1xaXfe_M0nyhKza; c_user=715240575; m_page_voice=715240575; m_ls=%7B%22c%22%3A%7B%221%22%3A%22HCwAABb8v1IWqNGC-gQTBRb-0Y2qBQA%22%2C%222%22%3A%22GSwVQBxMAAAWbBaKobPUDBYAABV-HEwAABYAFoqhs9QMFgAAFigA%22%2C%2295%22%3A%22HCwAABaQHhaQhviiCBMFFv7RjaoFAA%22%7D%2C%22d%22%3A%2255933d66-ca82-4723-8ed1-adb4202f02a2%22%2C%22s%22%3A%221%22%2C%22u%22%3A%22iv290p%22%7D; presence=C%7B%22t3%22%3A%5B%5D%2C%22utc3%22%3A1699511184152%2C%22v%22%3A1%7D; xs=10%3Apt2OVoJPJApOiA%3A2%3A1699274880%3A-1%3A6147%3A%3AAcUsEnjtT8vARlzbaFLHnzayBArPsLm3L3mof1ZzHoM; fr=122eh0ZNPDejTuTuS.AWXxu2xgXgNdZIMDs5ZtKUfSt8I.BlTIlW.w0.AAA.0.0.BlTIlW.AWWrfyOGywc; wd=846x937";
-            //string userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36";
-            //string proxy = "";
+            //string cookie = "presence=C%7B%22t3%22%3A%5B%5D%2C%22utc3%22%3A1699421921907%2C%22v%22%3A1%7D;fr=19KnfwZOnJLSpXdLY.AWUlci4uCY8xqNTdRBecg1zhAys.BlRmUy.z1.AAA.0.0.BlSx7a.AWWrFwaBJAg;wd=383x317;xs=48%3AUJIoTV1Pbg0plA%3A2%3A1699153770%3A-1%3A4784;m_page_voice=100046488757424;c_user=100046488757424;datr=_W1GZVoRoQmJ1rmjtPktUGw_;sb=La1AZTZa7XyRdbRT7284cycR;";
+            //string userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36";
+            //string proxy = "fb2425.proxyfb.com:25745:user25745:0872";
 
             //FacebookAccountAPI accountAPI = new FacebookAccountAPI(cookie, userAgent, proxy);
+
+            //accountAPI.CreatePost("https://www.facebook.com/groups/2568945776603748/posts/2594291997402459").Wait();
 
             //List<FriendInfo> friends = accountAPI.GetGroupNewMenbers("howkteam").Result;
             //foreach (FriendInfo friend in friends)
