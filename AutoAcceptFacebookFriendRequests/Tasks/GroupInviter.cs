@@ -36,7 +36,7 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
         public async Task Inviter()
         {
             FacebookAccountAPI accountAPI = null!;
-            Queue<string> groupList = new Queue<string>(Service.GetGroupIDs());
+            Queue<string> groupList = new Queue<string>(Service.GetGroupIDs(Service.MainForm.materialMultiLineTextBox21));
 
             bool nextAccount = true;
 

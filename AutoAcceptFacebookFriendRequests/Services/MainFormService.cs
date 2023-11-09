@@ -53,6 +53,7 @@ namespace AutoAcceptFacebookFriendRequests.Services
             GridViews.Add(MainForm.CookieGridView4);
             GridViews.Add(MainForm.CookieGridView5);
             GridViews.Add(MainForm.CookieGridView6);
+            GridViews.Add(MainForm.CookieGridView7);
 
             _tabs = new List<TabPage>();
             _tabs.Add(MainForm.tabPage1);
@@ -88,9 +89,9 @@ namespace AutoAcceptFacebookFriendRequests.Services
             return value;
         }
 
-        public string[] GetGroupIDs()
+        public string[] GetGroupIDs(MaterialMultiLineTextBox2 multiLineTextBox)
         {
-            return ReadTextBoxLines(MainForm.materialMultiLineTextBox21);
+            return ReadTextBoxLines(multiLineTextBox);
         }
 
         public string[] ReadTextBoxLines(MaterialMultiLineTextBox2 textBox)

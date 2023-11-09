@@ -98,6 +98,19 @@
             dataGridViewTextBoxColumn19 = new DataGridViewTextBoxColumn();
             stopButton6 = new MaterialSkin.Controls.MaterialButton();
             startButton6 = new MaterialSkin.Controls.MaterialButton();
+            tabPage8 = new TabPage();
+            CookieGridView7 = new DataGridView();
+            dataGridViewTextBoxColumn20 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn21 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn22 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn23 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn24 = new DataGridViewTextBoxColumn();
+            materialLabel15 = new MaterialSkin.Controls.MaterialLabel();
+            materialTextBox21 = new MaterialSkin.Controls.MaterialTextBox2();
+            materialLabel16 = new MaterialSkin.Controls.MaterialLabel();
+            stopButton7 = new MaterialSkin.Controls.MaterialButton();
+            startButton7 = new MaterialSkin.Controls.MaterialButton();
+            materialMultiLineTextBox23 = new MaterialSkin.Controls.MaterialMultiLineTextBox2();
             tabPage2 = new TabPage();
             repeatCount = new MaterialSkin.Controls.MaterialTextBox2();
             materialSwitch1 = new MaterialSkin.Controls.MaterialSwitch();
@@ -128,6 +141,8 @@
             ((System.ComponentModel.ISupportInitialize)CookieGridView5).BeginInit();
             tabPage7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)CookieGridView6).BeginInit();
+            tabPage8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)CookieGridView7).BeginInit();
             tabPage2.SuspendLayout();
             SuspendLayout();
             // 
@@ -139,6 +154,7 @@
             tabControl1.Controls.Add(tabPage5);
             tabControl1.Controls.Add(tabPage6);
             tabControl1.Controls.Add(tabPage7);
+            tabControl1.Controls.Add(tabPage8);
             tabControl1.Controls.Add(tabPage2);
             tabControl1.Depth = 0;
             tabControl1.Dock = DockStyle.Fill;
@@ -374,7 +390,7 @@
             CookieGridView2.ReadOnly = true;
             CookieGridView2.RowHeadersVisible = false;
             CookieGridView2.RowTemplate.Height = 25;
-            CookieGridView2.Size = new Size(657, 515);
+            CookieGridView2.Size = new Size(657, 655);
             CookieGridView2.TabIndex = 40;
             // 
             // dataGridViewTextBoxColumn1
@@ -527,7 +543,7 @@
             CookieGridView3.ReadOnly = true;
             CookieGridView3.RowHeadersVisible = false;
             CookieGridView3.RowTemplate.Height = 25;
-            CookieGridView3.Size = new Size(657, 515);
+            CookieGridView3.Size = new Size(657, 655);
             CookieGridView3.TabIndex = 45;
             // 
             // dataGridViewTextBoxColumn6
@@ -640,7 +656,7 @@
             CookieGridView4.ReadOnly = true;
             CookieGridView4.RowHeadersVisible = false;
             CookieGridView4.RowTemplate.Height = 25;
-            CookieGridView4.Size = new Size(662, 417);
+            CookieGridView4.Size = new Size(662, 557);
             CookieGridView4.TabIndex = 6;
             // 
             // Column3
@@ -738,6 +754,7 @@
             stopButton4.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             stopButton4.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             stopButton4.Depth = 0;
+            stopButton4.Enabled = false;
             stopButton4.HighEmphasis = true;
             stopButton4.Icon = null;
             stopButton4.Location = new Point(482, 137);
@@ -861,6 +878,7 @@
             stopButton5.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             stopButton5.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             stopButton5.Depth = 0;
+            stopButton5.Enabled = false;
             stopButton5.HighEmphasis = true;
             stopButton5.Icon = null;
             stopButton5.Location = new Point(535, 137);
@@ -1085,6 +1103,195 @@
             startButton6.UseAccentColor = false;
             startButton6.UseVisualStyleBackColor = true;
             startButton6.Click += startButton6_Click;
+            // 
+            // tabPage8
+            // 
+            tabPage8.Controls.Add(CookieGridView7);
+            tabPage8.Controls.Add(materialLabel15);
+            tabPage8.Controls.Add(materialTextBox21);
+            tabPage8.Controls.Add(materialLabel16);
+            tabPage8.Controls.Add(stopButton7);
+            tabPage8.Controls.Add(startButton7);
+            tabPage8.Controls.Add(materialMultiLineTextBox23);
+            tabPage8.ImageKey = "account-plus-2.png";
+            tabPage8.Location = new Point(4, 74);
+            tabPage8.Name = "tabPage8";
+            tabPage8.Size = new Size(669, 529);
+            tabPage8.TabIndex = 7;
+            tabPage8.Text = "Kết bạn với thành viên trong nhóm";
+            tabPage8.UseVisualStyleBackColor = true;
+            // 
+            // CookieGridView7
+            // 
+            CookieGridView7.AllowUserToAddRows = false;
+            CookieGridView7.AllowUserToDeleteRows = false;
+            CookieGridView7.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            CookieGridView7.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            CookieGridView7.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn20, dataGridViewTextBoxColumn21, dataGridViewTextBoxColumn22, dataGridViewTextBoxColumn23, dataGridViewTextBoxColumn24 });
+            CookieGridView7.Location = new Point(4, 182);
+            CookieGridView7.Name = "CookieGridView7";
+            CookieGridView7.ReadOnly = true;
+            CookieGridView7.RowHeadersVisible = false;
+            CookieGridView7.RowTemplate.Height = 25;
+            CookieGridView7.Size = new Size(662, 344);
+            CookieGridView7.TabIndex = 13;
+            // 
+            // dataGridViewTextBoxColumn20
+            // 
+            dataGridViewTextBoxColumn20.HeaderText = "N.";
+            dataGridViewTextBoxColumn20.Name = "dataGridViewTextBoxColumn20";
+            dataGridViewTextBoxColumn20.ReadOnly = true;
+            dataGridViewTextBoxColumn20.SortMode = DataGridViewColumnSortMode.NotSortable;
+            // 
+            // dataGridViewTextBoxColumn21
+            // 
+            dataGridViewTextBoxColumn21.HeaderText = "Cookie [0]";
+            dataGridViewTextBoxColumn21.Name = "dataGridViewTextBoxColumn21";
+            dataGridViewTextBoxColumn21.ReadOnly = true;
+            dataGridViewTextBoxColumn21.SortMode = DataGridViewColumnSortMode.NotSortable;
+            // 
+            // dataGridViewTextBoxColumn22
+            // 
+            dataGridViewTextBoxColumn22.HeaderText = "Proxy";
+            dataGridViewTextBoxColumn22.Name = "dataGridViewTextBoxColumn22";
+            dataGridViewTextBoxColumn22.ReadOnly = true;
+            dataGridViewTextBoxColumn22.SortMode = DataGridViewColumnSortMode.NotSortable;
+            // 
+            // dataGridViewTextBoxColumn23
+            // 
+            dataGridViewTextBoxColumn23.HeaderText = "Đã kết bạn";
+            dataGridViewTextBoxColumn23.Name = "dataGridViewTextBoxColumn23";
+            dataGridViewTextBoxColumn23.ReadOnly = true;
+            dataGridViewTextBoxColumn23.SortMode = DataGridViewColumnSortMode.NotSortable;
+            // 
+            // dataGridViewTextBoxColumn24
+            // 
+            dataGridViewTextBoxColumn24.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dataGridViewTextBoxColumn24.HeaderText = "Status";
+            dataGridViewTextBoxColumn24.Name = "dataGridViewTextBoxColumn24";
+            dataGridViewTextBoxColumn24.ReadOnly = true;
+            dataGridViewTextBoxColumn24.SortMode = DataGridViewColumnSortMode.NotSortable;
+            // 
+            // materialLabel15
+            // 
+            materialLabel15.AutoSize = true;
+            materialLabel15.Depth = 0;
+            materialLabel15.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            materialLabel15.Location = new Point(3, 0);
+            materialLabel15.MouseState = MaterialSkin.MouseState.HOVER;
+            materialLabel15.Name = "materialLabel15";
+            materialLabel15.Size = new Size(80, 19);
+            materialLabel15.TabIndex = 12;
+            materialLabel15.Text = "Group Id(s)";
+            // 
+            // materialTextBox21
+            // 
+            materialTextBox21.AnimateReadOnly = false;
+            materialTextBox21.BackgroundImageLayout = ImageLayout.None;
+            materialTextBox21.CharacterCasing = CharacterCasing.Normal;
+            materialTextBox21.Depth = 0;
+            materialTextBox21.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            materialTextBox21.HideSelection = true;
+            materialTextBox21.LeadingIcon = null;
+            materialTextBox21.Location = new Point(406, 80);
+            materialTextBox21.MaxLength = 32767;
+            materialTextBox21.MouseState = MaterialSkin.MouseState.OUT;
+            materialTextBox21.Name = "materialTextBox21";
+            materialTextBox21.PasswordChar = '\0';
+            materialTextBox21.PrefixSuffixText = null;
+            materialTextBox21.ReadOnly = false;
+            materialTextBox21.RightToLeft = RightToLeft.No;
+            materialTextBox21.SelectedText = "";
+            materialTextBox21.SelectionLength = 0;
+            materialTextBox21.SelectionStart = 0;
+            materialTextBox21.ShortcutsEnabled = true;
+            materialTextBox21.Size = new Size(139, 48);
+            materialTextBox21.TabIndex = 11;
+            materialTextBox21.TabStop = false;
+            materialTextBox21.Text = "30";
+            materialTextBox21.TextAlign = HorizontalAlignment.Left;
+            materialTextBox21.TrailingIcon = null;
+            materialTextBox21.UseSystemPasswordChar = false;
+            materialTextBox21.TextChanged += materialTextBox21_TextChanged;
+            // 
+            // materialLabel16
+            // 
+            materialLabel16.AutoSize = true;
+            materialLabel16.Depth = 0;
+            materialLabel16.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            materialLabel16.Location = new Point(406, 58);
+            materialLabel16.MouseState = MaterialSkin.MouseState.HOVER;
+            materialLabel16.Name = "materialLabel16";
+            materialLabel16.Size = new Size(125, 19);
+            materialLabel16.TabIndex = 10;
+            materialLabel16.Text = "Chỉ kết bạn tối đa";
+            // 
+            // stopButton7
+            // 
+            stopButton7.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            stopButton7.Cursor = Cursors.Hand;
+            stopButton7.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            stopButton7.Depth = 0;
+            stopButton7.Enabled = false;
+            stopButton7.HighEmphasis = true;
+            stopButton7.Icon = null;
+            stopButton7.Location = new Point(481, 137);
+            stopButton7.Margin = new Padding(4, 6, 4, 6);
+            stopButton7.MouseState = MaterialSkin.MouseState.HOVER;
+            stopButton7.Name = "stopButton7";
+            stopButton7.NoAccentTextColor = Color.Empty;
+            stopButton7.Size = new Size(64, 36);
+            stopButton7.TabIndex = 9;
+            stopButton7.Text = "Stop";
+            stopButton7.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            stopButton7.UseAccentColor = false;
+            stopButton7.UseVisualStyleBackColor = true;
+            stopButton7.Click += stopButton7_Click;
+            // 
+            // startButton7
+            // 
+            startButton7.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            startButton7.Cursor = Cursors.Hand;
+            startButton7.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            startButton7.Depth = 0;
+            startButton7.HighEmphasis = true;
+            startButton7.Icon = null;
+            startButton7.Location = new Point(406, 137);
+            startButton7.Margin = new Padding(4, 6, 4, 6);
+            startButton7.MouseState = MaterialSkin.MouseState.HOVER;
+            startButton7.Name = "startButton7";
+            startButton7.NoAccentTextColor = Color.Empty;
+            startButton7.Size = new Size(67, 36);
+            startButton7.TabIndex = 8;
+            startButton7.Text = "Start";
+            startButton7.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            startButton7.UseAccentColor = false;
+            startButton7.UseVisualStyleBackColor = true;
+            startButton7.Click += startButton7_Click;
+            // 
+            // materialMultiLineTextBox23
+            // 
+            materialMultiLineTextBox23.AnimateReadOnly = false;
+            materialMultiLineTextBox23.BackgroundImageLayout = ImageLayout.None;
+            materialMultiLineTextBox23.CharacterCasing = CharacterCasing.Normal;
+            materialMultiLineTextBox23.Depth = 0;
+            materialMultiLineTextBox23.HideSelection = true;
+            materialMultiLineTextBox23.Location = new Point(3, 22);
+            materialMultiLineTextBox23.MaxLength = 32767;
+            materialMultiLineTextBox23.MouseState = MaterialSkin.MouseState.OUT;
+            materialMultiLineTextBox23.Name = "materialMultiLineTextBox23";
+            materialMultiLineTextBox23.PasswordChar = '\0';
+            materialMultiLineTextBox23.ReadOnly = false;
+            materialMultiLineTextBox23.ScrollBars = ScrollBars.None;
+            materialMultiLineTextBox23.SelectedText = "";
+            materialMultiLineTextBox23.SelectionLength = 0;
+            materialMultiLineTextBox23.SelectionStart = 0;
+            materialMultiLineTextBox23.ShortcutsEnabled = true;
+            materialMultiLineTextBox23.Size = new Size(396, 151);
+            materialMultiLineTextBox23.TabIndex = 7;
+            materialMultiLineTextBox23.TabStop = false;
+            materialMultiLineTextBox23.TextAlign = HorizontalAlignment.Left;
+            materialMultiLineTextBox23.UseSystemPasswordChar = false;
             // 
             // tabPage2
             // 
@@ -1415,6 +1622,7 @@
             imageList.Images.SetKeyName(4, "account-multiple-plus.png");
             imageList.Images.SetKeyName(5, "note-plus.png");
             imageList.Images.SetKeyName(6, "note-minus.png");
+            imageList.Images.SetKeyName(7, "account-plus-2.png");
             // 
             // MainForm
             // 
@@ -1449,6 +1657,9 @@
             tabPage7.ResumeLayout(false);
             tabPage7.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)CookieGridView6).EndInit();
+            tabPage8.ResumeLayout(false);
+            tabPage8.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)CookieGridView7).EndInit();
             tabPage2.ResumeLayout(false);
             tabPage2.PerformLayout();
             ResumeLayout(false);
@@ -1541,5 +1752,18 @@
         private MaterialSkin.Controls.MaterialButton startButton6;
         public MaterialSkin.Controls.MaterialTextBox2 maxPostsDelete;
         public TabPage tabPage7;
+        private TabPage tabPage8;
+        public DataGridView CookieGridView7;
+        private MaterialSkin.Controls.MaterialLabel materialLabel15;
+        public MaterialSkin.Controls.MaterialTextBox2 materialTextBox21;
+        private MaterialSkin.Controls.MaterialLabel materialLabel16;
+        private MaterialSkin.Controls.MaterialButton stopButton7;
+        private MaterialSkin.Controls.MaterialButton startButton7;
+        public MaterialSkin.Controls.MaterialMultiLineTextBox2 materialMultiLineTextBox23;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn20;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn21;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn22;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn23;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn24;
     }
 }

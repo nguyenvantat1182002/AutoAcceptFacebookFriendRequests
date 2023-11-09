@@ -46,6 +46,66 @@ namespace AutoAcceptFacebookFriendRequests.API
                 _httpHandler.CookieContainer.Add(item);
         }
 
+        public async Task<List<FriendInfo>> GetGroupNewMenbers(string groupId, int maxMenbers = 30)
+        {
+            string groupUrl = $"https://www.facebook.com/groups/{groupId}";
+
+            groupId = await GetGroupId(groupUrl);
+
+            string dtsg = await GetDTSG(groupUrl);
+
+            Dictionary<string, dynamic> values = new Dictionary<string, dynamic>();
+            values.Add("count", 10);
+            values.Add("groupID", groupId);
+            values.Add("recruitingGroupFilterNonCompliant", false);
+            values.Add("scale", 1);
+            values.Add("id", groupId);
+
+            List<FriendInfo> friends = new List<FriendInfo>();
+
+            bool hasNextPage = true;
+
+            while (hasNextPage && friends.Count < maxMenbers)
+            {
+                DateTime startTime = DateTime.Now;
+
+                string variables = Newtonsoft.Json.JsonConvert.SerializeObject(values);
+                string responseContent = await RequestAPI(dtsg, variables, "6621621524622624");
+
+                JObject responseObject = JObject.Parse(responseContent);
+
+                JToken newMenbers = responseObject["data"]!["node"]!["new_members"]!;
+                JToken pageInfo = newMenbers["page_info"]!;
+
+                JArray menber = (JArray)newMenbers["edges"]!;
+                hasNextPage = Convert.ToBoolean(pageInfo["has_next_page"]!);
+
+                if (hasNextPage)
+                {
+                    if (!values.ContainsKey("cursor"))
+                        values.Add("cursor", "");
+                    values["cursor"] = pageInfo["end_cursor"]!.ToString();
+                }
+
+                foreach (JToken item in menber)
+                {
+                    if (friends.Count > maxMenbers)
+                        break;
+
+                    JToken node = item["node"]!;
+
+                    string id = node["id"]!.ToString();
+                    string name = node["name"]!.ToString();
+
+                    friends.Add(new FriendInfo(id, name));
+                }
+
+                await Task.Delay((int)(DateTime.Now - startTime).TotalMilliseconds);
+            }
+
+            return friends;
+        }
+
         public async Task<bool> DeletePost(PostInfo info)
         {
             string dtsg = await GetDTSG($"https://www.facebook.com/{info.Id}");
@@ -487,6 +547,22 @@ namespace AutoAcceptFacebookFriendRequests.API
                 }
 
                 _disposed = true;
+            }
+        }
+
+        public async Task<string> GetGroupId(string groupUrl)
+        {
+            using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, groupUrl))
+            {
+                request.Headers.Add("Sec-Fetch-Site", "same-origin");
+                request.Headers.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7");
+
+                using (HttpResponseMessage response = await _http.SendAsync(request))
+                {
+                    string responseContent = await EnsureNoCheckpoint(response).Content.ReadAsStringAsync();
+                    Match match = Regex.Match(responseContent, "\"groupID\":\"(\\d+)\"");
+                    return match.Groups[1].Value;
+                }
             }
         }
 

@@ -5,6 +5,7 @@ using AutoAcceptFacebookFriendRequests.Tasks;
 using AutoAcceptFacebookFriendRequests.Utils;
 using MaterialSkin;
 using MaterialSkin.Controls;
+using System.Data;
 using System.Diagnostics;
 
 namespace AutoAcceptFacebookFriendRequests
@@ -57,7 +58,7 @@ namespace AutoAcceptFacebookFriendRequests
             {
                 if (item.RowCount > 0)
                     item.Rows.Clear();
-            }    
+            }
 
             try
             {
@@ -400,6 +401,49 @@ namespace AutoAcceptFacebookFriendRequests
         private void stopButton6_Click(object sender, EventArgs e)
         {
             stopButton6.Text = "Stop...";
+            _tokenSource!.Cancel();
+        }
+
+        private void materialTextBox21_TextChanged(object sender, EventArgs e)
+        {
+            int.TryParse(materialTextBox21.Text, out int result);
+
+            Input.MaxRequestLimit = result < 1 ? 30 : result;
+
+            materialTextBox21.Text = Input.MaxRequestLimit.ToString();
+        }
+
+        private async void startButton7_Click(object sender, EventArgs e)
+        {
+            startButton7.Enabled = false;
+            stopButton7.Enabled = true;
+
+            Service.HighlightMainTab(tabPage8, false);
+
+            _tokenSource = null;
+            _tokenSource = new CancellationTokenSource();
+
+            FriendConnector connector = new FriendConnector(Service, CookieGridView7, _tokenSource.Token);
+            await Task.Run(connector.Start);
+
+            startButton7.Enabled = true;
+            stopButton7.Enabled = false;
+
+            stopButton7.Text = "Stop";
+
+            Service.HighlightMainTab(tabPage8, true);
+
+            MessageBox.Show(
+                    text: _tokenSource.IsCancellationRequested ? "Đã dừng" : "Hoàn thành",
+                    caption: "Thông báo",
+                    buttons: MessageBoxButtons.OK,
+                    icon: MessageBoxIcon.Information
+                );
+        }
+
+        private void stopButton7_Click(object sender, EventArgs e)
+        {
+            stopButton7.Text = "Stop...";
             _tokenSource!.Cancel();
         }
     }
