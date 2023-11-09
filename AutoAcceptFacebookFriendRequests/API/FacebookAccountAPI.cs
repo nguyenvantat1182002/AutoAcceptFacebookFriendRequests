@@ -50,7 +50,7 @@ namespace AutoAcceptFacebookFriendRequests.API
         {
             string groupUrl = $"https://www.facebook.com/groups/{groupId}";
 
-            groupId = await GetGroupId(groupUrl);
+            groupId = await GetRealGroupID(groupUrl);
 
             string dtsg = await GetDTSG(groupUrl);
 
@@ -547,22 +547,6 @@ namespace AutoAcceptFacebookFriendRequests.API
                 }
 
                 _disposed = true;
-            }
-        }
-
-        public async Task<string> GetGroupId(string groupUrl)
-        {
-            using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, groupUrl))
-            {
-                request.Headers.Add("Sec-Fetch-Site", "same-origin");
-                request.Headers.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7");
-
-                using (HttpResponseMessage response = await _http.SendAsync(request))
-                {
-                    string responseContent = await EnsureNoCheckpoint(response).Content.ReadAsStringAsync();
-                    Match match = Regex.Match(responseContent, "\"groupID\":\"(\\d+)\"");
-                    return match.Groups[1].Value;
-                }
             }
         }
 
