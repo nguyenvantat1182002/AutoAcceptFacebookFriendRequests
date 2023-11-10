@@ -86,7 +86,7 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
 
                             Service.UpdateRequest(GridView, accountAPI, ++sentCount);
 
-                            coolDownTime = DateTime.Now.AddSeconds(Input.RateLimitDuration);
+                            coolDownTime = DateTime.Now.AddSeconds(Input.Duration);
 
                             requested++;
                         }

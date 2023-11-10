@@ -8,11 +8,15 @@ namespace AutoAcceptFacebookFriendRequests
         [STAThread]
         static void Main()
         {
-            //string cookie = "presence=C%7B%22t3%22%3A%5B%5D%2C%22utc3%22%3A1699421921907%2C%22v%22%3A1%7D;fr=19KnfwZOnJLSpXdLY.AWUlci4uCY8xqNTdRBecg1zhAys.BlRmUy.z1.AAA.0.0.BlSx7a.AWWrFwaBJAg;wd=383x317;xs=48%3AUJIoTV1Pbg0plA%3A2%3A1699153770%3A-1%3A4784;m_page_voice=100046488757424;c_user=100046488757424;datr=_W1GZVoRoQmJ1rmjtPktUGw_;sb=La1AZTZa7XyRdbRT7284cycR;";
+            //string cookie = "presence=C%7B%22t3%22%3A%5B%5D%2C%22utc3%22%3A1699495419205%2C%22v%22%3A1%7D;fr=1BeoWbiquXS1OHSIy.AWX1XIgm_95O7xALVsrEcyjguWM.BlTD33.6f.AAA.0.0.BlTD33.AWU15VZi-ac;xs=49%3AcFYdKFFMi2Prvg%3A2%3A1699287699%3A-1%3A640%3A%3AAcU2RWIR56aBch_XAKbGdgW1pbgQatqLTHL09iqPkA;wd=383x317;m_page_voice=100025133085803;c_user=100025133085803;locale=en_GB;datr=ehJJZd-hdGWadmDgi76NzVtL;sb=ehJJZbYlDb3k11xI9AbhhnWM;";
             //string userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36";
-            //string proxy = "fb2425.proxyfb.com:25745:user25745:0872";
+            //string proxy = "42.96.12.16:51791:user51791:4C07";
 
             //FacebookAccountAPI accountAPI = new FacebookAccountAPI(cookie, userAgent, proxy);
+
+            //List<FriendInfo> friends = accountAPI.GetGroupNewMenbers("1053510842501893").Result;
+            //foreach (FriendInfo friend in friends)
+            //    Console.WriteLine($"{friend.Id} {friend.Name}");
 
             //accountAPI.CreatePost("https://www.facebook.com/groups/2568945776603748/posts/2594291997402459").Wait();
 
