@@ -48,11 +48,9 @@ namespace AutoAcceptFacebookFriendRequests.API
 
         public async Task<List<FriendInfo>> GetGroupNewMenbers(string groupId, int maxMenbers = 30)
         {
-            string groupUrl = $"https://www.facebook.com/groups/{groupId}";
+            groupId = await GetRealGroupID(groupId);
 
-            groupId = await GetRealGroupID(groupUrl);
-
-            string dtsg = await GetDTSG(groupUrl);
+            string dtsg = await GetDTSG($"https://www.facebook.com/groups/{groupId}");
 
             Dictionary<string, dynamic> values = new Dictionary<string, dynamic>();
             values.Add("count", 10);
