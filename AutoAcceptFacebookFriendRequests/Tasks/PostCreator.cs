@@ -1,13 +1,6 @@
 ﻿using AutoAcceptFacebookFriendRequests.API.Exeptions;
-using AutoAcceptFacebookFriendRequests.API.Model;
 using AutoAcceptFacebookFriendRequests.API;
 using AutoAcceptFacebookFriendRequests.Services;
-using AutoAcceptFacebookFriendRequests.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AutoAcceptFacebookFriendRequests.Tasks
 {
@@ -26,7 +19,7 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
                 Task task = Task.Run(Creator);
                 tasks.Add(task);
 
-                await Task.Delay(100);
+                await Task.Delay(5000);
             }
 
             await Task.WhenAll(tasks);

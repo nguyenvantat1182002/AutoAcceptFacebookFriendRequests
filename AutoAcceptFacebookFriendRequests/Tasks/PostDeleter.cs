@@ -31,7 +31,7 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
                     Task task = Task.Run(Deleter);
                     tasks.Add(task);
 
-                    await Task.Delay(100);
+                    await Task.Delay(5000);
                 }
 
                 await Task.WhenAll(tasks);
