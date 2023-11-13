@@ -13,17 +13,32 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
 
         public override async Task Start()
         {
-            List<Task> tasks = new List<Task>();
+            int currentLoop = 0;
 
-            for (int _ = 0; _ < Input.MaxThreadCount; _++)
+            while (true)
             {
-                Task task = Task.Run(Connector);
-                tasks.Add(task);
+                List<Task> tasks = new List<Task>();
 
-                await Task.Delay(5000);
+                Accounts = new Queue<FacebookAccountAPI>(Service.MainForm.AccountList);
+
+                for (int _ = 0; _ < Input.MaxThreadCount; _++)
+                {
+                    Task task = Task.Run(Connector);
+                    tasks.Add(task);
+
+                    await Task.Delay(5000);
+                }
+
+                await Task.WhenAll(tasks);
+
+                if (!Service.IsRepeat)
+                    break;
+
+                if (currentLoop >= Service.RepeatCount)
+                    break;
+
+                currentLoop++;
             }
-
-            await Task.WhenAll(tasks);
         }
 
         private async Task Connector()
