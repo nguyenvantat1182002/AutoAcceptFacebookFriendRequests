@@ -171,6 +171,71 @@ namespace AutoAcceptFacebookFriendRequests.API
             return new PostInfo(postId, hash);
         }
 
+        public async Task<string?> GetLinkAttachment(string dtsg, string surl)
+        {
+            string id = null!;
+
+            using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, $"https://m.facebook.com/share_preview/?surl={surl}"))
+            {
+                request.Headers.Add("Sec-Fetch-Site", "same-origin");
+                request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
+                {
+                    { "fb_dtsg", dtsg }
+                });
+
+                using (HttpResponseMessage response = await _http.SendAsync(request))
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    content = content.Replace("for (;;);", "");
+
+                    JObject data = JObject.Parse(content);
+                    JToken? action = data["payload"]?["actions"]?[0];
+                    if (action == null)
+                        return null;
+
+                    HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+                    doc.LoadHtml(action["html"]!.ToString());
+
+                    HtmlAgilityPack.HtmlNode? _params = doc.DocumentNode.SelectSingleNode(".//input[@name=\"attachment[params][0]\"]");
+                    HtmlAgilityPack.HtmlNode type = doc.DocumentNode.SelectSingleNode(".//input[@name=\"attachment[type]\"]");
+
+                    id = $"{_params.Attributes["value"].Value}|{type.Attributes["value"].Value}";
+                }
+            }
+
+            return id;
+        }
+
+        public async Task CreatePost(string status, string link)
+        {
+            string dtsg = await GetDTSG("https://m.facebook.com/?soft=composer");
+            string userId = GetActorId();
+            string? id = await GetLinkAttachment(dtsg, link);
+            if (id == null)
+                return;
+
+            string[] parts = id.Split("|");
+            string attachmentParams = parts[0];
+            string attachmentType = parts[1];
+
+            using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "https://m.facebook.com/a/home.php"))
+            {
+                request.Headers.Add("Sec-Fetch-Site", "same-origin");
+                request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
+                {
+                    { "fb_dtsg", dtsg },
+                    { "attachment[params][0]", attachmentParams },
+                    { "attachment[type]", attachmentType },
+                    { "target", userId },
+                    { "linkUrl", link },
+                    { "status", status },
+                    { "privacyx", "300645083384735" }
+                });
+
+                using (HttpResponseMessage response = await _http.SendAsync(request)) { }
+            }
+        }
+
         public async Task<bool> CreatePost(string message)
         {
             string responseContent;
@@ -564,7 +629,14 @@ namespace AutoAcceptFacebookFriendRequests.API
 
                     Match match = Regex.Match(responseContent, "\\[\"DTSGInitialData\",\\[],{\"token\":\"(.*?)\"},\\d+]");
                     if (!match.Success)
+                    {
+                        match = Regex.Match(responseContent, "name=\"fb_dtsg\" value=\"(.*?)\"");
+                        if (match.Success)
+                            return match.Groups[1].Value;
+
                         throw new InvalidCookie();
+
+                    }
 
                     return match.Groups[1].Value;
                 }

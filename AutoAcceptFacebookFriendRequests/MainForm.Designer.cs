@@ -78,6 +78,7 @@
             startButton4 = new MaterialSkin.Controls.MaterialButton();
             materialMultiLineTextBox21 = new MaterialSkin.Controls.MaterialMultiLineTextBox2();
             tabPage6 = new TabPage();
+            materialTextBox22 = new MaterialSkin.Controls.MaterialTextBox2();
             CookieGridView5 = new DataGridView();
             dataGridViewTextBoxColumn11 = new DataGridViewTextBoxColumn();
             dataGridViewTextBoxColumn12 = new DataGridViewTextBoxColumn();
@@ -816,6 +817,7 @@
             // 
             // tabPage6
             // 
+            tabPage6.Controls.Add(materialTextBox22);
             tabPage6.Controls.Add(CookieGridView5);
             tabPage6.Controls.Add(stopButton5);
             tabPage6.Controls.Add(startButton5);
@@ -828,6 +830,35 @@
             tabPage6.TabIndex = 5;
             tabPage6.Text = "Đăng bài viết";
             tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // materialTextBox22
+            // 
+            materialTextBox22.AnimateReadOnly = false;
+            materialTextBox22.BackgroundImageLayout = ImageLayout.None;
+            materialTextBox22.CharacterCasing = CharacterCasing.Normal;
+            materialTextBox22.Depth = 0;
+            materialTextBox22.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            materialTextBox22.HideSelection = true;
+            materialTextBox22.Hint = "https://...";
+            materialTextBox22.LeadingIcon = null;
+            materialTextBox22.Location = new Point(3, 128);
+            materialTextBox22.MaxLength = 32767;
+            materialTextBox22.MouseState = MaterialSkin.MouseState.OUT;
+            materialTextBox22.Name = "materialTextBox22";
+            materialTextBox22.PasswordChar = '\0';
+            materialTextBox22.PrefixSuffixText = null;
+            materialTextBox22.ReadOnly = false;
+            materialTextBox22.RightToLeft = RightToLeft.No;
+            materialTextBox22.SelectedText = "";
+            materialTextBox22.SelectionLength = 0;
+            materialTextBox22.SelectionStart = 0;
+            materialTextBox22.ShortcutsEnabled = true;
+            materialTextBox22.Size = new Size(450, 48);
+            materialTextBox22.TabIndex = 10;
+            materialTextBox22.TabStop = false;
+            materialTextBox22.TextAlign = HorizontalAlignment.Left;
+            materialTextBox22.TrailingIcon = null;
+            materialTextBox22.UseSystemPasswordChar = false;
             // 
             // CookieGridView5
             // 
@@ -944,7 +975,7 @@
             materialMultiLineTextBox22.SelectionLength = 0;
             materialMultiLineTextBox22.SelectionStart = 0;
             materialMultiLineTextBox22.ShortcutsEnabled = true;
-            materialMultiLineTextBox22.Size = new Size(450, 151);
+            materialMultiLineTextBox22.Size = new Size(450, 100);
             materialMultiLineTextBox22.TabIndex = 0;
             materialMultiLineTextBox22.TabStop = false;
             materialMultiLineTextBox22.TextAlign = HorizontalAlignment.Left;
@@ -1765,5 +1796,6 @@
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn22;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn23;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn24;
+        public MaterialSkin.Controls.MaterialTextBox2 materialTextBox22;
     }
 }

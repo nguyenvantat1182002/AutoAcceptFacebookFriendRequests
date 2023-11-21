@@ -1,3 +1,5 @@
+using AutoAcceptFacebookFriendRequests.API;
+
 namespace AutoAcceptFacebookFriendRequests
 {
     internal static class Program
@@ -8,11 +10,15 @@ namespace AutoAcceptFacebookFriendRequests
         [STAThread]
         static void Main()
         {
-            //string cookie = "presence=C%7B%22t3%22%3A%5B%5D%2C%22utc3%22%3A1699495419205%2C%22v%22%3A1%7D;fr=1BeoWbiquXS1OHSIy.AWX1XIgm_95O7xALVsrEcyjguWM.BlTD33.6f.AAA.0.0.BlTD33.AWU15VZi-ac;xs=49%3AcFYdKFFMi2Prvg%3A2%3A1699287699%3A-1%3A640%3A%3AAcU2RWIR56aBch_XAKbGdgW1pbgQatqLTHL09iqPkA;wd=383x317;m_page_voice=100025133085803;c_user=100025133085803;locale=en_GB;datr=ehJJZd-hdGWadmDgi76NzVtL;sb=ehJJZbYlDb3k11xI9AbhhnWM;";
+            //string cookie = "locale=en_US; c_user=100077352290246; datr=Tx9JZT34ltluxXjHvXAoxqga; sb=Tx9JZeJ91FA2TvoHhbZgA1-N; m_page_voice=100077352290246; xs=24%3AB4UiIDqcstXfYg%3A2%3A1700536658%3A-1%3A4276%3A%3AAcXOh9CYeXCxgtFMRuMT1XOYREmrVQ1CTQbm_Q8yeA; fr=1UK979MPWFCxSd8uW.AWUWLL-2fIFUaOckjtfXj2tUFPg.BlVjBv.ro.AAA.0.0.BlXEZF.AWWLmz17uZ8; wd=1078x953; presence=C%7B%22t3%22%3A%5B%5D%2C%22utc3%22%3A1700546080432%2C%22v%22%3A1%7D; m_pixel_ratio=1; datr=Tx9JZT34ltluxXjHvXAoxqga; c_user=100077352290246; xs=24%3AB4UiIDqcstXfYg%3A2%3A1700536658%3A-1%3A4276%3A%3AAcXRooywm2RTI0VnUINU_xZztBkXIDduEfiJchdIqw; fr=1Lr8LkqptlOoQApPM.AWVxAyICpBZ3bWzD8824VyKMWkQ.BlXEoB.ro.AAA.0.0.BlXEoB.AWXLH5RsUPY; wd=1061x953; x-referer=eyJyIjoiLz9zb2Z0PWNvbXBvc2VyIiwiaCI6Ii8%2Fc29mdD1jb21wb3NlciIsInMiOiJtIn0%3D";
             //string userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36";
-            //string proxy = "42.96.12.16:51791:user51791:4C07";
+            //string proxy = "139.84.169.136:10949:lev10949:JHitE";
 
-            //FacebookAccountAPI accountAPI = new FacebookAccountAPI(cookie, userAgent, proxy);
+            //FacebookAccountAPI api = new FacebookAccountAPI(cookie, userAgent, proxy);
+
+            //api.CreatePost("", "https://www.facebook.com/hoifancuongonepiece/posts/767920548477980").Wait();
+
+            //api.Dispose();
 
             //List<FriendInfo> friends = accountAPI.GetGroupNewMenbers("1053510842501893").Result;
             //foreach (FriendInfo friend in friends)

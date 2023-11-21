@@ -5,8 +5,8 @@ using AutoAcceptFacebookFriendRequests.Tasks;
 using AutoAcceptFacebookFriendRequests.Utils;
 using MaterialSkin;
 using MaterialSkin.Controls;
-using System.Data;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace AutoAcceptFacebookFriendRequests
 {

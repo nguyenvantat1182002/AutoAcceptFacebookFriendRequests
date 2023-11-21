@@ -65,6 +65,18 @@ namespace AutoAcceptFacebookFriendRequests.Services
             _tabs.Add(MainForm.tabPage7);
         }
 
+        public string GetLink()
+        {
+            string link = "";
+
+            MainForm.materialTextBox22.Invoke(new Action(() =>
+            {
+                link = MainForm.materialTextBox22.Text.Trim();
+            }));
+
+            return link;
+        }
+
         public string GetPostContent()
         {
             string content = "";
