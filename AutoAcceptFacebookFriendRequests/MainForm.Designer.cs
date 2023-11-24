@@ -391,7 +391,7 @@
             CookieGridView2.ReadOnly = true;
             CookieGridView2.RowHeadersVisible = false;
             CookieGridView2.RowTemplate.Height = 25;
-            CookieGridView2.Size = new Size(657, 655);
+            CookieGridView2.Size = new Size(657, 690);
             CookieGridView2.TabIndex = 40;
             // 
             // dataGridViewTextBoxColumn1
@@ -544,7 +544,7 @@
             CookieGridView3.ReadOnly = true;
             CookieGridView3.RowHeadersVisible = false;
             CookieGridView3.RowTemplate.Height = 25;
-            CookieGridView3.Size = new Size(657, 655);
+            CookieGridView3.Size = new Size(657, 690);
             CookieGridView3.TabIndex = 45;
             // 
             // dataGridViewTextBoxColumn6
@@ -657,7 +657,7 @@
             CookieGridView4.ReadOnly = true;
             CookieGridView4.RowHeadersVisible = false;
             CookieGridView4.RowTemplate.Height = 25;
-            CookieGridView4.Size = new Size(662, 557);
+            CookieGridView4.Size = new Size(662, 592);
             CookieGridView4.TabIndex = 6;
             // 
             // Column3
@@ -837,7 +837,7 @@
             materialTextBox22.BackgroundImageLayout = ImageLayout.None;
             materialTextBox22.CharacterCasing = CharacterCasing.Normal;
             materialTextBox22.Depth = 0;
-            materialTextBox22.Font = new Font("Roboto", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            materialTextBox22.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             materialTextBox22.HideSelection = true;
             materialTextBox22.Hint = "https://...";
             materialTextBox22.LeadingIcon = null;
@@ -1149,7 +1149,7 @@
             tabPage8.Name = "tabPage8";
             tabPage8.Size = new Size(669, 529);
             tabPage8.TabIndex = 7;
-            tabPage8.Text = "Kết bạn với thành viên trong nhóm";
+            tabPage8.Text = "Kết bạn ngẫu nhiên";
             tabPage8.UseVisualStyleBackColor = true;
             // 
             // CookieGridView7
@@ -1211,9 +1211,9 @@
             materialLabel15.Location = new Point(3, 0);
             materialLabel15.MouseState = MaterialSkin.MouseState.HOVER;
             materialLabel15.Name = "materialLabel15";
-            materialLabel15.Size = new Size(80, 19);
+            materialLabel15.Size = new Size(68, 19);
             materialLabel15.TabIndex = 12;
-            materialLabel15.Text = "Group Id(s)";
+            materialLabel15.Text = "User Id(s)";
             // 
             // materialTextBox21
             // 

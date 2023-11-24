@@ -68,6 +68,7 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
                 }
 
                 int deletedCount = 0;
+                int requested = 0;
                 DateTime coolDownTime = DateTime.Now;
 
                 Service.UpdateCookieStatus(GridView, accountAPI, $"Đang chờ...");
@@ -87,6 +88,24 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
                             await Task.Delay(1000, Token);
                         }
 
+                        if (requested >= Input.RateLimit)
+                        {
+                            DateTime endTime = DateTime.Now.AddSeconds(Input.RateLimitDuration);
+
+                            while (true)
+                            {
+                                if (DateTime.Now > endTime)
+                                    break;
+
+                                TimeSpan remainningTime = endTime - DateTime.Now;
+                                Service.UpdateCookieStatus(GridView, accountAPI, $"Tạm dừng, sẽ tiếp tục sau {remainningTime.Hours}:{remainningTime.Minutes}:{remainningTime.Seconds}");
+
+                                await Task.Delay(1000, Token);
+                            }
+
+                            requested = 0;
+                        }
+
                         Service.UpdateCookieStatus(GridView, accountAPI, $"Lấy bài viết...");
                         PostInfo? info = await accountAPI.GetPost();
 
@@ -100,6 +119,7 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
                         await accountAPI.DeletePost(info);
 
                         deletedCount++;
+                        requested++;
 
                         Service.UpdateRequest(GridView, accountAPI, deletedCount);
 
@@ -110,6 +130,7 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
 
                     if (deletedCount > 0)
                         Service.UpdateCookieStatus(GridView, accountAPI, $"Hoàn thành");
+
                     nextAccount = true;
                 }
                 catch (Exception ex)

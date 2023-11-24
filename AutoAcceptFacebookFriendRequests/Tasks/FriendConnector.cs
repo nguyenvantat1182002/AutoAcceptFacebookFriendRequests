@@ -56,55 +56,64 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
 
                 try
                 {
-                    string[] groupIds = Service.GetGroupIDs(Service.MainForm.materialMultiLineTextBox23);
+                    string[] userIdArr = Service.GetUserIds(Service.MainForm.materialMultiLineTextBox23);
+
+                    // Shuffle Array
+                    Random random = new Random();
+                    for (int i = userIdArr.Length - 1; i > 0; i--)
+                    {
+                        int j = random.Next(0, i + 1);
+                        string temp = userIdArr[i];
+                        userIdArr[i] = userIdArr[j];
+                        userIdArr[j] = temp;
+                    }
+
+                    Queue<string> userIds = new Queue<string>(userIdArr);
+
                     DateTime coolDownTime = DateTime.Now;
                     int requested = 0;
                     int sentCount = 0;
 
-                    foreach (string groupId in groupIds)
+                    foreach (string userId in userIds)
                     {
-                        Service.UpdateCookieStatus(GridView, accountAPI, $"Lấy danh sách thành viên trong nhóm {groupId}");
-                        List<FriendInfo> friendList = await accountAPI.GetGroupNewMenbers(groupId, Input.MaxRequestLimit);
-                        foreach (FriendInfo friend in friendList)
+                        while (true)
                         {
+                            if (DateTime.Now > coolDownTime)
+                                break;
+
+                            TimeSpan remainningTime = coolDownTime - DateTime.Now;
+                            Service.UpdateCookieStatus(GridView, accountAPI, $"Sẽ tiếp tục sau {remainningTime.Hours}:{remainningTime.Minutes}:{remainningTime.Seconds}");
+
+                            await Task.Delay(1000, Token);
+                        }
+
+                        if (requested >= Input.RateLimit)
+                        {
+                            DateTime endTime = DateTime.Now.AddSeconds(Input.RateLimitDuration);
+
                             while (true)
                             {
-                                if (DateTime.Now > coolDownTime)
+                                if (DateTime.Now > endTime)
                                     break;
 
-                                TimeSpan remainningTime = coolDownTime - DateTime.Now;
-                                Service.UpdateCookieStatus(GridView, accountAPI, $"Sẽ tiếp tục sau {remainningTime.Hours}:{remainningTime.Minutes}:{remainningTime.Seconds}");
+                                TimeSpan remainningTime = endTime - DateTime.Now;
+                                Service.UpdateCookieStatus(GridView, accountAPI, $"Tạm dừng, sẽ tiếp tục sau {remainningTime.Hours}:{remainningTime.Minutes}:{remainningTime.Seconds}");
 
                                 await Task.Delay(1000, Token);
                             }
 
-                            if (requested >= Input.RateLimit)
-                            {
-                                DateTime endTime = DateTime.Now.AddSeconds(Input.RateLimitDuration);
-
-                                while (true)
-                                {
-                                    if (DateTime.Now > endTime)
-                                        break;
-
-                                    TimeSpan remainningTime = endTime - DateTime.Now;
-                                    Service.UpdateCookieStatus(GridView, accountAPI, $"Sẽ tiếp tục sau {remainningTime.Hours}:{remainningTime.Minutes}:{remainningTime.Seconds}");
-
-                                    await Task.Delay(1000, Token);
-                                }
-
-                                requested = 0;
-                            }
-
-                            Service.UpdateCookieStatus(GridView, accountAPI, $"Sẽ kết bạn với {friend.Name}");
-                            await accountAPI.AddFriend(friend);
-
-                            Service.UpdateRequest(GridView, accountAPI, ++sentCount);
-
-                            coolDownTime = DateTime.Now.AddSeconds(Input.Duration);
-
-                            requested++;
+                            requested = 0;
                         }
+
+                        Service.UpdateCookieStatus(GridView, accountAPI, $"Sẽ kết bạn với {userId}");
+                        FriendInfo friend = new FriendInfo(userId, "");
+                        await accountAPI.AddFriend(friend);
+
+                        Service.UpdateRequest(GridView, accountAPI, ++sentCount);
+
+                        coolDownTime = DateTime.Now.AddSeconds(Input.Duration);
+
+                        requested++;
                     }
 
                     Service.UpdateCookieStatus(GridView, accountAPI, $"Hoàn thành");

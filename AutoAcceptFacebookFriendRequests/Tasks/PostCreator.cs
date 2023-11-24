@@ -27,8 +27,6 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
 
         private async Task Creator()
         {
-            DateTime coolDownTime = DateTime.Now;
-
             while (true)
             {
                 FacebookAccountAPI accountAPI;
@@ -39,18 +37,6 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
                         break;
 
                     accountAPI = Accounts.Dequeue();
-                }
-
-                while (true)
-                {
-                    if (DateTime.Now > coolDownTime)
-                        break;
-
-                    TimeSpan remainningTime = coolDownTime - DateTime.Now;
-                    Service.UpdateCookieStatus(GridView, accountAPI, $"Sẽ thực hiện sau 0:{remainningTime.Minutes}:{remainningTime.Seconds}");
-
-                    if (Token.IsCancellationRequested)
-                        return;
                 }
 
                 Service.UpdateCookieStatus(GridView, accountAPI, $"Đang tạo bài viết...");
@@ -91,8 +77,6 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
 
                     if (Token.IsCancellationRequested)
                         Service.UpdateCookieStatus(GridView, accountAPI, "Đã dừng.");
-
-                    coolDownTime = DateTime.Now.AddSeconds(Input.Duration);
 
                     Semaphore.Release();
                 }
