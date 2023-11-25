@@ -13,5 +13,6 @@
         public int RepeatCount { get; set; } = 3;
         public int MaxPostsDelete { get; set; } = 30;
         public int MaxRequestLimit { get; set; } = 30;
+        public int MaxMembers { get; set; } = 100;
     }
 }

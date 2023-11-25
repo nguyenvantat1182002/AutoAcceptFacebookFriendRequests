@@ -46,7 +46,7 @@ namespace AutoAcceptFacebookFriendRequests.API
                 _httpHandler.CookieContainer.Add(item);
         }
 
-        public async Task<List<FriendInfo>> GetGroupNewMenbers(string groupId, int maxMenbers = 30)
+        public async IAsyncEnumerable<FriendInfo> GetGroupNewMenbers(string groupId, int maxMembers = 30)
         {
             groupId = await GetRealGroupID(groupId);
 
@@ -59,12 +59,15 @@ namespace AutoAcceptFacebookFriendRequests.API
             values.Add("scale", 1);
             values.Add("id", groupId);
 
-            List<FriendInfo> friends = new List<FriendInfo>();
+            int members = 0;
 
             bool hasNextPage = true;
 
-            while (hasNextPage && friends.Count < maxMenbers)
+            while (hasNextPage)
             {
+                if (members >= maxMembers)
+                    break;
+
                 DateTime startTime = DateTime.Now;
 
                 string variables = Newtonsoft.Json.JsonConvert.SerializeObject(values);
@@ -87,7 +90,7 @@ namespace AutoAcceptFacebookFriendRequests.API
 
                 foreach (JToken item in menber)
                 {
-                    if (friends.Count > maxMenbers)
+                    if (members >= maxMembers)
                         break;
 
                     JToken node = item["node"]!;
@@ -95,13 +98,13 @@ namespace AutoAcceptFacebookFriendRequests.API
                     string id = node["id"]!.ToString();
                     string name = node["name"]!.ToString();
 
-                    friends.Add(new FriendInfo(id, name));
+                    members++;
+
+                    yield return new FriendInfo(id, name);
                 }
 
                 await Task.Delay((int)(DateTime.Now - startTime).TotalMilliseconds);
             }
-
-            return friends;
         }
 
         public async Task<bool> DeletePost(PostInfo info)

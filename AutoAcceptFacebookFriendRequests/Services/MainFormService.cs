@@ -1,4 +1,5 @@
 ﻿using AutoAcceptFacebookFriendRequests.API;
+using AutoAcceptFacebookFriendRequests.API.Model;
 using AutoAcceptFacebookFriendRequests.Utils;
 using MaterialSkin.Controls;
 
@@ -54,6 +55,7 @@ namespace AutoAcceptFacebookFriendRequests.Services
             GridViews.Add(MainForm.CookieGridView5);
             GridViews.Add(MainForm.CookieGridView6);
             GridViews.Add(MainForm.CookieGridView7);
+            GridViews.Add(MainForm.CookieGridView8);
 
             _tabs = new List<TabPage>();
             _tabs.Add(MainForm.tabPage1);
@@ -63,6 +65,23 @@ namespace AutoAcceptFacebookFriendRequests.Services
             _tabs.Add(MainForm.tabPage6);
             _tabs.Add(MainForm.tabPage6);
             _tabs.Add(MainForm.tabPage7);
+            _tabs.Add(MainForm.tabPage8);
+            _tabs.Add(MainForm.tabPage9);
+        }
+
+        public void AddMemberId(FriendInfo member)
+        {
+            MainForm.materialMultiLineTextBox25.Invoke(new Action(() =>
+            {
+                MainForm.materialMultiLineTextBox25.Text = $"{MainForm.materialMultiLineTextBox25.Text}\r\n{member.Id}";
+                MainForm.materialMultiLineTextBox25.Text = MainForm.materialMultiLineTextBox25.Text.Trim();
+            }));
+
+            MainForm.materialLabel18.Invoke(new Action(() =>
+            {
+                string[] ids = ReadTextBoxLines(MainForm.materialMultiLineTextBox25);
+                MainForm.materialLabel18.Text = $"Id(s): {ids.Length}";
+            }));
         }
 
         public string[] GetUserIds(MaterialMultiLineTextBox2 multiLineTextBox)

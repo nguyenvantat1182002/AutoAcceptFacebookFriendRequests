@@ -178,6 +178,7 @@ namespace AutoAcceptFacebookFriendRequests
             maxSuggestionLimit.Text = Input.MaxSuggestionLimit.ToString();
             maxInviteCount.Text = Input.MaxInviteCounnt.ToString();
             repeatCount.Text = Input.RepeatCount.ToString();
+            maxMemberTextBox.Text = Input.MaxMembers.ToString();
         }
 
         private void maxAcceptanceLimit_TextChanged(object sender, EventArgs e)
@@ -444,6 +445,52 @@ namespace AutoAcceptFacebookFriendRequests
         private void stopButton7_Click(object sender, EventArgs e)
         {
             stopButton7.Text = "Stop...";
+            _tokenSource!.Cancel();
+        }
+
+        private void maxMemberTextBox_TextChanged(object sender, EventArgs e)
+        {
+            int.TryParse(maxMemberTextBox.Text, out int result);
+
+            Input.MaxMembers = result < 1 ? 100 : result;
+
+            maxMemberTextBox.Text = Input.MaxMembers.ToString();
+        }
+
+        private async void startButton8_Click(object sender, EventArgs e)
+        {
+            materialMultiLineTextBox25.Text = "";
+            materialLabel18.Text = $"Id(s): 0";
+
+            startButton8.Enabled = false;
+            stopButton8.Enabled = true;
+
+            Service.HighlightMainTab(tabPage9, false);
+
+            _tokenSource = null;
+            _tokenSource = new CancellationTokenSource();
+
+            MemberGetter getter = new MemberGetter(Service, CookieGridView8, _tokenSource.Token);
+            await Task.Run(getter.Start);
+
+            startButton8.Enabled = true;
+            stopButton8.Enabled = false;
+
+            stopButton8.Text = "Stop";
+
+            Service.HighlightMainTab(tabPage9, true);
+
+            MessageBox.Show(
+                    text: _tokenSource.IsCancellationRequested ? "Đã dừng" : "Hoàn thành",
+                    caption: "Thông báo",
+                    buttons: MessageBoxButtons.OK,
+                    icon: MessageBoxIcon.Information
+                );
+        }
+
+        private void stopButton8_Click(object sender, EventArgs e)
+        {
+            stopButton8.Text = "Stop...";
             _tokenSource!.Cancel();
         }
     }
