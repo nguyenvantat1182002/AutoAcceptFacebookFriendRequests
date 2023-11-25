@@ -69,6 +69,7 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
                         }
 
                         Service.UpdateRequest(GridView, api, ++groupCount);
+                        Service.UpdateCookieStatus(GridView, api, "");
                     }
                 }
                 catch (OperationCanceledException)
