@@ -6,51 +6,86 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
 {
     public class MemberGetter : BaseTask
     {
+        private readonly Queue<string> _groupIds;
+
         public MemberGetter(MainFormService service, DataGridView gridView, CancellationToken token) : base(service, gridView, token)
         {
+            _groupIds = new Queue<string>(Service.GetGroupIDs(Service.MainForm.materialMultiLineTextBox24));
         }
 
         public override async Task Start()
         {
-            await Task.Run(Getter);
+            List<Task> tasks = new List<Task>();
+
+            for (int _ = 0; _ < Input.MaxThreadCount; _++)
+            {
+                Task task = Task.Run(Getter);
+                tasks.Add(task);
+
+                await Task.Delay(800);
+            }
+
+            await Task.WhenAll(tasks);
         }
 
         private async Task Getter()
         {
-            DataGridViewRow row = GridView.CurrentRow;
-            FacebookAccountAPI api = Service.MainForm.AccountList[row.Index];
-
-            try
+            while (true)
             {
-                string[] groupIds = Service.GetGroupIDs(Service.MainForm.materialMultiLineTextBox24);
+                FacebookAccountAPI api;
+
+                string? groupId = null;
+
                 int groupCount = 0;
 
-                foreach (string groupId in groupIds)
+                lock (LockObject)
                 {
-                    await foreach (FriendInfo member in api.GetGroupNewMenbers(groupId, Input.MaxMembers))
-                    {
-                        Console.WriteLine($"{member.Id} {member.Name}");
+                    if (Accounts.Count < 1)
+                        return;
 
-                        Service.UpdateCookieStatus(GridView, api, $"Lấy UID của {member.Name}");
-                        Service.AddMemberId(member);
-
-                        Token.ThrowIfCancellationRequested();
-                    }
-
-                    Service.UpdateRequest(GridView, api, ++groupCount);
-
-                    Token.ThrowIfCancellationRequested();
+                    api = Accounts.Dequeue();
                 }
 
-                Service.UpdateCookieStatus(GridView, api, "");
-            }
-            catch (OperationCanceledException)
-            {
-                Service.UpdateCookieStatus(GridView, api, "Đã dừng");
-            }
-            catch (Exception ex)
-            {
-                Service.UpdateCookieStatus(GridView, api, ex.Message);
+                try
+                {
+                    while (true)
+                    {
+                        lock (LockObject)
+                        {
+                            if (_groupIds.Count < 1)
+                                return;
+
+                            groupId = _groupIds.Dequeue();
+                        }
+
+                        await foreach (FriendInfo member in api.GetGroupNewMenbers(groupId, Input.MaxMembers))
+                        {
+                            Service.UpdateCookieStatus(GridView, api, $"Lấy UID của {member.Name}");
+
+                            lock (LockObject)
+                                Service.AddMemberId(member);
+
+                            Token.ThrowIfCancellationRequested();
+                        }
+
+                        Service.UpdateRequest(GridView, api, ++groupCount);
+                    }
+                }
+                catch (OperationCanceledException)
+                {
+                    Service.UpdateCookieStatus(GridView, api, "Đã dừng");
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    lock (LockObject)
+                    {
+                        if (groupId != null)
+                            _groupIds.Enqueue(groupId);
+                    }
+
+                    Service.UpdateCookieStatus(GridView, api, ex.Message);
+                }
             }
         }
     }
