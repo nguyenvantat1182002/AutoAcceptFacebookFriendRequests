@@ -85,7 +85,9 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
                             TimeSpan remainningTime = coolDownTime - DateTime.Now;
                             Service.UpdateCookieStatus(GridView, accountAPI, $"Sẽ thực hiện sau 0:{remainningTime.Minutes}:{remainningTime.Seconds}");
 
-                            await Task.Delay(1000, Token);
+                            Token.ThrowIfCancellationRequested();
+
+                            await Task.Delay(1000);
                         }
 
                         if (requested >= Input.RateLimit)
@@ -100,7 +102,9 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
                                 TimeSpan remainningTime = endTime - DateTime.Now;
                                 Service.UpdateCookieStatus(GridView, accountAPI, $"Tạm dừng, sẽ tiếp tục sau {remainningTime.Hours}:{remainningTime.Minutes}:{remainningTime.Seconds}");
 
-                                await Task.Delay(1000, Token);
+                                Token.ThrowIfCancellationRequested();
+
+                                await Task.Delay(1000);
                             }
 
                             requested = 0;
@@ -133,6 +137,11 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
 
                     nextAccount = true;
                 }
+                catch (TaskCanceledException)
+                {
+                    nextAccount = true;
+                    Service.UpdateCookieStatus(GridView, accountAPI, $"Timeout");
+                }
                 catch (Exception ex)
                 {
                     if (ex is InvalidCookie || ex is AccountCheckpointed)
@@ -145,7 +154,7 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
 
                         nextAccount = true;
                     }
-                    else if (ex is TaskCanceledException)
+                    else if (ex is OperationCanceledException)
                         break;
                     else
                         Service.UpdateCookieStatus(GridView, accountAPI, ex.Message);

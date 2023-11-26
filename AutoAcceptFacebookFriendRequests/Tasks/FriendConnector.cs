@@ -87,7 +87,9 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
                             TimeSpan remainningTime = coolDownTime - DateTime.Now;
                             Service.UpdateCookieStatus(GridView, accountAPI, $"Sẽ tiếp tục sau {remainningTime.Hours}:{remainningTime.Minutes}:{remainningTime.Seconds}");
 
-                            await Task.Delay(1000, Token);
+                            Token.ThrowIfCancellationRequested();
+
+                            await Task.Delay(1000);
                         }
 
                         if (requested >= Input.RateLimit)
@@ -102,7 +104,9 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
                                 TimeSpan remainningTime = endTime - DateTime.Now;
                                 Service.UpdateCookieStatus(GridView, accountAPI, $"Tạm dừng, sẽ tiếp tục sau {remainningTime.Hours}:{remainningTime.Minutes}:{remainningTime.Seconds}");
 
-                                await Task.Delay(1000, Token);
+                                Token.ThrowIfCancellationRequested();
+
+                                await Task.Delay(1000);
                             }
 
                             requested = 0;
@@ -122,6 +126,10 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
 
                     Service.UpdateCookieStatus(GridView, accountAPI, $"Hoàn thành");
                 }
+                catch (TaskCanceledException)
+                {
+                    Service.UpdateCookieStatus(GridView, accountAPI, $"Timeout");
+                }
                 catch (Exception ex)
                 {
                     if (ex is InvalidCookie || ex is AccountCheckpointed)
@@ -132,7 +140,7 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
                         if (ex is AccountCheckpointed)
                             accountAPI.State.IsCheckpointed = true;
                     }
-                    else if (ex is TaskCanceledException)
+                    else if (ex is OperationCanceledException)
                         break;
                     else
                         Service.UpdateCookieStatus(GridView, accountAPI, ex.Message);

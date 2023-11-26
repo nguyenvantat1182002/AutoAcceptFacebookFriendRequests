@@ -95,7 +95,9 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
 
                                 Service.UpdateCookieStatus(GridView, accountAPI, $"Sẽ tiếp tục sau {formattedTime}");
 
-                                await Task.Delay(1000, Token);
+                                Token.ThrowIfCancellationRequested();
+
+                                await Task.Delay(1000);
                             }
 
                             if (requestedCount >= Input.RateLimit)
@@ -112,18 +114,20 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
 
                                     Service.UpdateCookieStatus(GridView, accountAPI, $"Tạm dừng, sẽ tiếp tục sau {formattedTime}");
 
-                                    await Task.Delay(1000, Token);
+                                    Token.ThrowIfCancellationRequested();
+
+                                    await Task.Delay(1000);
                                 }
 
                                 requestedCount = 0;
                             }
 
                             Service.UpdateCookieStatus(GridView, accountAPI, $"Chấp nhận kết bạn với {friendRequest.Name}");
-
                             await accountAPI.AcceptFriendRequest(friendRequest);
 
                             requestedCount++;
                             acceptedRequestCount++;
+
                             Service.UpdateRequest(GridView, accountAPI, acceptedRequestCount);
 
                             endTime = TimeUtils.GetTimestamp() + Input.Duration;
@@ -132,6 +136,12 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
 
                     if (acceptedRequestCount > 0)
                         Service.UpdateCookieStatus(GridView, accountAPI, $"Hoàn thành");
+
+                    nextAccount = true;
+                }
+                catch (TaskCanceledException)
+                {
+                    Service.UpdateCookieStatus(GridView, accountAPI, $"Timeout");
                     nextAccount = true;
                 }
                 catch (Exception ex)
@@ -146,7 +156,7 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
 
                         nextAccount = true;
                     }
-                    else if (ex is TaskCanceledException)
+                    else if (ex is OperationCanceledException)
                         break;
                     else
                         Service.UpdateCookieStatus(GridView, accountAPI, ex.Message);

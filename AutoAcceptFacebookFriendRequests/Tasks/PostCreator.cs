@@ -52,6 +52,10 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
 
                     Token.ThrowIfCancellationRequested();
                 }
+                catch (TaskCanceledException)
+                {
+                    Service.UpdateCookieStatus(GridView, accountAPI, $"Timeout");
+                }
                 catch (Exception ex)
                 {
                     if (ex is InvalidCookie || ex is AccountCheckpointed)

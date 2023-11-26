@@ -186,7 +186,7 @@ namespace AutoAcceptFacebookFriendRequests.API
                     { "fb_dtsg", dtsg }
                 });
 
-                using (HttpResponseMessage response = await _http.SendAsync(request))
+                using (HttpResponseMessage response = await HttpSend(request))
                 {
                     string content = await response.Content.ReadAsStringAsync();
                     content = content.Replace("for (;;);", "");
@@ -235,7 +235,7 @@ namespace AutoAcceptFacebookFriendRequests.API
                     { "privacyx", "300645083384735" }
                 });
 
-                using (HttpResponseMessage response = await _http.SendAsync(request)) { }
+                using (HttpResponseMessage response = await HttpSend(request)) { }
             }
         }
 
@@ -248,7 +248,7 @@ namespace AutoAcceptFacebookFriendRequests.API
                 request.Headers.Add("Sec-Fetch-Site", "same-origin");
                 request.Headers.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7");
 
-                using (HttpResponseMessage response = await _http.SendAsync(request))
+                using (HttpResponseMessage response = await HttpSend(request))
                     responseContent = await EnsureNoCheckpoint(response).Content.ReadAsStringAsync();
             }
 
@@ -289,7 +289,7 @@ namespace AutoAcceptFacebookFriendRequests.API
                 request.Content = content;
                 request.Headers.Add("Sec-Fetch-Site", "same-origin");
 
-                using (HttpResponseMessage response = await _http.SendAsync(request))
+                using (HttpResponseMessage response = await HttpSend(request))
                     responseContent = await EnsureNoCheckpoint(response).Content.ReadAsStringAsync();
             }
 
@@ -358,7 +358,7 @@ namespace AutoAcceptFacebookFriendRequests.API
                 request.Headers.Add("Sec-Fetch-Site", "same-origin");
                 request.Headers.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7");
 
-                using (HttpResponseMessage response = await _http.SendAsync(request))
+                using (HttpResponseMessage response = await HttpSend(request))
                 {
                     string responseContent = await EnsureNoCheckpoint(response).Content.ReadAsStringAsync();
 
@@ -626,7 +626,7 @@ namespace AutoAcceptFacebookFriendRequests.API
                 request.Headers.Add("Sec-Fetch-Site", "same-origin");
                 request.Headers.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7");
 
-                using (HttpResponseMessage response = await _http.SendAsync(request))
+                using (HttpResponseMessage response = await HttpSend(request))
                 {
                     string responseContent = await EnsureNoCheckpoint(response).Content.ReadAsStringAsync();
 
@@ -698,11 +698,19 @@ namespace AutoAcceptFacebookFriendRequests.API
                     { "doc_id", docId }
                 });
 
-                using (HttpResponseMessage response = await _http.SendAsync(request))
+                using (HttpResponseMessage response = await HttpSend(request))
                     responseContent = await response.EnsureSuccessStatusCode().Content.ReadAsStringAsync();
             }
 
             return responseContent;
+        }
+
+        private async Task<HttpResponseMessage> HttpSend(HttpRequestMessage request)
+        {
+            CancellationTokenSource cts = new CancellationTokenSource();
+            cts.CancelAfter(TimeSpan.FromSeconds(30));
+
+            return await _http.SendAsync(request, cts.Token);
         }
     }
 }

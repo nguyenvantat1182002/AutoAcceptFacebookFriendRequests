@@ -74,6 +74,16 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
                         Service.UpdateCookieStatus(GridView, api, "");
                     }
                 }
+                catch (TaskCanceledException)
+                {
+                    lock (LockObject)
+                    {
+                        if (groupId != null)
+                            _groupIds.Enqueue(groupId);
+                    }
+
+                    Service.UpdateCookieStatus(GridView, api, "Timeout");
+                }
                 catch (OperationCanceledException)
                 {
                     Service.UpdateCookieStatus(GridView, api, "Đã dừng");
