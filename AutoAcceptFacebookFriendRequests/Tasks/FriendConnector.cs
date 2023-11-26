@@ -76,6 +76,9 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
 
                     foreach (string userId in userIds)
                     {
+                        if (sentCount >= Input.MaxRequestLimit)
+                            break;
+
                         while (true)
                         {
                             if (DateTime.Now > coolDownTime)
@@ -109,11 +112,12 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
                         FriendInfo friend = new FriendInfo(userId, "");
                         await accountAPI.AddFriend(friend);
 
-                        Service.UpdateRequest(GridView, accountAPI, ++sentCount);
+                        sentCount++;
+                        requested++;
+
+                        Service.UpdateRequest(GridView, accountAPI, sentCount);
 
                         coolDownTime = DateTime.Now.AddSeconds(Input.Duration);
-
-                        requested++;
                     }
 
                     Service.UpdateCookieStatus(GridView, accountAPI, $"Hoàn thành");

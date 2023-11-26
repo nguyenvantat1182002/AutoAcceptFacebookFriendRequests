@@ -68,7 +68,9 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
                             Token.ThrowIfCancellationRequested();
                         }
 
-                        Service.UpdateRequest(GridView, api, ++groupCount);
+                        groupCount++;
+
+                        Service.UpdateRequest(GridView, api, groupCount);
                         Service.UpdateCookieStatus(GridView, api, "");
                     }
                 }

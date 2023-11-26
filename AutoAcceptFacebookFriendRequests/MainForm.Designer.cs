@@ -1326,7 +1326,7 @@
             materialMultiLineTextBox23.Depth = 0;
             materialMultiLineTextBox23.HideSelection = true;
             materialMultiLineTextBox23.Location = new Point(3, 22);
-            materialMultiLineTextBox23.MaxLength = 32767;
+            materialMultiLineTextBox23.MaxLength = 90000000;
             materialMultiLineTextBox23.MouseState = MaterialSkin.MouseState.OUT;
             materialMultiLineTextBox23.Name = "materialMultiLineTextBox23";
             materialMultiLineTextBox23.PasswordChar = '\0';
@@ -1507,7 +1507,7 @@
             materialMultiLineTextBox25.Depth = 0;
             materialMultiLineTextBox25.HideSelection = true;
             materialMultiLineTextBox25.Location = new Point(223, 28);
-            materialMultiLineTextBox25.MaxLength = 32767;
+            materialMultiLineTextBox25.MaxLength = 90000000;
             materialMultiLineTextBox25.MouseState = MaterialSkin.MouseState.OUT;
             materialMultiLineTextBox25.Name = "materialMultiLineTextBox25";
             materialMultiLineTextBox25.PasswordChar = '\0';
@@ -1543,7 +1543,7 @@
             materialMultiLineTextBox24.Depth = 0;
             materialMultiLineTextBox24.HideSelection = true;
             materialMultiLineTextBox24.Location = new Point(3, 28);
-            materialMultiLineTextBox24.MaxLength = 32767;
+            materialMultiLineTextBox24.MaxLength = 90000000;
             materialMultiLineTextBox24.MouseState = MaterialSkin.MouseState.OUT;
             materialMultiLineTextBox24.Name = "materialMultiLineTextBox24";
             materialMultiLineTextBox24.PasswordChar = '\0';
