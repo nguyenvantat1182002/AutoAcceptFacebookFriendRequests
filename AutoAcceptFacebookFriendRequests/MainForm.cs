@@ -6,7 +6,6 @@ using AutoAcceptFacebookFriendRequests.Utils;
 using MaterialSkin;
 using MaterialSkin.Controls;
 using System.Diagnostics;
-using System.Text.RegularExpressions;
 
 namespace AutoAcceptFacebookFriendRequests
 {
@@ -491,6 +490,67 @@ namespace AutoAcceptFacebookFriendRequests
         private void stopButton8_Click(object sender, EventArgs e)
         {
             stopButton8.Text = "Stop...";
+            _tokenSource!.Cancel();
+        }
+
+        private void exportCookieButton_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Text Files (*.txt)|*.txt";
+            saveFileDialog.Title = "Save";
+            saveFileDialog.DefaultExt = "txt";
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string filePath = saveFileDialog.FileName;
+
+                using (StreamWriter sw = File.AppendText(filePath))
+                {
+                    foreach (FacebookAccountAPI item in AccountList)
+                    {
+                        string cookie = item.ExportCookies();
+                        sw.WriteLine(cookie);
+                    }
+                }
+            }
+        }
+
+        private void openCoverFolderButton_Click(object sender, EventArgs e)
+        {
+            Process.Start("explorer.exe", $"{Directory.GetCurrentDirectory()}\\covers");
+        }
+
+        private async void startButton9_Click(object sender, EventArgs e)
+        {
+            startButton9.Enabled = false;
+            stopButton9.Enabled = true;
+
+            Service.HighlightMainTab(tabPage10, false);
+
+            _tokenSource = null;
+            _tokenSource = new CancellationTokenSource();
+
+            CoverDownloader downloader = new CoverDownloader(Service, CookieGridView9, _tokenSource.Token);
+            await Task.Run(downloader.Start);
+
+            startButton9.Enabled = true;
+            stopButton9.Enabled = false;
+
+            stopButton9.Text = "Stop";
+
+            Service.HighlightMainTab(tabPage10, true);
+
+            MessageBox.Show(
+                    text: _tokenSource.IsCancellationRequested ? "Đã dừng" : "Hoàn thành",
+                    caption: "Thông báo",
+                    buttons: MessageBoxButtons.OK,
+                    icon: MessageBoxIcon.Information
+                );
+        }
+
+        private void stopButton9_Click(object sender, EventArgs e)
+        {
+            stopButton9.Text = "Stop...";
             _tokenSource!.Cancel();
         }
     }

@@ -56,6 +56,7 @@ namespace AutoAcceptFacebookFriendRequests.Services
             GridViews.Add(MainForm.CookieGridView6);
             GridViews.Add(MainForm.CookieGridView7);
             GridViews.Add(MainForm.CookieGridView8);
+            GridViews.Add(MainForm.CookieGridView9);
 
             _tabs = new List<TabPage>();
             _tabs.Add(MainForm.tabPage1);
@@ -67,6 +68,7 @@ namespace AutoAcceptFacebookFriendRequests.Services
             _tabs.Add(MainForm.tabPage7);
             _tabs.Add(MainForm.tabPage8);
             _tabs.Add(MainForm.tabPage9);
+            _tabs.Add(MainForm.tabPage10);
         }
 
         public void AddMemberId(FriendInfo member)

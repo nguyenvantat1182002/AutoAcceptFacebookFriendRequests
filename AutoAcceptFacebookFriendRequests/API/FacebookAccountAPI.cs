@@ -5,6 +5,7 @@ using AutoAcceptFacebookFriendRequests.API.Exeptions;
 using Newtonsoft.Json.Linq;
 using System.Text.Json;
 using AutoAcceptFacebookFriendRequests.API.Models;
+using System.Net.Http;
 
 namespace AutoAcceptFacebookFriendRequests.API
 {
@@ -16,6 +17,7 @@ namespace AutoAcceptFacebookFriendRequests.API
 
         private readonly HttpClient _http;
         private readonly HttpClientHandler _httpHandler;
+        private readonly TimeSpan _timeout = TimeSpan.FromSeconds(30);
 
         private bool _disposed = false;
 
@@ -44,6 +46,45 @@ namespace AutoAcceptFacebookFriendRequests.API
 
             foreach (Cookie item in ParseCookieString(cookie))
                 _httpHandler.CookieContainer.Add(item);
+        }
+
+        public async Task<bool> DownloadCover()
+        {
+            string userId = GetActorId();
+
+            using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"https://www.facebook.com/{userId}"))
+            {
+                request.Headers.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7");
+                request.Headers.Add("Sec-Fetch-Site", "same-origin");
+
+                using (HttpResponseMessage response = await HttpSend(request))
+                {
+                    string responseContent = await EnsureNoCheckpoint(response).Content.ReadAsStringAsync();
+                    Match imageMatch = Regex.Match(responseContent, "\"photo\":{\"id\":\"\\d+\",\"image\":{\"uri\":\"(.*?)\".*}");
+
+                    string imageLink = imageMatch.Groups[1].Value.Replace("\\", "");
+                    if (string.IsNullOrWhiteSpace(imageLink))
+                        return false;
+
+                    CancellationToken token = CreateCancellationToken();
+                    byte[] imageBytes = await _http.GetByteArrayAsync(imageLink, token);
+                    string outputPath = $"{Directory.GetCurrentDirectory()}\\covers\\cover_{userId}.png";
+                    File.WriteAllBytes(outputPath, imageBytes);
+                }
+            }
+
+            return true;
+        }
+
+        public string ExportCookies()
+        {
+            CookieCollection cookies = _httpHandler.CookieContainer.GetAllCookies();
+            string cookie = string.Empty;
+
+            foreach (Cookie item in cookies)
+                cookie += $"{item.Name}={item.Value};";
+
+            return cookie;
         }
 
         public async IAsyncEnumerable<FriendInfo> GetGroupNewMenbers(string groupId, int maxMembers = 30)
@@ -705,12 +746,18 @@ namespace AutoAcceptFacebookFriendRequests.API
             return responseContent;
         }
 
-        private async Task<HttpResponseMessage> HttpSend(HttpRequestMessage request)
+        private CancellationToken CreateCancellationToken()
         {
             CancellationTokenSource cts = new CancellationTokenSource();
-            cts.CancelAfter(TimeSpan.FromSeconds(30));
+            cts.CancelAfter(_timeout);
 
-            return await _http.SendAsync(request, cts.Token);
+            return cts.Token;
+        }
+
+        private async Task<HttpResponseMessage> HttpSend(HttpRequestMessage request)
+        {
+            CancellationToken token = CreateCancellationToken();
+            return await _http.SendAsync(request, token);
         }
     }
 }
