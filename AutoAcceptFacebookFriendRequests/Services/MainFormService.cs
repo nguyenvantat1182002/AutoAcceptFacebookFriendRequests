@@ -2,6 +2,7 @@
 using AutoAcceptFacebookFriendRequests.API.Model;
 using AutoAcceptFacebookFriendRequests.Utils;
 using MaterialSkin.Controls;
+using System.Text.RegularExpressions;
 
 namespace AutoAcceptFacebookFriendRequests.Services
 {
@@ -84,6 +85,12 @@ namespace AutoAcceptFacebookFriendRequests.Services
                 string[] ids = ReadTextBoxLines(MainForm.materialMultiLineTextBox25);
                 MainForm.materialLabel18.Text = $"Id(s): {ids.Length}";
             }));
+        }
+
+        public string GetUidFromDataRow(DataGridViewRow dataGridViewRow)
+        {
+            Match match = Regex.Match(dataGridViewRow.Cells[1].Value.ToString()!, "c_user=(\\d+);");
+            return match.Groups[1].Value;
         }
 
         public string[] GetUserIds(MaterialMultiLineTextBox2 multiLineTextBox)
@@ -174,17 +181,27 @@ namespace AutoAcceptFacebookFriendRequests.Services
                 item.Columns[1].HeaderText = $"Cookie [{item.RowCount}]";
         }
 
+        public DataGridViewCell GetRequestCell(DataGridView dataGridView, int index)
+        {
+            return dataGridView.Rows[index].Cells[3];
+        }
+
+        public DataGridViewCell GetStatusCell(DataGridView dataGridView, int index)
+        {
+            return dataGridView.Rows[index].Cells[dataGridView.ColumnCount < 5 ? 3 : 4];
+        }
+
         public void UpdateCookieStatus(DataGridView gridView, FacebookAccountAPI account, string status)
         {
             int index = MainForm.AccountList.IndexOf(account);
 
             gridView.Invoke(new Action(() =>
             {
-                gridView.Rows[index].Cells[gridView.ColumnCount < 5 ? 3 : 4].Value = status;
+                GetStatusCell(gridView, index).Value = status;
             }));
         }
 
-        public void UpdateRequest(DataGridView gridView, FacebookAccountAPI account, int value)
+        public void UpdateRequest(DataGridView gridView, FacebookAccountAPI account, string value)
         {
             int index = MainForm.AccountList.IndexOf(account);
 

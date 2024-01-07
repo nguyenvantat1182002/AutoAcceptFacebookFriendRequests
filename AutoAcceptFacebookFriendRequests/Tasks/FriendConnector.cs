@@ -119,7 +119,7 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
                         sentCount++;
                         requested++;
 
-                        Service.UpdateRequest(GridView, accountAPI, sentCount);
+                        Service.UpdateRequest(GridView, accountAPI, sentCount.ToString());
 
                         coolDownTime = DateTime.Now.AddSeconds(Input.Duration);
                     }

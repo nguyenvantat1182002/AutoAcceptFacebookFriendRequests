@@ -18,6 +18,7 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
             while (true)
             {
                 List<Task> tasks = new List<Task>();
+
                 Accounts = new Queue<FacebookAccountAPI>(Service.MainForm.AccountList);
 
                 for (int _ = 0; _ < Input.MaxThreadCount; _++)
@@ -68,10 +69,13 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
                 Semaphore.Wait();
                 try
                 {
+                    string friendRequestData = await accountAPI.GetFriendRequestData();
+                    int friendRequestCount = accountAPI.GetFriendRequestCount(friendRequestData);
+
                     while (acceptedRequestCount < Input.MaxAcceptanceLimit)
                     {
                         Service.UpdateCookieStatus(GridView, accountAPI, $"Lấy danh sách lời mời kết bạn");
-                        Queue<FriendInfo> friendRequests = new Queue<FriendInfo>(await accountAPI.GetFriendRequests());
+                        Queue<FriendInfo> friendRequests = new Queue<FriendInfo>(accountAPI.GetFriendRequests(friendRequestData));
 
                         if (friendRequests.Count < 1)
                         {
@@ -128,7 +132,7 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
                             requestedCount++;
                             acceptedRequestCount++;
 
-                            Service.UpdateRequest(GridView, accountAPI, acceptedRequestCount);
+                            Service.UpdateRequest(GridView, accountAPI, $"{acceptedRequestCount}/{friendRequestCount}");
 
                             endTime = TimeUtils.GetTimestamp() + Input.Duration;
                         }

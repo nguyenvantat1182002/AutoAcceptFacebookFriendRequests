@@ -46,10 +46,7 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
                     string content = Service.GetPostContent();
                     string link = Service.GetLink();
 
-                    if (link.Contains("facebook"))
-                        await accountAPI.CreatePost(content, link);
-                    else
-                        await accountAPI.CreatePost(content);
+                    await accountAPI.CreatePost(content, link);
 
                     Service.UpdateCookieStatus(GridView, accountAPI, $"Hoàn thành");
 

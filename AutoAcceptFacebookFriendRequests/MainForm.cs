@@ -553,5 +553,62 @@ namespace AutoAcceptFacebookFriendRequests
             stopButton9.Text = "Stop...";
             _tokenSource!.Cancel();
         }
+
+        private DataGridView GetSelectedDataGridView(object sender)
+        {
+            ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
+            ContextMenuStrip contextMenu = (ContextMenuStrip)menuItem.Owner;
+            Control sourceControl = contextMenu.SourceControl!;
+            return (sourceControl as DataGridView)!;
+        }
+
+        private void copyUidTimeoutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DataGridView dataGridView = GetSelectedDataGridView(sender);
+            string clipboardData = string.Join(
+                    "\n",
+                    dataGridView.Rows
+                        .Cast<DataGridViewRow>()
+                        .Where(row => Service.GetStatusCell(dataGridView, row.Index).Value.ToString() == "Timeout")
+                        .Select(row => Service.GetUidFromDataRow(row))
+                );
+
+            Clipboard.SetText(clipboardData);
+        }
+
+        private void copyUidErrorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<string> excludeStatus = new List<string>();
+            excludeStatus.Add("Hoàn thành");
+            excludeStatus.Add("Timeout");
+            excludeStatus.Add("Checkpoint");
+            excludeStatus.Add("Invalid cookie.");
+            excludeStatus.Add("Đã dừng.");
+
+            DataGridView dataGridView = GetSelectedDataGridView(sender);
+            string clipboardData = string.Join(
+                    "\n",
+                    dataGridView.Rows
+                        .Cast<DataGridViewRow>()
+                        .Where(row => !excludeStatus.Contains(Service.GetStatusCell(dataGridView, row.Index).Value.ToString()!))
+                        .Select(row => Service.GetUidFromDataRow(row))
+                );
+
+            Clipboard.SetText(clipboardData);
+        }
+
+        private void copyDoneUidToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DataGridView dataGridView = GetSelectedDataGridView(sender);
+            string clipboardData = string.Join(
+                    "\n",
+                    dataGridView.Rows
+                        .Cast<DataGridViewRow>()
+                        .Where(row => Service.GetStatusCell(dataGridView, row.Index).Value.ToString() == "Hoành thành" && (int)Service.GetRequestCell(dataGridView, row.Index).Value >= 30)
+                        .Select(row => Service.GetUidFromDataRow(row))
+                );
+
+            Clipboard.SetText(clipboardData);
+        }
     }
 }

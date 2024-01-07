@@ -125,7 +125,7 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
                         deletedCount++;
                         requested++;
 
-                        Service.UpdateRequest(GridView, accountAPI, deletedCount);
+                        Service.UpdateRequest(GridView, accountAPI, deletedCount.ToString());
 
                         coolDownTime = DateTime.Now.AddSeconds(Input.Duration);
 

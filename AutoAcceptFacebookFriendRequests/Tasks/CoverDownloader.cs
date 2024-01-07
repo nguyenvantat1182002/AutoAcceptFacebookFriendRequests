@@ -45,7 +45,7 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
                 {
                     bool success = await api.DownloadCover();
                     if (success)
-                        Service.UpdateRequest(GridView, api, 1);
+                        Service.UpdateRequest(GridView, api, "1");
 
                     Service.UpdateCookieStatus(GridView, api, $"Hoàn thành");
                 }

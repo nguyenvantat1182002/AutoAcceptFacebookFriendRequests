@@ -127,7 +127,7 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
 
                             requestedCount++;
                             suggestionCount++;
-                            Service.UpdateRequest(GridView, accountAPI, suggestionCount);
+                            Service.UpdateRequest(GridView, accountAPI, suggestionCount.ToString());
 
                             endTime = TimeUtils.GetTimestamp() + Input.Duration;
                         }

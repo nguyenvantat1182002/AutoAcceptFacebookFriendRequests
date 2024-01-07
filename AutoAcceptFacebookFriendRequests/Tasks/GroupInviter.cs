@@ -133,7 +133,7 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
                                 requestedCount++;
                                 inviteCount++;
 
-                                Service.UpdateRequest(GridView, accountAPI, inviteCount);
+                                Service.UpdateRequest(GridView, accountAPI, inviteCount.ToString());
 
                                 endTime = TimeUtils.GetTimestamp() + Input.Duration;
                             }

@@ -128,7 +128,7 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
                             requestedCount++;
                             deletedCount++;
 
-                            Service.UpdateRequest(GridView, accountAPI, deletedCount);
+                            Service.UpdateRequest(GridView, accountAPI, deletedCount.ToString());
 
                             endTime = TimeUtils.GetTimestamp() + Input.Duration;
                         }

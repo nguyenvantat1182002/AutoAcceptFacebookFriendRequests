@@ -5,7 +5,6 @@ using AutoAcceptFacebookFriendRequests.API.Exeptions;
 using Newtonsoft.Json.Linq;
 using System.Text.Json;
 using AutoAcceptFacebookFriendRequests.API.Models;
-using System.Net.Http;
 
 namespace AutoAcceptFacebookFriendRequests.API
 {
@@ -46,6 +45,91 @@ namespace AutoAcceptFacebookFriendRequests.API
 
             foreach (Cookie item in ParseCookieString(cookie))
                 _httpHandler.CookieContainer.Add(item);
+        }
+
+        public async Task CreatePost(string message, string link)
+        {
+            string dtsg = await GetDTSG("https://www.facebook.com/");
+            string userId = GetActorId();
+
+            string? shareScrapeData = await GetShareScrapeData(link, dtsg);
+            if (shareScrapeData == null)
+                return;
+
+            List<string> emptyList = new List<string>();
+            List<object> attachments = new List<object>();
+
+            attachments.Add(new
+            {
+                link = new
+                {
+                    share_scrape_data = shareScrapeData,
+                }
+            });
+
+            string variables = JsonSerializer.Serialize(new
+            {
+                input = new
+                {
+                    composer_entry_point = "inline_composer",
+                    composer_source_surface = "newsfeed",
+                    composer_type = "feed",
+                    idempotence_token = Guid.NewGuid() + "_FEED",
+                    source = "WWW",
+                    audience = new
+                    {
+                        privacy = new
+                        {
+                            allow = emptyList,
+                            base_state = "EVERYONE",
+                            deny = emptyList,
+                            tag_expansion_state = "UNSPECIFIED"
+                        }
+                    },
+                    message = new
+                    {
+                        ranges = emptyList,
+                        text = message
+                    },
+                    attachments = attachments,
+                    actor_id = userId,
+                    client_mutation_id = "1"
+                }
+            });
+
+            await RequestAPI(dtsg, variables, "24475754388740032");
+        }
+
+        private async Task<string?> GetShareScrapeData(string link, string dtsg)
+        {
+            string? nullstr = null;
+            string variables = JsonSerializer.Serialize(new
+            {
+                feedLocation = "FEED_COMPOSER",
+                focusCommentID = nullstr,
+                goodwillCampaignId = "",
+                goodwillCampaignMediaIds = new List<string>(),
+                goodwillContentType = nullstr,
+                ___params = new
+                {
+                    url = link
+                },
+                privacySelectorRenderLocation = "COMET_COMPOSER",
+                renderLocation = "composer_preview",
+                parentStoryID = nullstr,
+                scale = 1,
+                useDefaultActor = false,
+                shouldIncludeStoryAttachment = false,
+            });
+            variables = variables.Replace("___params", "params");
+
+            string responseContent = await RequestAPI(dtsg, variables, "7051327781650639");
+            JObject responseObject = JObject.Parse(responseContent);
+            JToken? data = responseObject["data"];
+            JToken? linkPreview = data?["link_preview"];
+            JToken? shareScrapeData = linkPreview?["share_scrape_data"];
+
+            return shareScrapeData == null ? null : shareScrapeData.ToString();
         }
 
         public async Task<bool> DownloadCover()
@@ -250,92 +334,92 @@ namespace AutoAcceptFacebookFriendRequests.API
             return id;
         }
 
-        public async Task CreatePost(string status, string link)
-        {
-            string dtsg = await GetDTSG("https://m.facebook.com/?soft=composer");
-            string userId = GetActorId();
-            string? id = await GetLinkAttachment(dtsg, link);
-            if (id == null)
-                return;
+        //public async Task CreatePost(string status, string link)
+        //{
+        //    string dtsg = await GetDTSG("https://m.facebook.com/?soft=composer");
+        //    string userId = GetActorId();
+        //    string? id = await GetLinkAttachment(dtsg, link);
+        //    if (id == null)
+        //        return;
 
-            string[] parts = id.Split("|");
-            string attachmentParams = parts[0];
-            string attachmentType = parts[1];
+        //    string[] parts = id.Split("|");
+        //    string attachmentParams = parts[0];
+        //    string attachmentType = parts[1];
 
-            using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "https://m.facebook.com/a/home.php"))
-            {
-                request.Headers.Add("Sec-Fetch-Site", "same-origin");
-                request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
-                {
-                    { "fb_dtsg", dtsg },
-                    { "attachment[params][0]", attachmentParams },
-                    { "attachment[type]", attachmentType },
-                    { "target", userId },
-                    { "linkUrl", link },
-                    { "status", status },
-                    { "privacyx", "300645083384735" }
-                });
+        //    using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "https://m.facebook.com/a/home.php"))
+        //    {
+        //        request.Headers.Add("Sec-Fetch-Site", "same-origin");
+        //        request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
+        //        {
+        //            { "fb_dtsg", dtsg },
+        //            { "attachment[params][0]", attachmentParams },
+        //            { "attachment[type]", attachmentType },
+        //            { "target", userId },
+        //            { "linkUrl", link },
+        //            { "status", status },
+        //            { "privacyx", "300645083384735" }
+        //        });
 
-                using (HttpResponseMessage response = await HttpSend(request)) { }
-            }
-        }
+        //        using (HttpResponseMessage response = await HttpSend(request)) { }
+        //    }
+        //}
 
-        public async Task<bool> CreatePost(string message)
-        {
-            string responseContent;
+        //public async Task<bool> CreatePost(string message)
+        //{
+        //    string responseContent;
 
-            using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, "https://mbasic.facebook.com/"))
-            {
-                request.Headers.Add("Sec-Fetch-Site", "same-origin");
-                request.Headers.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7");
+        //    using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, "https://mbasic.facebook.com/"))
+        //    {
+        //        request.Headers.Add("Sec-Fetch-Site", "same-origin");
+        //        request.Headers.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7");
 
-                using (HttpResponseMessage response = await HttpSend(request))
-                    responseContent = await EnsureNoCheckpoint(response).Content.ReadAsStringAsync();
-            }
+        //        using (HttpResponseMessage response = await HttpSend(request))
+        //            responseContent = await EnsureNoCheckpoint(response).Content.ReadAsStringAsync();
+        //    }
 
-            HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
-            doc.LoadHtml(responseContent);
+        //    HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+        //    doc.LoadHtml(responseContent);
 
-            HtmlAgilityPack.HtmlNode composerForm = doc.DocumentNode.SelectSingleNode(".//form[@id=\"mbasic-composer-form\"]");
-            HtmlAgilityPack.HtmlNode? fb_dtsg = doc.DocumentNode.SelectSingleNode(".//input[@name=\"fb_dtsg\"]");
-            HtmlAgilityPack.HtmlNode jazoest = doc.DocumentNode.SelectSingleNode(".//input[@name=\"jazoest\"]");
-            //HtmlAgilityPack.HtmlNode privacyx = doc.DocumentNode.SelectSingleNode(".//input[@name=\"privacyx\"]");
-            HtmlAgilityPack.HtmlNode c_src = doc.DocumentNode.SelectSingleNode(".//input[@name=\"c_src\"]");
-            HtmlAgilityPack.HtmlNode target = doc.DocumentNode.SelectSingleNode(".//input[@name=\"target\"]");
-            HtmlAgilityPack.HtmlNode cwevent = doc.DocumentNode.SelectSingleNode(".//input[@name=\"cwevent\"]");
-            HtmlAgilityPack.HtmlNode referrer = doc.DocumentNode.SelectSingleNode(".//input[@name=\"referrer\"]");
-            HtmlAgilityPack.HtmlNode cver = doc.DocumentNode.SelectSingleNode(".//input[@name=\"cver\"]");
-            HtmlAgilityPack.HtmlNode view_post = doc.DocumentNode.SelectSingleNode(".//input[@name=\"view_post\"]");
+        //    HtmlAgilityPack.HtmlNode composerForm = doc.DocumentNode.SelectSingleNode(".//form[@id=\"mbasic-composer-form\"]");
+        //    HtmlAgilityPack.HtmlNode? fb_dtsg = doc.DocumentNode.SelectSingleNode(".//input[@name=\"fb_dtsg\"]");
+        //    HtmlAgilityPack.HtmlNode jazoest = doc.DocumentNode.SelectSingleNode(".//input[@name=\"jazoest\"]");
+        //    //HtmlAgilityPack.HtmlNode privacyx = doc.DocumentNode.SelectSingleNode(".//input[@name=\"privacyx\"]");
+        //    HtmlAgilityPack.HtmlNode c_src = doc.DocumentNode.SelectSingleNode(".//input[@name=\"c_src\"]");
+        //    HtmlAgilityPack.HtmlNode target = doc.DocumentNode.SelectSingleNode(".//input[@name=\"target\"]");
+        //    HtmlAgilityPack.HtmlNode cwevent = doc.DocumentNode.SelectSingleNode(".//input[@name=\"cwevent\"]");
+        //    HtmlAgilityPack.HtmlNode referrer = doc.DocumentNode.SelectSingleNode(".//input[@name=\"referrer\"]");
+        //    HtmlAgilityPack.HtmlNode cver = doc.DocumentNode.SelectSingleNode(".//input[@name=\"cver\"]");
+        //    HtmlAgilityPack.HtmlNode view_post = doc.DocumentNode.SelectSingleNode(".//input[@name=\"view_post\"]");
 
-            if (fb_dtsg == null)
-                throw new InvalidCookie();
+        //    if (fb_dtsg == null)
+        //        throw new InvalidCookie();
 
-            FormUrlEncodedContent content = new FormUrlEncodedContent(new Dictionary<string, string>
-            {
-                { "fb_dtsg", fb_dtsg.Attributes["value"].Value },
-                { "jazoest", jazoest.Attributes["value"].Value },
-                { "privacyx", "300645083384735" },
-                //{ "privacyx", privacyx.Attributes["value"].Value },
-                { "target", target.Attributes["value"].Value },
-                { "c_src", c_src.Attributes["value"].Value },
-                { "cwevent", cwevent.Attributes["value"].Value },
-                { "referrer", referrer.Attributes["value"].Value },
-                { "cver", cver.Attributes["value"].Value },
-                { "xc_message", message },
-                { "view_post", view_post.Attributes["value"].Value }
-            });
+        //    FormUrlEncodedContent content = new FormUrlEncodedContent(new Dictionary<string, string>
+        //    {
+        //        { "fb_dtsg", fb_dtsg.Attributes["value"].Value },
+        //        { "jazoest", jazoest.Attributes["value"].Value },
+        //        { "privacyx", "300645083384735" },
+        //        //{ "privacyx", privacyx.Attributes["value"].Value },
+        //        { "target", target.Attributes["value"].Value },
+        //        { "c_src", c_src.Attributes["value"].Value },
+        //        { "cwevent", cwevent.Attributes["value"].Value },
+        //        { "referrer", referrer.Attributes["value"].Value },
+        //        { "cver", cver.Attributes["value"].Value },
+        //        { "xc_message", message },
+        //        { "view_post", view_post.Attributes["value"].Value }
+        //    });
 
-            using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, $"https://mbasic.facebook.com/{composerForm.Attributes["action"].Value}"))
-            {
-                request.Content = content;
-                request.Headers.Add("Sec-Fetch-Site", "same-origin");
+        //    using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, $"https://mbasic.facebook.com/{composerForm.Attributes["action"].Value}"))
+        //    {
+        //        request.Content = content;
+        //        request.Headers.Add("Sec-Fetch-Site", "same-origin");
 
-                using (HttpResponseMessage response = await HttpSend(request))
-                    responseContent = await EnsureNoCheckpoint(response).Content.ReadAsStringAsync();
-            }
+        //        using (HttpResponseMessage response = await HttpSend(request))
+        //            responseContent = await EnsureNoCheckpoint(response).Content.ReadAsStringAsync();
+        //    }
 
-            return true;
-        }
+        //    return true;
+        //}
 
         public async Task<List<FriendInfo>> GetSuggestedMembers(string groupId, int maxSuggestedMembers = 10)
         {
@@ -617,24 +701,29 @@ namespace AutoAcceptFacebookFriendRequests.API
             return true;
         }
 
-        public async Task<List<FriendInfo>> GetFriendRequests()
+        public async Task<string> GetFriendRequestData()
+        {
+            string dtsg = await GetDTSG("https://www.facebook.com/friends/requests");
+            return await RequestAPI(dtsg, "{\"scale\":1}", "4851458921570237");
+        }
+
+        public int GetFriendRequestCount(string friendRequestData)
+        {
+            JObject responseObject = JObject.Parse(friendRequestData);
+            return Convert.ToInt32(responseObject["data"]!["viewer"]!["friend_requests"]!["count"]!);
+        }
+
+        public List<FriendInfo> GetFriendRequests(string friendRequestData)
         {
             List<FriendInfo> friends = new List<FriendInfo>();
 
-            string dtsg = await GetDTSG("https://www.facebook.com/friends/requests");
-            string responseContent = await RequestAPI(dtsg, "{\"scale\":1}", "4851458921570237");
-
-            JObject responseObject = JObject.Parse(responseContent);
-
+            JObject responseObject = JObject.Parse(friendRequestData);                                 
             JArray friendRequests = JArray.Parse(responseObject["data"]!["viewer"]!["friending_possibilities"]!["edges"]!.ToString());
-
             foreach (JToken item in friendRequests)
             {
                 JToken node = item["node"]!;
-
                 string id = node["id"]!.ToString();
                 string name = node["name"]!.ToString();
-
                 friends.Add(new FriendInfo(id, name));
             }
 

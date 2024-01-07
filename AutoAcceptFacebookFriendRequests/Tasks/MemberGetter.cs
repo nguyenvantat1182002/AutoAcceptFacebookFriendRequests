@@ -70,7 +70,7 @@ namespace AutoAcceptFacebookFriendRequests.Tasks
 
                         groupCount++;
 
-                        Service.UpdateRequest(GridView, api, groupCount);
+                        Service.UpdateRequest(GridView, api, groupCount.ToString());
                         Service.UpdateCookieStatus(GridView, api, "");
                     }
                 }

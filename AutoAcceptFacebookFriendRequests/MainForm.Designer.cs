@@ -40,6 +40,10 @@
             Column5 = new DataGridViewTextBoxColumn();
             Column6 = new DataGridViewTextBoxColumn();
             Column4 = new DataGridViewTextBoxColumn();
+            contextMenuStrip = new ContextMenuStrip(components);
+            copyAccHoaToolStripMenuItem = new ToolStripMenuItem();
+            copyUidAccBiToolStripMenuItem = new ToolStripMenuItem();
+            copyUidAccBi5ToolStripMenuItem = new ToolStripMenuItem();
             stopButton = new MaterialSkin.Controls.MaterialButton();
             startButton = new MaterialSkin.Controls.MaterialButton();
             tabPage3 = new TabPage();
@@ -158,6 +162,7 @@
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)CookieGridView1).BeginInit();
+            contextMenuStrip.SuspendLayout();
             tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)CookieGridView2).BeginInit();
             tabPage4.SuspendLayout();
@@ -265,6 +270,7 @@
             CookieGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             CookieGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             CookieGridView1.Columns.AddRange(new DataGridViewColumn[] { Column1, Column2, Column5, Column6, Column4 });
+            CookieGridView1.ContextMenuStrip = contextMenuStrip;
             CookieGridView1.Location = new Point(6, 79);
             CookieGridView1.Name = "CookieGridView1";
             CookieGridView1.ReadOnly = true;
@@ -310,6 +316,33 @@
             Column4.Name = "Column4";
             Column4.ReadOnly = true;
             Column4.SortMode = DataGridViewColumnSortMode.NotSortable;
+            // 
+            // contextMenuStrip
+            // 
+            contextMenuStrip.Items.AddRange(new ToolStripItem[] { copyAccHoaToolStripMenuItem, copyUidAccBiToolStripMenuItem, copyUidAccBi5ToolStripMenuItem });
+            contextMenuStrip.Name = "contextMenuStrip";
+            contextMenuStrip.Size = new Size(204, 92);
+            // 
+            // copyAccHoaToolStripMenuItem
+            // 
+            copyAccHoaToolStripMenuItem.Name = "copyAccHoaToolStripMenuItem";
+            copyAccHoaToolStripMenuItem.Size = new Size(203, 22);
+            copyAccHoaToolStripMenuItem.Text = "Copy acc đã hoàn thành";
+            copyAccHoaToolStripMenuItem.Click += copyDoneUidToolStripMenuItem_Click;
+            // 
+            // copyUidAccBiToolStripMenuItem
+            // 
+            copyUidAccBiToolStripMenuItem.Name = "copyUidAccBiToolStripMenuItem";
+            copyUidAccBiToolStripMenuItem.Size = new Size(203, 22);
+            copyUidAccBiToolStripMenuItem.Text = "Copy uid acc bị lỗi";
+            copyUidAccBiToolStripMenuItem.Click += copyUidErrorToolStripMenuItem_Click;
+            // 
+            // copyUidAccBi5ToolStripMenuItem
+            // 
+            copyUidAccBi5ToolStripMenuItem.Name = "copyUidAccBi5ToolStripMenuItem";
+            copyUidAccBi5ToolStripMenuItem.Size = new Size(203, 22);
+            copyUidAccBi5ToolStripMenuItem.Text = "Copy uid acc timeout";
+            copyUidAccBi5ToolStripMenuItem.Click += copyUidTimeoutToolStripMenuItem_Click;
             // 
             // stopButton
             // 
@@ -418,12 +451,13 @@
             CookieGridView2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             CookieGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             CookieGridView2.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn1, dataGridViewTextBoxColumn2, dataGridViewTextBoxColumn3, dataGridViewTextBoxColumn4, dataGridViewTextBoxColumn5 });
-            CookieGridView2.Location = new Point(6, 81);
+            CookieGridView2.ContextMenuStrip = contextMenuStrip;
+            CookieGridView2.Location = new Point(6, 84);
             CookieGridView2.Name = "CookieGridView2";
             CookieGridView2.ReadOnly = true;
             CookieGridView2.RowHeadersVisible = false;
             CookieGridView2.RowTemplate.Height = 25;
-            CookieGridView2.Size = new Size(717, 655);
+            CookieGridView2.Size = new Size(717, 407);
             CookieGridView2.TabIndex = 40;
             // 
             // dataGridViewTextBoxColumn1
@@ -571,12 +605,13 @@
             CookieGridView3.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             CookieGridView3.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             CookieGridView3.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn6, dataGridViewTextBoxColumn7, dataGridViewTextBoxColumn8, dataGridViewTextBoxColumn9, dataGridViewTextBoxColumn10 });
-            CookieGridView3.Location = new Point(6, 81);
+            CookieGridView3.ContextMenuStrip = contextMenuStrip;
+            CookieGridView3.Location = new Point(6, 84);
             CookieGridView3.Name = "CookieGridView3";
             CookieGridView3.ReadOnly = true;
             CookieGridView3.RowHeadersVisible = false;
             CookieGridView3.RowTemplate.Height = 25;
-            CookieGridView3.Size = new Size(717, 655);
+            CookieGridView3.Size = new Size(717, 407);
             CookieGridView3.TabIndex = 45;
             // 
             // dataGridViewTextBoxColumn6
@@ -684,12 +719,13 @@
             CookieGridView4.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             CookieGridView4.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             CookieGridView4.Columns.AddRange(new DataGridViewColumn[] { Column3, Column7, Column8, Column9, Column10 });
+            CookieGridView4.ContextMenuStrip = contextMenuStrip;
             CookieGridView4.Location = new Point(4, 179);
             CookieGridView4.Name = "CookieGridView4";
             CookieGridView4.ReadOnly = true;
             CookieGridView4.RowHeadersVisible = false;
             CookieGridView4.RowTemplate.Height = 25;
-            CookieGridView4.Size = new Size(719, 557);
+            CookieGridView4.Size = new Size(719, 312);
             CookieGridView4.TabIndex = 6;
             // 
             // Column3
@@ -899,12 +935,13 @@
             CookieGridView5.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             CookieGridView5.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             CookieGridView5.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn11, dataGridViewTextBoxColumn12, dataGridViewTextBoxColumn13, dataGridViewTextBoxColumn15 });
+            CookieGridView5.ContextMenuStrip = contextMenuStrip;
             CookieGridView5.Location = new Point(3, 182);
             CookieGridView5.Name = "CookieGridView5";
             CookieGridView5.ReadOnly = true;
             CookieGridView5.RowHeadersVisible = false;
             CookieGridView5.RowTemplate.Height = 25;
-            CookieGridView5.Size = new Size(720, 414);
+            CookieGridView5.Size = new Size(720, 309);
             CookieGridView5.TabIndex = 9;
             // 
             // dataGridViewTextBoxColumn11
@@ -1078,12 +1115,13 @@
             CookieGridView6.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             CookieGridView6.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             CookieGridView6.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn14, dataGridViewTextBoxColumn16, dataGridViewTextBoxColumn17, dataGridViewTextBoxColumn18, dataGridViewTextBoxColumn19 });
+            CookieGridView6.ContextMenuStrip = contextMenuStrip;
             CookieGridView6.Location = new Point(6, 80);
             CookieGridView6.Name = "CookieGridView6";
             CookieGridView6.ReadOnly = true;
             CookieGridView6.RowHeadersVisible = false;
             CookieGridView6.RowTemplate.Height = 25;
-            CookieGridView6.Size = new Size(714, 513);
+            CookieGridView6.Size = new Size(714, 408);
             CookieGridView6.TabIndex = 40;
             // 
             // dataGridViewTextBoxColumn14
@@ -1191,12 +1229,13 @@
             CookieGridView7.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             CookieGridView7.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             CookieGridView7.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn20, dataGridViewTextBoxColumn21, dataGridViewTextBoxColumn22, dataGridViewTextBoxColumn23, dataGridViewTextBoxColumn24 });
+            CookieGridView7.ContextMenuStrip = contextMenuStrip;
             CookieGridView7.Location = new Point(3, 179);
             CookieGridView7.Name = "CookieGridView7";
             CookieGridView7.ReadOnly = true;
             CookieGridView7.RowHeadersVisible = false;
             CookieGridView7.RowTemplate.Height = 25;
-            CookieGridView7.Size = new Size(720, 417);
+            CookieGridView7.Size = new Size(720, 312);
             CookieGridView7.TabIndex = 13;
             // 
             // dataGridViewTextBoxColumn20
@@ -1389,7 +1428,7 @@
             CookieGridView8.RowHeadersVisible = false;
             CookieGridView8.RowTemplate.Height = 25;
             CookieGridView8.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            CookieGridView8.Size = new Size(720, 462);
+            CookieGridView8.Size = new Size(720, 357);
             CookieGridView8.TabIndex = 14;
             // 
             // dataGridViewTextBoxColumn25
@@ -1633,7 +1672,7 @@
             CookieGridView9.ReadOnly = true;
             CookieGridView9.RowHeadersVisible = false;
             CookieGridView9.RowTemplate.Height = 25;
-            CookieGridView9.Size = new Size(714, 469);
+            CookieGridView9.Size = new Size(714, 434);
             CookieGridView9.TabIndex = 36;
             // 
             // dataGridViewTextBoxColumn30
@@ -2090,6 +2129,7 @@
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)CookieGridView1).EndInit();
+            contextMenuStrip.ResumeLayout(false);
             tabPage3.ResumeLayout(false);
             tabPage3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)CookieGridView2).EndInit();
@@ -2246,5 +2286,9 @@
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn32;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn33;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn34;
+        private ContextMenuStrip contextMenuStrip;
+        private ToolStripMenuItem copyAccHoaToolStripMenuItem;
+        private ToolStripMenuItem copyUidAccBiToolStripMenuItem;
+        private ToolStripMenuItem copyUidAccBi5ToolStripMenuItem;
     }
 }
